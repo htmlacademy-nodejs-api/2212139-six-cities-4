@@ -1,7 +1,7 @@
 export type User = {
   name: string;
   email: string;
-  avatarPath: string;
+  avatarUrl: string;
   password: string;
   type: 'regular' | 'pro';
 }

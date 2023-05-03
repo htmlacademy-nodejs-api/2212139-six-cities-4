@@ -7,10 +7,10 @@ import { City } from './city-type.enum.js';
 export type Offer = {
   title: string;
   description: string;
-  postdate: Date;
-  city: City;
-  prefoto: string;
-  foto: string[];
+  postDate: Date;
+  cityName: City;
+  preview: string;
+  photos: string[];
   isPremium: boolean;
   isFavorite: boolean;
   rating: number;
