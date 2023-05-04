@@ -6,12 +6,12 @@ export default class VersionComand implements CliCommandInterface {
   public readonly name = '--version';
 
   private readVersion(): string {
-    const contentPageJSON = readFileSync(path.resolve('../../../package.json'), 'utf-8');
+    const contentPageJSON = readFileSync(path.resolve('./package.json'), 'utf-8');
     const content = JSON.parse(contentPageJSON);
     return content.version;
   }
 
-  public async execute(): Promise<void>{
+  public async execute(): Promise<void> {
     const version = this.readVersion();
     console.log(version);
   }
