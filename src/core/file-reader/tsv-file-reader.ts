@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs';
-import { City } from '../../types/city-type.enum';
-import { Feature } from '../../types/feature-type.enum';
-import { OfferType } from '../../types/offer-type.enum';
-import { Offer } from '../../types/offer.type';
-import { FileReaderInterface } from './file-reader.interface';
+import { City } from '../../types/city-type.enum.js';
+import { Feature } from '../../types/feature-type.enum.js';
+import { OfferType } from '../../types/offer-type.enum.js';
+import { Offer } from '../../types/offer.type.js';
+import { FileReaderInterface } from './file-reader.interface.js';
 
 export default class TSVFileReader implements FileReaderInterface {
   private rawData = '';
