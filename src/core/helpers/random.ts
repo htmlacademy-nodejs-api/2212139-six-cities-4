@@ -23,7 +23,7 @@ export function getRandomItem<T>(items: T[]): T {
 
 export function getPostDate(): string {
   const date = dayjs();
-  date.subtract(generateRandomValue(100, 60000000), 's');
+  date.subtract(generateRandomValue(100, 6000000), 's');
   return date.toISOString();
 }
 
