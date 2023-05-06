@@ -1,0 +1,100 @@
+{
+  "api": {
+    "titles": [
+      "Маленькая квартирка рядом с парком",
+      "Чёткая хата",
+      "Небольшая лавочка в парке",
+      "Уютное гнездышко для молодоженов",
+      "Тихая квартирка недалеко от метро",
+      "Стандартная квартира в центре",
+      "Квартира студия в престижном районе",
+      "Милое гнездышко для фанатов Анимэ",
+      "Загородный дом для спокойного отдыха",
+      "Милейший чердачок",
+      "Хостел «Для друзей»",
+      "Отель-музей",
+      "Императорский дворец"
+    ],
+    "descriptions": [
+      "Великолепная лавочка прямо в центре парка. Подходит для всех кто любит спать на свежем воздухе.",
+      "Хейтеров просьба не беспокоить.",
+      "Замечательный дворец в старинном центре города. Только для тех кто может себе позволить дворец. Лакеев и прочих жокеев просим не беспокоить.",
+      "Тут красиво, светло и уютно. Есть где разместиться компании из 5 человек. Кофе и печеньки бесплатно.",
+      "Великолепная квартира-студия в центре. Подходит как туристам, там и бизнесменам. Квартира полностью укомплектована и имеет свежий ремонт.",
+      "Маленькая квартирка на чердаке. Для самых не требовательных.",
+      "Один из лучших хостелов для душевного общения. Ужинаем вместе и играем в «Мафию» по вечерам, вкусно готовим. Ежедневная уборка, бесплатный Wi-Fi, чистое постельное белье.",
+      "Отель для ценителей истории. Почувствуй себя героем из прошлого.",
+      "У нас тут все ништяк. Ларек за углом. Шава 24 часа. Приезжайте! Интернетов нет!",
+      "Комната в трёхкомнатной квартире, подойдёт молодым путешественникам.",
+      "Квартира на первом этаже. Соседи тихие. Для всех, кто терпеть не может шума и суеты."
+    ],
+    "preview": [
+      "apartment-small-04.jpg",
+      "apartment-small-03.jpg",
+      "romm-small-03.jpg",
+      "hotel-small-03.jpg",
+      "room-small.jpg"
+    ],
+    "photos": [
+      "apartment-01.jpg",
+      "apartment-01.jpg",
+      "apartment-03.jpg",
+      "apartment-03.jpg",
+      "apartment-04.jpg",
+      "apartment-04.jpg",
+      "room.jpg",
+      "room.jpg"
+    ],
+    "names": [
+      "Иван Иванов",
+      "Олег Сидоров",
+      "Пьер Безухов",
+      "Роланд Дискейн",
+      "Холи Гибни",
+      "Джек Торренс",
+      "Антон Городецкий",
+      "Борис Гесер",
+      "Рокки Бальбоа",
+      "Джон Смит"
+    ],
+    "emails": [
+      "snow@pisem.local",
+      "president@dka.local",
+      "fish@big.local",
+      "test@pisem.local",
+      "freedom@pisem.local",
+      "rolan@pochta.local",
+      "author@mir.local",
+      "test@lost.loca",
+      "kujo-fan@story.local"
+    ],
+    "avatars": [
+      "avatar-max.jpg",
+      "avatar-leha.jpg",
+      "avatar-mark.jpg",
+      "avatar-youma.jpg",
+      "avatar-bigboss.jpg"
+    ],
+    "cities": [
+      "Paris, 48.85661, 2.351499",
+      "Cologne, 50.938361, 6.959974",
+      "Brussels, 50.846557, 4.351697",
+      "Amsterdam, 52.370216, 4.895168",
+      "Hamburg, 53.550341, 10.000654",
+      "Dusseldorf, 51.225402, 6.776314"
+    ],
+    "comments": [
+      "A movie that will take you to another world full of emotions.",
+      "I love this movie. This film is a milestone in cinematography. Great Immersive camera-work. This film is an experience and i has already seen it 4 times and I only see more quality of the film.",
+      "I personally found this movie to be boring. Definitely one of the most boring movies I've ever seen.",
+      "I really find it difficult to believe this movie is rated highly by people. It's hands down the worst movie I've seen in my life",
+      "It was well acted, directed, and the music was good. But the story is yawn. Not trying to rip anybody but I checked my watch a dozen times during this movie.",
+      "Poised to be an instant classic, almost everything about this film is phenomenal - the acting, the cinematography, the discography, etc.",
+      "The editing is a mess, and the transitions of the plot or characters are rather strange. There is no narrative focus and the storytelling is unbalanced. I cannot really understand why such a bad movie received an overwhelming approval from the critics. ",
+      "This movie is perfect in all its categories: credits, sound track, production, casting, writing, photography, editing, acting, and direction. I was amazed with the freedom of the use of the camera. This movie will change the way movies are made. Slow-mo, stills, black and white, and color were all used to brilliant effect.",
+      "This movie really touched my heart, it really is the best movie of the year and everyone should see this masterpiece.",
+      "This movie is just plain bad. There must be some big payola going round this awards season. Badly written, average acting at best, all the characters are unrelatable and inlikeable. 2 hours of my life wasted.",
+      "Unfortunately we don't have a reliable way to tell the true ratings of a movie."
+    ]
+  }
+}
