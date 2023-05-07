@@ -1,4 +1,4 @@
-import { City } from './types/city-type.enum';
+import { City } from './types/city-type.enum.js';
 
 export const RANGE_COORDINATES_VALUE = 0.05;
 

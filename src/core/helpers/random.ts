@@ -22,9 +22,7 @@ export function getRandomItem<T>(items: T[]): T {
 }
 
 export function getPostDate(): string {
-  const date = dayjs();
-  date.subtract(generateRandomValue(100, 6000000), 's');
-  return date.toISOString();
+  return dayjs().subtract(generateRandomValue(1000, 600000), 'seconds').toISOString();
 }
 
 export function getBooleanValue(): boolean {
