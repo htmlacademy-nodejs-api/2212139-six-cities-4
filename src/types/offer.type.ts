@@ -21,5 +21,5 @@ export type Offer = {
   features: Feature[];
   user: User;
   commentsCount: number;
-  address: Location;
-}
+  coordinates: Location;
+};
