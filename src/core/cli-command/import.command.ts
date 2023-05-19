@@ -47,6 +47,8 @@ export default class ImportCommand implements CliCommandInterface {
     await this.offerService.create({
       ...offer,
       userId: user.id,
+      latitude: offer.coordinates.latitude,
+      longitude: offer.coordinates.longitude,
     });
   }
 
