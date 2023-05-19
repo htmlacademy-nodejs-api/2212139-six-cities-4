@@ -4,6 +4,7 @@ import typegoose, {
   getModelForClass,
 } from '@typegoose/typegoose';
 import { createSHA256 } from '../../core/helpers/index.js';
+import { UserType } from '../../types/user-type.enum.js';
 
 const { prop, modelOptions } = typegoose;
 
@@ -15,28 +16,28 @@ export interface UserEntity extends defaultClasses.Base {}
   },
 })
 export class UserEntity extends defaultClasses.TimeStamps implements User {
+  @prop({ required: true, default: '' })
+  public name: string;
+
   @prop({ unique: true, required: true })
   public email: string;
 
   @prop({ required: false, default: '' })
-  public avatarPath: string;
+  public avatarUrl: string;
 
-  @prop({ required: true, default: '' })
-  public firstname: string;
-
-  @prop({ required: true, default: '' })
-  public lastname: string;
+  @prop({ required: true, default: 'обычный' })
+  public type: UserType;
 
   @prop({ required: true })
-  private password!: string;
+  private password?: string;
 
   constructor(userData: User) {
     super();
 
     this.email = userData.email;
-    this.avatarPath = userData.avatarPath;
-    this.firstname = userData.firstname;
-    this.lastname = userData.lastname;
+    this.avatarUrl = userData.avatarUrl;
+    this.name = userData.name;
+    this.type = userData.type;
   }
 
   public setPassword(password: string, salt: string) {
