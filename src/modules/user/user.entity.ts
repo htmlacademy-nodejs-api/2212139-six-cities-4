@@ -1,13 +1,13 @@
-import typegoose, {
-  getModelForClass,
-  defaultClasses,
-} from '@typegoose/typegoose';
-import { createSHA256 } from '../../core/helpers/common.js';
 import { User } from '../../types/user.type.js';
-
-export interface UserEntity extends defaultClasses.Base {}
+import typegoose, {
+  defaultClasses,
+  getModelForClass,
+} from '@typegoose/typegoose';
+import { createSHA256 } from '../../core/helpers/index.js';
 
 const { prop, modelOptions } = typegoose;
+
+export interface UserEntity extends defaultClasses.Base {}
 
 @modelOptions({
   schemaOptions: {
@@ -16,16 +16,16 @@ const { prop, modelOptions } = typegoose;
 })
 export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ unique: true, required: true })
-  public email: '';
+  public email = '';
 
-  @prop({ unique: false, default: '' })
-  public avatarPath: '';
+  @prop({ required: false, default: '' })
+  public avatarPath = '';
 
-  @prop({ unique: true, default: '' })
-  public firstname: '';
+  @prop({ required: true, default: '' })
+  public firstname = '';
 
-  @prop({ unique: true, default: '' })
-  public lastname: '';
+  @prop({ required: true, default: '' })
+  public lastname = '';
 
   @prop({ required: true })
   private password!: string;
