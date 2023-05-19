@@ -5,7 +5,8 @@ import { FileReaderInterface } from './file-reader.interface.js';
 const CHUNK_SIZE = 16384;
 
 export default class TSVFileReader
-  extends EventEmitter implements FileReaderInterface {
+  extends EventEmitter
+  implements FileReaderInterface {
   constructor(public filename: string) {
     super();
   }
@@ -28,7 +29,9 @@ export default class TSVFileReader
         remainingData = remainingData.slice(++nextLinePosition);
         importedRowCount++;
 
-        this.emit('line', completeRow);
+        await new Promise((resolve) => {
+          this.emit('line', completeRow, resolve);
+        });
       }
     }
     this.emit('end', importedRowCount);
