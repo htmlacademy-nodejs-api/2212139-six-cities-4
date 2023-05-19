@@ -7,6 +7,7 @@ import UserService from './user.service.js';
 
 export function createUserContainer() {
   const userContainer = new Container();
+
   userContainer
     .bind<UserServiceInterface>(AppComponent.UserServiceInterface)
     .to(UserService)
