@@ -2,6 +2,7 @@ import { City } from '../../types/city-type.enum.js';
 import { Feature } from '../../types/feature-type.enum.js';
 import { OfferType } from '../../types/offer-type.enum.js';
 import { Offer } from '../../types/offer.type.js';
+import { UserType } from '../../types/user-type.enum.js';
 
 export function createOffer(offerData: string): Offer {
   const [
@@ -34,7 +35,7 @@ export function createOffer(offerData: string): Offer {
     email,
     avatarUrl,
     password,
-    type: userType as 'pro' | 'regular',
+    type: UserType[userType as keyof typeof UserType],
   };
 
   const coordinates = {

@@ -1,8 +1,8 @@
 import { OfferType } from './offer-type.enum.js';
 import { User } from './user.type.js';
-import { Location } from './location.type.js';
 import { Feature } from './feature-type.enum.js';
 import { City } from './city-type.enum.js';
+import { Location } from './location.type.js';
 
 export type Offer = {
   title: string;

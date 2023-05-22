@@ -51,7 +51,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const email = getRandomItem(this.mockData.emails);
     const avatarUrl = getRandomItem(this.mockData.avatars);
     const password = getRandomItem(this.mockData.passwords);
-    const type = getRandomItem(['regular', 'pro']);
+    const type = getRandomItem(['обычный', 'pro']);
     const commentsCount = generateRandomValue(
       CommentCountValue.min,
       CommentCountValue.max
