@@ -35,7 +35,7 @@ export function createOffer(offerData: string): Offer {
     email,
     avatarUrl,
     password,
-    type: UserType[userType as keyof typeof UserType],
+    userType: UserType[userType as keyof typeof UserType],
   };
 
   const coordinates = {
