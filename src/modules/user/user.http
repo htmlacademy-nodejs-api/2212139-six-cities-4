@@ -1,0 +1,26 @@
+# Пользователи
+## Создать нового пользователя
+
+POST http://localhost:5000/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "mabori@mail.ru",
+    "avaratUrl": "mabori.png",
+    "name": "Алексей Макеев",
+    "password": "lsdkfadf",
+  }
+
+###
+
+## Авторизовать пользователя
+
+POST http://localhost:5000/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "mabori@mail.ru",
+    "password": "lsdkfadf",
+  }
+
+###
