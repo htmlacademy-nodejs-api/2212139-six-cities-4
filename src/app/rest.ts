@@ -1,3 +1,4 @@
+import express, { Express } from 'express';
 import { ConfigInterface } from '../core/config/config.interface.js';
 import { RestSchema } from '../core/config/rest.schema.js';
 import { LoggerInterface } from '../core/logger/logger.interface.js';
@@ -8,6 +9,8 @@ import { getMongoURI } from '../core/helpers/db.js';
 
 @injectable()
 export default class RestApplication {
+  private expressApplication: Express;
+
   constructor(
     @inject(AppComponent.LoggerInterface)
     private readonly logger: LoggerInterface,
@@ -15,9 +18,13 @@ export default class RestApplication {
     private readonly config: ConfigInterface<RestSchema>,
     @inject(AppComponent.DatabaseClientInterface)
     private readonly databaseClient: DatabaseClientInterface
-  ) {}
+  ) {
+    this.expressApplication = express();
+  }
 
   private async _initDb() {
+    this.logger.info('Init database...');
+
     const mongoUri = getMongoURI(
       this.config.get('DB_USER'),
       this.config.get('DB_PASSWORD'),
@@ -25,15 +32,25 @@ export default class RestApplication {
       this.config.get('DB_PORT'),
       this.config.get('DB_NAME')
     );
-    return this.databaseClient.connect(mongoUri);
+    await this.databaseClient.connect(mongoUri);
+    this.logger.info('Init database completed');
+  }
+
+  private async _initServer() {
+    this.logger.info('Try to init server...');
+
+    const port = this.config.get('PORT');
+    this.expressApplication.listen(port);
+
+    this.logger.info(
+      `Server started on http://localhost:${this.config.get('PORT')}`
+    );
   }
 
   public async init() {
     this.logger.info('Application initialization...');
-    this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
 
-    this.logger.info('Init database');
     await this._initDb();
-    this.logger.info('Init database completed');
+    await this._initServer();
   }
 }

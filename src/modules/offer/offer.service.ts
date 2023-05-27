@@ -92,4 +92,27 @@ export default class OfferService implements OfferServiceInterface {
       .findByIdAndUpdate(offerId, { $set: { isFavorite } })
       .exec();
   }
+
+  public async updateRating(offerId: string): Promise<number | null> {
+    const currentOffer = this.offerModel.findById(offerId);
+    const offerWithNewRating = await this.offerModel.aggregate([
+      { $match: { title: currentOffer?.title } },
+      {
+        $lookup: {
+          from: 'comments',
+          localField: '_id',
+          foreignField: 'offerId',
+          pipeline: [
+            { $project: { rating: 1 } },
+            { $group: { _id: null, ratingAvg: { $avg: '$rating' } } },
+          ],
+          as: 'result',
+        },
+      },
+      { $unwind: '$result' },
+      { $addFields: { rating: '$result.ratingAvg' } },
+      { $unset: 'result' },
+    ]);
+    return offerWithNewRating[0] ? offerWithNewRating[0].rating : 0;
+  }
 }
