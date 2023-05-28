@@ -5,7 +5,7 @@ import { UserEntity } from '../user/user.entity.js';
 
 const {prop, modelOptions} = typegoose;
 
-export interface CommentEntity extends defaultClasses.Base {};
+export interface CommentEntity extends defaultClasses.Base {}
 
 @modelOptions({
   schemaOptions: {

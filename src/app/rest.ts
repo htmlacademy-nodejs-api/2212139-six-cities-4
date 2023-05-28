@@ -7,7 +7,7 @@ import { inject, injectable } from 'inversify';
 import { DatabaseClientInterface } from '../core/database-client/database-client.interface.js';
 import { getMongoURI } from '../core/helpers/db.js';
 import { ControllerInterface } from '../core/controller/controller.interface.js';
-import { ExceptionFilterInterface } from '../core/expception-filter/exception-filter.interface.js';
+import { ExceptionFilterInterface } from '../core/expception-filters/exception-filter.interface.js';
 
 @injectable()
 export default class RestApplication {
@@ -22,7 +22,7 @@ export default class RestApplication {
     private readonly databaseClient: DatabaseClientInterface,
     @inject(AppComponent.UserController)
     private readonly userController: ControllerInterface,
-    @inject(AppComponent.Offercontroller)
+    @inject(AppComponent.OfferController)
     private readonly offerController: ControllerInterface,
     @inject(AppComponent.ExceptionFilterInterface)
     private readonly exceprionFilter: ExceptionFilterInterface

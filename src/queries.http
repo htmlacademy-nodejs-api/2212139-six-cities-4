@@ -10,7 +10,7 @@ Content-Type: application/json
 {
   "name": "Jack Torrance",
   "email": "torans@overlook.net",
-  "avatarPath": "torrance.png",
+  "avatarUrl": "torrance.png",
   "password": "pro"
 }
 
@@ -40,7 +40,7 @@ Content-Type: application/json
 
 {
   "title": "test offer 001",
-  "description": "test offer number one. Прими звонок и превратись в зомби. Рассказ о зомбировании через средства связи.",
+  "description": "test offer 001 description",
   "postDate": "2023-01-13T20:26:42.941Z",
   "city": "Amsterdam",
   "previewImage": "institute-book.jpg",
@@ -67,7 +67,7 @@ Content-Type: application/json
 {
   "id": "1",
   "title": "test offer 001",
-  "description": "test offer number one. Прими звонок и превратись в зомби. Рассказ о зомбировании через средства связи.",
+  "description": "test offer number one.",
   "postDate": "2023-01-13T20:26:42.941Z",
   "city": "Brussels",
   "previewImage": "institute-book.jpg",
