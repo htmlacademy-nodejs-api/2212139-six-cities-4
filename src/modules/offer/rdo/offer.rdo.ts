@@ -1,8 +1,8 @@
 import { Expose, Type } from 'class-transformer';
-import { City } from '../../../types/city-type.enum';
-import { Feature } from '../../../types/feature-type.enum';
-import { OfferType } from '../../../types/offer-type.enum';
-import UserRdo from '../../user/rdo/user.rdo';
+import { City } from '../../../types/city-type.enum.js';
+import { Feature } from '../../../types/feature-type.enum.js';
+import { OfferType } from '../../../types/offer-type.enum.js';
+import UserRdo from '../../user/rdo/user.rdo.js';
 
 export default class OfferResponse {
   @Expose()
