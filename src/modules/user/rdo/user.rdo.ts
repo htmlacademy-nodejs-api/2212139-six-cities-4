@@ -9,4 +9,7 @@ export default class UserRdo {
 
   @Expose()
   public name!: string;
+
+  @Expose()
+  public userType!: string;
 }

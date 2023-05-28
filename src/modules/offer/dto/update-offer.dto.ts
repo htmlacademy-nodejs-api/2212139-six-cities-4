@@ -3,6 +3,7 @@ import { Feature } from '../../../types/feature-type.enum.js';
 import { OfferType } from '../../../types/offer-type.enum.js';
 
 export default class UpdateOfferDto {
+  public id!: string;
   public title?: string;
   public description?: string;
   public postDate?: Date;
@@ -17,7 +18,4 @@ export default class UpdateOfferDto {
   public guestsCount?: number;
   public price?: number;
   public features?: Feature[];
-  public commentsCount!: number;
-  public latitude?: number;
-  public longitude?: number;
 }
