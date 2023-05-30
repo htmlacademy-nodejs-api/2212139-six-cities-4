@@ -1,0 +1,98 @@
+GET http://localhost:5000/api HTTP/1.1
+
+###
+
+# Пользователи
+## Регистрация пользователя
+POST http://localhost:5000/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Jack Torrance",
+  "email": "torans@overlook.net",
+  "avatarUrl": "torrance.png",
+  "password": "pro"
+}
+
+###
+
+## Авторизация пользователя
+POST http://localhost:4000/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "torans@overlook.net",
+  "password": "123456"
+}
+
+###
+
+# Объявления
+## Получить список объявлений
+GET http://localhost:5000/offers HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Создать новое объявление
+POST http://localhost:4000/offers HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "test offer 001",
+  "description": "test offer 001 description",
+  "postDate": "2023-01-13T20:26:42.941Z",
+  "city": "Amsterdam",
+  "previewImage": "institute-book.jpg",
+  "images": ["institute-book.jpg", "dark-tower.jpg"],
+  "isPremium": true,
+  "isFavorite": false,
+  "rating": 4.2,
+  "type": "apartment",
+  "maxAdults": 3,
+  "bedrooms": 2,
+  "price": 80000,
+  "categories": ["Air conditioning", "Laptop friendly workspace", "Towels", "Fridge"],
+  "userId": "1",
+  "latitude": 48.85661,
+  "longitude": 2.351499,
+}
+
+###
+
+## Обновить объявление
+PUT http://localhost:4000/offers/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": "1",
+  "title": "test offer 001",
+  "description": "test offer number one.",
+  "postDate": "2023-01-13T20:26:42.941Z",
+  "city": "Brussels",
+  "previewImage": "institute-book.jpg",
+  "images": ["institute-book.jpg", "dark-tower.jpg"],
+  "isPremium": true,
+  "isFavorite": false,
+  "rating": 4.6,
+  "type": "hotel",
+  "maxAdults": 2,
+  "bedrooms": 1,
+  "price": 90000,
+  "categories": ["Air conditioning", "Towels", "Fridge"],
+  "userId": "1",
+  "latitude": 48.85661,
+  "longitude": 2.351499,
+}
+
+###
+
+## Удалить объявление
+DELETE http://localhost:4000/offers/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": "1",
+}
+
+###
