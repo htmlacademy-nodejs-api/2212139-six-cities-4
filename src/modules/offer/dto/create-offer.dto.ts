@@ -18,7 +18,6 @@ export default class CreateOfferDto {
   public price!: number;
   public features!: Feature[];
   public userId!: string;
-  public commentsCount!: number;
   public latitude!: number;
   public longitude!: number;
 }

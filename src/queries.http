@@ -28,6 +28,13 @@ Content-Type: application/json
 ###
 
 # Объявления
+
+## Объявление по идентификатору
+
+GET http://localhost:5000/offers/62711a50b0e24a624d49ffdc HTTP/1.1
+
+###
+
 ## Получить список объявлений
 GET http://localhost:5000/offers HTTP/1.1
 Content-Type: application/json
@@ -61,11 +68,10 @@ Content-Type: application/json
 ###
 
 ## Обновить объявление
-PUT http://localhost:4000/offers/1 HTTP/1.1
+PUT http://localhost:5000/offers/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "id": "1",
   "title": "test offer 001",
   "description": "test offer number one.",
   "postDate": "2023-01-13T20:26:42.941Z",
@@ -87,12 +93,8 @@ Content-Type: application/json
 
 ###
 
-## Удалить объявление
-DELETE http://localhost:4000/offers/1 HTTP/1.1
-Content-Type: application/json
+## Удаление объявления
 
-{
-  "id": "1",
-}
+DELETE http://localhost:4000/offers/62825028a75295825778ac80 HTTP/1.1
 
 ###
