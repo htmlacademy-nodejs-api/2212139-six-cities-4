@@ -14,9 +14,14 @@ import { StatusCodes } from 'http-status-codes';
 import UpdateOfferDto from './dto/update-offer.dto.js';
 import { CommentServiceInterface } from '../comment/comment-service.interface.js';
 import CommentRdo from '../comment/rdo/comment.rdo.js';
+import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 
 type ParamsGetOffer = {
   offerId: string;
+};
+
+type ParamsGetPremium = {
+  cityName: string;
 };
 
 @injectable()
@@ -36,6 +41,17 @@ export default class OfferController extends Controller {
       path: '/:offerId',
       method: HttpMethod.Get,
       handler: this.show,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
+    });
+    this.addRoute({
+      path: '/favorite',
+      method: HttpMethod.Get,
+      handler: this.showFavorite,
+    });
+    this.addRoute({
+      path: '/favorite',
+      method: HttpMethod.Get,
+      handler: this.showPremium,
     });
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
@@ -43,16 +59,25 @@ export default class OfferController extends Controller {
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
       handler: this.update,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
     });
     this.addRoute({
       path: '/:offerId/comments',
       method: HttpMethod.Get,
       handler: this.getComments,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')],
+    });
+
+    this.addRoute({
+      path: '/premium/:cityName',
+      method: HttpMethod.Get,
+      handler: this.showPremium,
     });
   }
 
@@ -155,5 +180,36 @@ export default class OfferController extends Controller {
 
     const comments = await this.commentService.findByOfferId(params.offerId);
     this.ok(res, fillDTO(CommentRdo, comments));
+  }
+
+  public async showPremium(
+    { params }: Request<core.ParamsDictionary | ParamsGetPremium>,
+    res: Response
+  ): Promise<void> {
+    const { cityName } = params;
+    const offers = await this.offerService.findPremiumOffers(cityName);
+    if (!offers) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Premium offer with city ${cityName} not found.`,
+        'OfferController'
+      );
+    }
+
+    this.ok(res, fillDTO(OfferRdo, offers));
+  }
+
+  public async showFavorite(_req: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.findFavoriteOffers();
+
+    if (!offers) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        'Favorite offers not found',
+        'OfferController'
+      );
+    }
+
+    this.ok(res, fillDTO(OfferRdo, offers));
   }
 }

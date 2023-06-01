@@ -7,6 +7,7 @@ import { OfferServiceInterface } from './offer-service.interface.js';
 import { OfferEntity } from './offer.entity.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
 import { DEFAULT_OFFER_COUNT } from './offer.constant.js';
+import { SortType } from '../../types/sort-type.enum.js';
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
@@ -36,8 +37,9 @@ export default class OfferService implements OfferServiceInterface {
     offerId: string,
     dto: UpdateOfferDto
   ): Promise<DocumentType<OfferEntity> | null> {
+    const newRating = this.updateRating(offerId);
     return this.offerModel
-      .findByIdAndUpdate(offerId, dto, { new: true })
+      .findByIdAndUpdate(offerId, { ...dto, rating: newRating }, { new: true })
       .populate(['userId'])
       .exec();
   }
@@ -59,17 +61,30 @@ export default class OfferService implements OfferServiceInterface {
   public async incCommentCount(
     offerId: string
   ): Promise<DocumentType<OfferEntity> | null> {
+    const newRating = await this.updateRating(offerId);
+
     return this.offerModel
-      .findByIdAndUpdate(offerId, { $inc: { commentsCount: 1 } })
+      .findByIdAndUpdate(offerId, {
+        $set: { rating: newRating },
+        $inc: { commentsCount: 1 },
+      })
       .exec();
   }
 
+  public async findByTitle(
+    title: string
+  ): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel.findOne({ title }).exec();
+  }
+
   public async findPremiumOffers(
+    cityName: string,
     count?: number
   ): Promise<DocumentType<OfferEntity>[]> {
     const limit = count ?? DEFAULT_OFFER_COUNT;
     return this.offerModel
-      .find({ isPremium: true }, {}, { limit })
+      .find({ isPremium: true, cityName: cityName }, {}, { limit })
+      .sort({ postDate: SortType.Down })
       .populate(['userId'])
       .exec();
   }
