@@ -54,7 +54,7 @@ export default class UpdateOfferDto {
 
   @IsOptional()
   @IsInt({ message: 'Rating must be an integer' })
-  @Min(0, { message: 'Minimum rating is 0' })
+  @Min(1, { message: 'Minimum rating is 1' })
   @Max(5, { message: 'Maximum rating is 5' })
   public rating?: number;
 

@@ -6,11 +6,13 @@ export default class CreateUserDto {
   @Length(1, 15, { message: 'Min length is 1, max is 15' })
   public name!: string;
 
+  @IsString({ message: 'email is required' })
   @IsEmail({}, { message: 'email must be valid address' })
   public email!: string;
 
   public avatarUrl!: string;
 
+  @IsString({ message: 'userType is required' })
   @IsEnum(UserType, { message: 'type must be one of pro or обычный' })
   public userType!: UserType;
 

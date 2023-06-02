@@ -1,6 +1,7 @@
 import { Response, Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { inject } from 'inversify';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { Controller } from '../../core/controller/controller.abstract.js';
 import HttpError from '../../core/errors/http-error.js';
 import { fillDTO } from '../../core/helpers/common.js';
@@ -23,7 +24,12 @@ export default class CommentController extends Controller {
     super(logger);
 
     this.logger.info('Register routes for CommentController...');
-    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)],
+    });
   }
 
   public async create(

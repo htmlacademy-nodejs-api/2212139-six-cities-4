@@ -13,13 +13,17 @@ import {
   ArrayMinSize,
   IsMongoId,
   IsBoolean,
+  IsString,
+  ArrayMaxSize,
 } from 'class-validator';
 
 export default class CreateOfferDto {
+  @IsString({ message: 'title is required' })
   @MinLength(10, { message: 'Minimum title length must be 10' })
   @MaxLength(100, { message: 'Maximum title length must be 100' })
   public title!: string;
 
+  @IsString({ message: 'description is required' })
   @MinLength(20, { message: 'Minimum description length must be 20' })
   @MaxLength(1024, { message: 'Maximum description length must be 1024' })
   public description!: string;
@@ -32,7 +36,13 @@ export default class CreateOfferDto {
   })
   public cityName!: City;
 
+  @IsString({ message: 'preview is required' })
   public preview!: string;
+
+  @ArrayMinSize(6)
+  @ArrayMaxSize(6)
+  @IsArray({ message: 'Field image must be an array' })
+  @IsString({ message: 'photos is required' })
   public photos!: string[];
 
   @IsBoolean({ message: 'isPremium must be true or false' })
@@ -42,7 +52,7 @@ export default class CreateOfferDto {
   public isFavorite!: boolean;
 
   @IsInt({ message: 'Rating must be an integer' })
-  @Min(0, { message: 'Minimum rating is 0' })
+  @Min(1, { message: 'Minimum rating is 1' })
   @Max(5, { message: 'Maximum rating is 5' })
   public rating!: number;
 
