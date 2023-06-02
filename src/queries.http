@@ -78,7 +78,7 @@ PATCH http://localhost:5000/offers/646ca6bdf2d877e09807a80c HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "test offer 001",
+  "title": "test GB Docker Compose 02.06.2023 Макеев Алексей",
   "guestsCount": 4
 }
 
@@ -95,9 +95,9 @@ POST http://localhost:5000/comments HTTP/1.1
 Content-Type: application/json
 
 {
-  "text": "Как обстоят дела с коробками? Фирменная упаковка сохранена?",
+  "text": "GB Docker Compose 02.06.2023 Макеев Алексей",
   "offerId": "646caadc17ebd798c525ce00",
-  "userId": "646caadc17ebd798c525cdfe"
+  "userId": "646ca6bdf2d877e09807a80a"
 }
 
 ###
