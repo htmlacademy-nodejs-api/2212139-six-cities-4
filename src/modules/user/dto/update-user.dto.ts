@@ -1,7 +1,6 @@
-import { UserType } from '../../../types/user-type.enum.js';
+import { IsString } from 'class-validator';
 
 export default class UpdateUserDto {
-  public name?: string;
+  @IsString({ message: 'avatarUrl is required' })
   public avatarUrl?: string;
-  public userType?: UserType;
 }

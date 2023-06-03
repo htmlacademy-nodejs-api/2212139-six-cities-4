@@ -4,7 +4,7 @@ import { Feature } from '../../../types/feature-type.enum.js';
 import { OfferType } from '../../../types/offer-type.enum.js';
 import UserRdo from '../../user/rdo/user.rdo.js';
 
-export default class OfferResponse {
+export default class OfferRdo {
   @Expose()
   public title!: string;
 
@@ -52,7 +52,7 @@ export default class OfferResponse {
 
   @Expose({ name: 'userId' })
   @Type(() => UserRdo)
-  public userId!: UserRdo;
+  public user!: UserRdo;
 
   @Expose()
   public commentsCount!: number;
