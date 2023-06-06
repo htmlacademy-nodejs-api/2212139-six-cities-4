@@ -8,7 +8,7 @@ import { HttpMethod } from '../../types/http-method.enum.js';
 import CreateUserDto from './dto/create-user.dto.js';
 import { UserServiceInterface } from './user-service.interface.js';
 import { StatusCodes } from 'http-status-codes';
-import { fillDTO } from '../../core/helpers/index.js';
+import { createJWT, fillDTO } from '../../core/helpers/index.js';
 import HttpError from '../../core/errors/http-error.js';
 import UserRdo from './rdo/user.rdo.js';
 import { RestSchema } from '../../core/config/rest.schema.js';
@@ -16,6 +16,9 @@ import LoginUserDto from './dto/login-user.dto.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 import { UploadFileMiddleware } from '../../common/middlewares/upload-file-middleware.js';
+import { UnknownRecord } from '../../types/unknown-record.type.js';
+import { JWT_ALGORITHM } from './user.constant.js';
+import LoggedUserRdo from './rdo/logged-user.rdo.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -81,26 +84,29 @@ export default class UserController extends Controller {
   }
 
   public async login(
-    {
-      body,
-    }: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
-    _res: Response
+    { body }: Request<UnknownRecord, UnknownRecord, LoginUserDto>,
+    res: Response
   ): Promise<void> {
-    const existsUser = await this.userService.findUserByEmail(body.email);
+    const user = await this.userService.verifyUser(
+      body,
+      this.configService.get('SALT')
+    );
 
-    if (!existsUser) {
+    if (!user) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
-        `User with email <<${body.email}>> not found`,
+        'Unauthorized',
         'UserController'
       );
     }
 
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController'
+    const token = await createJWT(
+      JWT_ALGORITHM,
+      this.configService.get('JWT_SECRET'),
+      { email: user.email, id: user.id }
     );
+
+    this.ok(res, fillDTO(LoggedUserRdo, { email: user.email, token }));
   }
 
   public async uploadAvatar(req: Request, res: Response) {
