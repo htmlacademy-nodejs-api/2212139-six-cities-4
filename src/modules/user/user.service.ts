@@ -17,7 +17,7 @@ export default class UserService implements UserServiceInterface {
     private readonly userModel: types.ModelType<UserEntity>
   ) {}
 
-  public async createUser(
+  public async create(
     dto: CreateUserDto,
     salt: string
   ): Promise<DocumentType<UserEntity>> {
@@ -30,32 +30,32 @@ export default class UserService implements UserServiceInterface {
     return result;
   }
 
-  public async findUserByEmail(
+  public async findById(
+    UserId: string
+  ): Promise<DocumentType<UserEntity> | null> {
+    return this.userModel.findById(UserId).exec();
+  }
+
+  public async findByEmail(
     email: string
   ): Promise<DocumentType<UserEntity> | null> {
     return this.userModel.findOne({ email });
   }
 
-  public async findUserById(
-    id: string
-  ): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel.findById(id).exec();
-  }
-
-  public async findUserOrCreate(
+  public async findOrCreate(
     dto: CreateUserDto,
     salt: string
   ): Promise<DocumentType<UserEntity>> {
-    const existedUser = await this.findUserByEmail(dto.email);
+    const existedUser = await this.findByEmail(dto.email);
 
     if (existedUser) {
       return existedUser;
     }
 
-    return this.createUser(dto, salt);
+    return this.create(dto, salt);
   }
 
-  updateByUserId(
+  public async updateById(
     userId: string,
     dto: UpdateUserDto
   ): Promise<DocumentType<UserEntity> | null> {
@@ -66,7 +66,8 @@ export default class UserService implements UserServiceInterface {
     dto: LoginUserDto,
     salt: string
   ): Promise<DocumentType<UserEntity> | null> {
-    const user = await this.findUserByEmail(dto.email);
+    const user = await this.findByEmail(dto.email);
+
     if (!user) {
       return null;
     }

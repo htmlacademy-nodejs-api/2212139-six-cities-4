@@ -27,7 +27,7 @@ export default class OfferService implements OfferServiceInterface {
     return result;
   }
 
-  public async findByOfferId(
+  public async findById(
     offerId: string
   ): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel.findById(offerId).populate(['userId']).exec();
@@ -37,7 +37,7 @@ export default class OfferService implements OfferServiceInterface {
     offerId: string,
     dto: UpdateOfferDto
   ): Promise<DocumentType<OfferEntity> | null> {
-    const newRating = this.updateRating(offerId);
+    const newRating = await this.updateRating(offerId);
     return this.offerModel
       .findByIdAndUpdate(offerId, { ...dto, rating: newRating }, { new: true })
       .populate(['userId'])
@@ -88,16 +88,6 @@ export default class OfferService implements OfferServiceInterface {
           },
         },
         { $addFields: { userId: '$user' } },
-        {
-          $lookup: {
-            from: 'locations',
-            localField: 'locationId',
-            foreignField: '_id',
-            pipeline: [{ $project: { _id: 0, latitude: 1, longitude: 1 } }],
-            as: 'location',
-          },
-        },
-        { $addFields: { locationId: '$location' } },
         { $limit: +limitNumber },
         { $sort: { postDate: SortType.Down } },
       ])
@@ -145,6 +135,7 @@ export default class OfferService implements OfferServiceInterface {
     const limit = count ?? DEFAULT_OFFER_COUNT;
     return this.offerModel
       .find({ isFavorite: true }, {}, { limit })
+      .sort({ postDate: SortType.Down })
       .populate(['userId'])
       .exec();
   }
@@ -162,7 +153,7 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async updateRating(offerId: string): Promise<number | null> {
-    const currentOffer = this.offerModel.findById(offerId);
+    const currentOffer = await this.offerModel.findById(offerId);
     const offerWithNewRating = await this.offerModel.aggregate([
       { $match: { title: currentOffer?.title } },
       {

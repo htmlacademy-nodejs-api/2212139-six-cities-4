@@ -2,15 +2,15 @@
 # Объявления
 
 ## Создать новое объявление (5.1)
-POST http://localhost:5000/offers HTTP/1.1
+POST http://localhost:5000/offers/create HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
 
 {
-  "title": "Чёткая хата",
+  "title": "Чёткая хата7",
   "description": "Один из лучших хостелов для душевного общения. Ужинаем вместе и играем в «Мафию» по вечерам, вкусно готовим. Ежедневная уборка, бесплатный Wi-Fi, чистое постельное белье.",
   "postDate": "2023-05-17T07:47:15.358Z",
-  "cityName": "Dusseldorf",
+  "cityName": "Paris",
   "preview": "apartment-small-03.jpg",
   "photos": [
         "apartment-01.jpg",
@@ -25,11 +25,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rL
   "rating": 2,
   "roomsCount": 3,
   "guestsCount": 4,
+  "offerType": "house",
   "price": 2971,
   "features": [
         "Fridge"
     ],
-  "userId": "646caadc17ebd798c525ce03",
   "latitude": 51.225402,
   "longitude": 2.351499
 }
@@ -37,21 +37,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rL
 ###
 
 ## Обновить, редактировать объявление (5.2)
-PATCH http://localhost:5000/offers/646ca6bdf2d877e09807a80c HTTP/1.1
+PATCH http://localhost:5000/offers/6480c503399a45b0ca261e76 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
 
 {
-  "title": "test GB Docker Compose 02.06.2023 Макеев Алексей",
-  "guestsCount": 4
+  "title": "Makeev Alexey test 1"
 }
 
 ###
 
 ## Удаление объявления (5.3)
 
-DELETE http://localhost:5000/offers/646ca6bdf2d877e09807a807 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+DELETE http://localhost:5000/offers/6480e237a9c61dbd659ab75e HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
 ###
 
 ## Получить список предложений по аренде (5.4)
@@ -61,26 +60,26 @@ Content-Type: application/json
 ###
 
 ## Детальная информация по предложению (5.5)
-GET http://localhost:5000/offers/63d77401a03b664cf3e1055d HTTP/1.1
+GET http://localhost:5000/offers/6480c503399a45b0ca261e76 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
 
 ###
 
 ## Список комментариев для предложения (5.6)
-GET http://localhost:5000/offers/63d77401a03b664cf3e1055d/comments HTTP/1.1
+GET http://localhost:5000/offers/6480c4e2399a45b0ca261e76/comments HTTP/1.1
 
 ###
 
 ## Добавление комментария (5.7)
 POST http://localhost:5000/comments HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
 
 {
   "text": "Тестовый текст комментария",
-  "offerId": "63d77401a03b664cf3e1055d",
-  "rating": 5
+  "offerId": "6480c503399a45b0ca261e76",
+  "rating": 2
 }
 ###
 
@@ -91,10 +90,11 @@ POST http://localhost:5000/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Jack Torrance",
-  "email": "torans2@overlook.net",
-  "avatarUrl": "torrance.png",
-  "password": "123456"
+  "name": "Макеев Алексей2",
+  "email": "makeevhome2@overlook.net",
+  "avatarUrl": "makeev.png",
+  "userType": "pro",
+  "password": "ma1234"
 }
 
 ###
@@ -104,21 +104,21 @@ POST http://localhost:5000/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "torans2@overlook.net",
-  "password": "123456"
+  "email": "makeevhome2@overlook.net",
+  "password": "ma1234"
 }
 
 ###
 ## Выход из закрытой части приложения (5.10)
-DELETE  http://localhost:5000/users/63e22aa4faa0208ac38bdb63/logout HTTP/1.1
+DELETE  http://localhost:5000/users/6480e382a9c61dbd659ab77b/logout HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
 ###
 
 ## Проверка состояния пользователя (5.11)
 GET  http://localhost:5000/users/login HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwOGQ2MDM5NGY4Y2I2NmM1MTQ0OTIiLCJpYXQiOjE2ODYxNDY0NTEsImV4cCI6MTY4NjMxOTI1MX0.R0pjd2zXGE508l7CKukSGu5Apo7xhf4_JFDXjzRAECM
 
 ###
 ## Премиальные предложения для города (5.12)
@@ -128,7 +128,7 @@ GET http://localhost:5000/offers/premium/Paris HTTP/1.1
 ## Список избранных предложений (5.13)
 GET http://localhost:5000/offers/favorite HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwOGQ2MDM5NGY4Y2I2NmM1MTQ0OTIiLCJpYXQiOjE2ODYxNDY0NTEsImV4cCI6MTY4NjMxOTI1MX0.R0pjd2zXGE508l7CKukSGu5Apo7xhf4_JFDXjzRAECM
 
 ###
 

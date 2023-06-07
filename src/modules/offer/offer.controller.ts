@@ -8,7 +8,6 @@ import { OfferServiceInterface } from './offer-service.interface.js';
 import { fillDTO } from '../../core/helpers/common.js';
 import OfferRdo from './rdo/offer.rdo.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
-import * as core from 'express-serve-static-core';
 import HttpError from '../../core/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import UpdateOfferDto from './dto/update-offer.dto.js';
@@ -25,14 +24,20 @@ import { RestSchema } from '../../core/config/rest.schema.js';
 import FavoriteRdo from '../favorite/rdo/favorite.rdo.js';
 import UploadImageRdo from '../favorite/rdo/upload-image.rdo.js';
 import UploadImagesRdo from './rdo/upload-images.rdo.js';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { UnknownRecord } from '../../types/unknown-record.type.js';
 
-type ParamsGetOffer = {
-  offerId: string;
-};
+type ParamsOfferDetails =
+  | {
+      offerId: string;
+    }
+  | ParamsDictionary;
 
-type ParamsGetPremium = {
-  cityName: string;
-};
+type ParamsGetPremium =
+  | {
+      cityName: string;
+    }
+  | ParamsDictionary;
 
 @injectable()
 export default class OfferController extends Controller {
@@ -164,17 +169,17 @@ export default class OfferController extends Controller {
   }
 
   public async show(
-    { params }: Request<core.ParamsDictionary | ParamsGetOffer>,
+    { params }: Request<ParamsOfferDetails>,
     res: Response
   ): Promise<void> {
     const { offerId } = params;
-    const offer = await this.offerService.findByOfferId(offerId);
+    const offer = await this.offerService.findById(offerId);
 
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findOffers();
+    const offers = await this.offerService.find();
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
@@ -193,12 +198,12 @@ export default class OfferController extends Controller {
       ...body,
       userId: user.id,
     });
-    const offer = await this.offerService.findByOfferId(result.id);
+    const offer = await this.offerService.findById(result.id);
     this.created(res, fillDTO(OfferRdo, offer));
   }
 
   public async delete(
-    { params }: Request<core.ParamsDictionary | ParamsGetOffer>,
+    { params }: Request<ParamsOfferDetails>,
     res: Response
   ): Promise<void> {
     const { offerId } = params;
@@ -213,11 +218,7 @@ export default class OfferController extends Controller {
     {
       body,
       params,
-    }: Request<
-      core.ParamsDictionary | ParamsGetOffer,
-      Record<string, unknown>,
-      UpdateOfferDto
-    >,
+    }: Request<ParamsOfferDetails, UnknownRecord, UpdateOfferDto>,
     res: Response
   ): Promise<void> {
     const updatedOffer = await this.offerService.updateByOfferId(
@@ -229,7 +230,7 @@ export default class OfferController extends Controller {
   }
 
   public async getComments(
-    { params }: Request<core.ParamsDictionary | ParamsGetOffer, object, object>,
+    { params }: Request<ParamsOfferDetails, UnknownRecord, UnknownRecord>,
     res: Response
   ): Promise<void> {
     const comments = await this.commentService.findByOfferId(params.offerId);
@@ -237,7 +238,7 @@ export default class OfferController extends Controller {
   }
 
   public async showPremium(
-    { params }: Request<core.ParamsDictionary | ParamsGetPremium>,
+    { params }: Request<ParamsGetPremium>,
     res: Response
   ): Promise<void> {
     const { cityName } = params;
@@ -268,11 +269,7 @@ export default class OfferController extends Controller {
   }
 
   public async setStatusFavotite(
-    req: Request<
-      core.ParamsDictionary | ParamsGetOffer,
-      Record<string, unknown>,
-      CreateOfferDto
-    >,
+    req: Request<ParamsOfferDetails, Record<string, unknown>, CreateOfferDto>,
     res: Response
   ): Promise<void> {
     const { params, user } = req;
@@ -298,7 +295,7 @@ export default class OfferController extends Controller {
   }
 
   public async uploadPrevImage(
-    req: Request<core.ParamsDictionary | ParamsGetOffer>,
+    req: Request<ParamsOfferDetails>,
     res: Response
   ) {
     const { offerId } = req.params;
@@ -307,10 +304,7 @@ export default class OfferController extends Controller {
     this.created(res, fillDTO(UploadImageRdo, updateDto));
   }
 
-  public async uploadImages(
-    req: Request<core.ParamsDictionary | ParamsGetOffer>,
-    res: Response
-  ) {
+  public async uploadImages(req: Request<ParamsOfferDetails>, res: Response) {
     const { offerId } = req.params;
     const fileArray = req.files as Array<Express.Multer.File>;
     const fileNames = fileArray.map((file) => file.filename);

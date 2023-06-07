@@ -46,6 +46,12 @@ export default class UserController extends Controller {
       middlewares: [new ValidateDtoMiddleware(LoginUserDto)],
     });
     this.addRoute({
+      path: '/:userId/louout',
+      method: HttpMethod.Delete,
+      handler: this.logout,
+      middlewares: [new ValidateObjectIdMiddleware('userId')],
+    });
+    this.addRoute({
       path: '/:userId/avatar',
       method: HttpMethod.Post,
       handler: this.uploadAvatar,
@@ -70,7 +76,7 @@ export default class UserController extends Controller {
     }: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>,
     res: Response
   ): Promise<void> {
-    const existsUser = await this.userService.findUserByEmail(body.email);
+    const existsUser = await this.userService.findByEmail(body.email);
 
     if (existsUser) {
       throw new HttpError(
@@ -80,7 +86,7 @@ export default class UserController extends Controller {
       );
     }
 
-    const result = await this.userService.createUser(
+    const result = await this.userService.create(
       body,
       this.configService.get('SALT')
     );
@@ -120,8 +126,17 @@ export default class UserController extends Controller {
     });
   }
 
+  public async logout(req: Request, res: Response): Promise<void> {
+    const { userId } = req.params;
+    const user = await this.userService.findById(userId);
+
+    if (!user) {
+      this.noContent(res, user);
+    }
+  }
+
   public async checkAuthenticate({ user: { email } }: Request, res: Response) {
-    const foundedUser = await this.userService.findUserByEmail(email);
+    const foundedUser = await this.userService.findByEmail(email);
 
     if (!foundedUser) {
       throw new HttpError(
