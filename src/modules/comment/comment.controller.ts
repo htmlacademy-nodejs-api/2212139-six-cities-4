@@ -1,6 +1,7 @@
 import { Response, Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { inject } from 'inversify';
+import { PrivateRouterMiddleware } from '../../common/middlewares/private-router.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { Controller } from '../../core/controller/controller.abstract.js';
 import HttpError from '../../core/errors/http-error.js';
@@ -8,6 +9,7 @@ import { fillDTO } from '../../core/helpers/common.js';
 import { LoggerInterface } from '../../core/logger/logger.interface.js';
 import { AppComponent } from '../../types/app-component.enum.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
+import { UnknownRecord } from '../../types/unknown-record.type.js';
 import { OfferServiceInterface } from '../offer/offer-service.interface.js';
 import CommentService from './comment.service.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
@@ -28,12 +30,15 @@ export default class CommentController extends Controller {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)],
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new ValidateDtoMiddleware(CreateCommentDto),
+      ],
     });
   }
 
   public async create(
-    { body }: Request<object, object, CreateCommentDto>,
+    { body, user }: Request<UnknownRecord, UnknownRecord, CreateCommentDto>,
     res: Response
   ): Promise<void> {
     if (!(await this.offerService.exists(body.offerId))) {
@@ -44,7 +49,7 @@ export default class CommentController extends Controller {
       );
     }
 
-    const comment = this.commentService.create(body);
+    const comment = this.commentService.create({ ...body, userId: user.id });
     await this.offerService.incCommentCount(body.offerId);
     this.created(res, fillDTO(CommentRdo, comment));
   }

@@ -1,3 +1,3 @@
-export const DEFAULT_OFFER_COUNT = 25;
-export const DEFAULT_DISCUSSED_OFFER_COUNT = 5;
-export const DEFAULT_NEW_OFFER_COUNT = 5;
+export const DEFAULT_OFFER_COUNT = 60;
+export const OFFER_PREMIUM_COUNT = 3;
+export const RATING_DEFAULT = 1;

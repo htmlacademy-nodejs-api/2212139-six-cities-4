@@ -12,7 +12,10 @@ export interface OfferServiceInterface extends DocumentExistsInterface {
     dto: UpdateOfferDto
   ): Promise<DocumentType<OfferEntity> | null>;
   deleteByOfferId(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  findOffers(count?: number): Promise<DocumentType<OfferEntity>[]>;
+  find(
+    userAuthorization?: string,
+    count?: number
+  ): Promise<DocumentType<OfferEntity>[]>;
   findByTitle(title: string): Promise<DocumentType<OfferEntity> | null>;
   findPremiumOffers(
     cityName: string,
@@ -20,8 +23,7 @@ export interface OfferServiceInterface extends DocumentExistsInterface {
   ): Promise<DocumentType<OfferEntity>[]>;
   findFavoriteOffers(count?: number): Promise<DocumentType<OfferEntity>[]>;
   setFavoriteStatusOffer(
-    offerId: string,
-    dto: UpdateOfferDto
+    offerId: string
   ): Promise<DocumentType<OfferEntity> | null>;
   incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   exists(documentId: string): Promise<boolean>;

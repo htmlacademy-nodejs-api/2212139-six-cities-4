@@ -1,6 +1,6 @@
 import { plainToInstance, ClassConstructor } from 'class-transformer';
 import * as crypto from 'node:crypto';
-import jose from 'jose';
+import * as jose from 'jose';
 
 export function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : '';

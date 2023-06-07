@@ -1,49 +1,10 @@
-GET http://localhost:5000/api HTTP/1.1
-
-###
-
-# Пользователи
-## Регистрация пользователя
-POST http://localhost:5000/users/register HTTP/1.1
-Content-Type: application/json
-
-{
-  "name": "Jack Torrance",
-  "email": "torans2@overlook.net",
-  "avatarUrl": "torrance.png",
-  "password": "123456"
-}
-
-###
-
-## Авторизация пользователя
-POST http://localhost:5000/users/login HTTP/1.1
-Content-Type: application/json
-
-{
-  "email": "torans2@overlook.net",
-  "password": "123456"
-}
-
-###
 
 # Объявления
 
-## Объявление по идентификатору
-
-GET http://localhost:5000/offers/646ca6bdf2d877e09807a807 HTTP/1.1
-
-###
-
-## Получить список объявлений
-GET http://localhost:5000/offers HTTP/1.1
-Content-Type: application/json
-
-###
-
-## Создать новое объявление
+## Создать новое объявление (5.1)
 POST http://localhost:5000/offers HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
 
 {
   "title": "Чёткая хата",
@@ -52,10 +13,12 @@ Content-Type: application/json
   "cityName": "Dusseldorf",
   "preview": "apartment-small-03.jpg",
   "photos": [
+        "apartment-01.jpg",
+        "apartment-02.jpg",
+        "apartment-03.jpg",
         "apartment-04.jpg",
-        "apartment-04.jpg",
-        "room.jpg",
-        "room.jpg"
+        "apartment-small-01.jpg",
+        "apartment-small-02.jpg"
     ],
   "isPremium": true,
   "isFavorite": true,
@@ -73,9 +36,10 @@ Content-Type: application/json
 
 ###
 
-## Обновить объявление
+## Обновить, редактировать объявление (5.2)
 PATCH http://localhost:5000/offers/646ca6bdf2d877e09807a80c HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
 
 {
   "title": "test GB Docker Compose 02.06.2023 Макеев Алексей",
@@ -84,37 +48,150 @@ Content-Type: application/json
 
 ###
 
-## Удаление объявления
+## Удаление объявления (5.3)
 
 DELETE http://localhost:5000/offers/646ca6bdf2d877e09807a807 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+###
+
+## Получить список предложений по аренде (5.4)
+GET http://localhost:5000/offers?limit=4 HTTP/1.1
+Content-Type: application/json
 
 ###
-#Создать комментарий
 
+## Детальная информация по предложению (5.5)
+GET http://localhost:5000/offers/63d77401a03b664cf3e1055d HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+
+###
+
+## Список комментариев для предложения (5.6)
+GET http://localhost:5000/offers/63d77401a03b664cf3e1055d/comments HTTP/1.1
+
+###
+
+## Добавление комментария (5.7)
 POST http://localhost:5000/comments HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+
+{
+  "text": "Тестовый текст комментария",
+  "offerId": "63d77401a03b664cf3e1055d",
+  "rating": 5
+}
+###
+
+# Пользователи
+
+## Регистрация пользователя (5.8)
+POST http://localhost:5000/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "text": "GB Docker Compose 02.06.2023 Макеев Алексей",
-  "offerId": "646caadc17ebd798c525ce00",
-  "userId": "646ca6bdf2d877e09807a80a"
+  "name": "Jack Torrance",
+  "email": "torans2@overlook.net",
+  "avatarUrl": "torrance.png",
+  "password": "123456"
 }
 
 ###
 
-## Список комментариев к объявлению
-GET http://localhost:5000/offers/646caadc17ebd798c525ce00/comments HTTP/1.1
+## Авторизация пользователя (5.9)
+POST http://localhost:5000/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "torans2@overlook.net",
+  "password": "123456"
+}
+
+###
+## Выход из закрытой части приложения (5.10)
+DELETE  http://localhost:5000/users/63e22aa4faa0208ac38bdb63/logout HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+###
+
+## Проверка состояния пользователя (5.11)
+GET  http://localhost:5000/users/login HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+
+###
+## Премиальные предложения для города (5.12)
+GET http://localhost:5000/offers/premium/Paris HTTP/1.1
+###
+
+## Список избранных предложений (5.13)
+GET http://localhost:5000/offers/favorite HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
 
 ###
 
+## Добавление и удаление предложения в/из избранного (5.14)
+PATCH http://localhost:5000/offers/favorite/63d77401a03b664cf3e1055d HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+
+###
+
+
 ## Отправка аватарки пользователю
 
-POST http://localhost:5000/users/62823cb2c5a64ce9f1b50eb6/avatar HTTP/1.1
+POST http://localhost:5000/users/63d77401a03b664cf3e10556/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="avatar"; filename="screen.png"
+Content-Disposition: form-data; name="avatar"; filename="avatar-max.jpg"
 Content-Type: image/png
 
-< /Users/tmp/screen.png
+< mocks/img/avatar-max.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+###
+
+## Загрузка превью для предложения
+POST http://localhost:5000/offers/63d77401a03b664cf3e1055d/previewimage HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczlAb3Zlcmxvb2submV0IiwiaWQiOiI2M2UwYjQ3ZTQzZTQxMjgyYzY5MWE4ZTMiLCJpYXQiOjE2NzU3MDcxNzUsImV4cCI6MTY3NTg3OTk3NX0.AmS-PUtKv6Lptt_RG0zb_Q3GACXWDimgP_FRISnVfkw
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="prevImg"; filename="room.jpg"
+Content-Type: image/png
+
+< ./mocks/img/room.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+## Загрузка изображений для предложения
+POST http://localhost:5000/offers/63d77401a03b664cf3e1055d/images HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczlAb3Zlcmxvb2submV0IiwiaWQiOiI2M2UwYjQ3ZTQzZTQxMjgyYzY5MWE4ZTMiLCJpYXQiOjE2NzU3MDcxNzUsImV4cCI6MTY3NTg3OTk3NX0.AmS-PUtKv6Lptt_RG0zb_Q3GACXWDimgP_FRISnVfkw
+
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="room.jpg"
+Content-Type: image/png
+
+< ./mocks/img/room.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="avatar-max.jpg"
+Content-Type: image/png
+
+< ./mocks/img/avatar-max.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="apartment-02.jpg"
+Content-Type: image/png
+
+< ./mocks/img/apartment-02.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="apartment-01.jpg"
+Content-Type: image/png
+
+< ./mocks/img/apartment-01.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+###

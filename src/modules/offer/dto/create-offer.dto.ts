@@ -11,10 +11,8 @@ import {
   Min,
   MinLength,
   ArrayMinSize,
-  IsMongoId,
   IsBoolean,
   IsString,
-  ArrayMaxSize,
 } from 'class-validator';
 
 export default class CreateOfferDto {
@@ -35,15 +33,6 @@ export default class CreateOfferDto {
     message: `cityName must be one of ${Object.values(City).join(', ')}`,
   })
   public cityName!: City;
-
-  @IsString({ message: 'preview is required' })
-  public preview!: string;
-
-  @ArrayMinSize(6)
-  @ArrayMaxSize(6)
-  @IsArray({ message: 'Field image must be an array' })
-  @IsString({ message: 'photos is required' })
-  public photos!: string[];
 
   @IsBoolean({ message: 'isPremium must be true or false' })
   public isPremium!: boolean;
@@ -81,7 +70,6 @@ export default class CreateOfferDto {
   @IsEnum(Feature, { each: true, message: 'features must be an array' })
   public features!: Feature[];
 
-  @IsMongoId({ message: 'userId field must be valid an id' })
   public userId!: string;
 
   @IsInt({ message: 'latitude must be an floating point' })

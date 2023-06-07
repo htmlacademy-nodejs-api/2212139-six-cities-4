@@ -8,6 +8,7 @@ import { DatabaseClientInterface } from '../core/database-client/database-client
 import { getMongoURI } from '../core/helpers/db.js';
 import { ControllerInterface } from '../core/controller/controller.interface.js';
 import { ExceptionFilterInterface } from '../core/expception-filters/exception-filter.interface.js';
+import { AuthenticateMiddleware } from '../common/middlewares/authenticate.middleware.js';
 
 @injectable()
 export default class RestApplication {
@@ -71,6 +72,12 @@ export default class RestApplication {
     this.expressApplication.use(
       '/upload',
       express.static(this.config.get('UPLOAD_DIRECTORY'))
+    );
+    const authenticateMiddleware = new AuthenticateMiddleware(
+      this.config.get('JWT_SECRET')
+    );
+    this.expressApplication.use(
+      authenticateMiddleware.execute.bind(authenticateMiddleware)
     );
     this.logger.info('Global middleware initialization completed');
   }
