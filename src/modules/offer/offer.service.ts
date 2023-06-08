@@ -164,15 +164,27 @@ export default class OfferService implements OfferServiceInterface {
           foreignField: 'offerId',
           pipeline: [
             { $project: { rating: 1 } },
-            { $group: { _id: null, ratingAvg: { $avg: '$rating' } } },
+            {
+              $group: {
+                _id: null,
+                ratingAvg: { $avg: '$rating' }
+              }
+            }
           ],
-          as: 'result',
-        },
+          as: 'result'
+        }
       },
       { $unwind: '$result' },
-      { $addFields: { rating: '$result.ratingAvg' } },
-      { $unset: 'result' },
+      {
+        $set: {
+          rating: {
+            $round: ['$result.ratingAvg', 1]
+          }
+        }
+      },
+      { $unset: 'result' }
     ]);
+
     return offerWithNewRating[0] ? offerWithNewRating[0].rating : 0;
   }
 }

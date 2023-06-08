@@ -74,11 +74,6 @@ export default class OfferController extends Controller {
       middlewares: [new PrivateRouterMiddleware()],
     });
     this.addRoute({
-      path: '/premium/:cityname',
-      method: HttpMethod.Get,
-      handler: this.showPremium,
-    });
-    this.addRoute({
       path: '/create',
       method: HttpMethod.Post,
       handler: this.create,
@@ -86,12 +81,6 @@ export default class OfferController extends Controller {
         new PrivateRouterMiddleware(),
         new ValidateDtoMiddleware(CreateOfferDto),
       ],
-    });
-    this.addRoute({
-      path: '/favorite',
-      method: HttpMethod.Get,
-      handler: this.showFavorite,
-      middlewares: [new PrivateRouterMiddleware()],
     });
     this.addRoute({
       path: '/:offerId',
@@ -106,7 +95,7 @@ export default class OfferController extends Controller {
     this.addRoute({
       path: '/favorite/:offerId',
       method: HttpMethod.Patch,
-      handler: this.setStatusFavotite,
+      handler: this.setStatusFavorite,
       middlewares: [
         new PrivateRouterMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
@@ -268,7 +257,7 @@ export default class OfferController extends Controller {
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
-  public async setStatusFavotite(
+  public async setStatusFavorite(
     req: Request<ParamsOfferDetails, Record<string, unknown>, CreateOfferDto>,
     res: Response
   ): Promise<void> {
