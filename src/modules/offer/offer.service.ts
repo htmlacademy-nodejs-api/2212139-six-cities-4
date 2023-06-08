@@ -154,6 +154,7 @@ export default class OfferService implements OfferServiceInterface {
 
   public async updateRating(offerId: string): Promise<number | null> {
     const currentOffer = await this.offerModel.findById(offerId);
+    console.log(currentOffer);
     const offerWithNewRating = await this.offerModel.aggregate([
       { $match: { title: currentOffer?.title } },
       {

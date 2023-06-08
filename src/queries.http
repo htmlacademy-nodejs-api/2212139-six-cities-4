@@ -7,7 +7,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
 
 {
-  "title": "Чёткая хата7",
+  "title": "Чёткая хата8",
   "description": "Один из лучших хостелов для душевного общения. Ужинаем вместе и играем в «Мафию» по вечерам, вкусно готовим. Ежедневная уборка, бесплатный Wi-Fi, чистое постельное белье.",
   "postDate": "2023-05-17T07:47:15.358Z",
   "cityName": "Paris",

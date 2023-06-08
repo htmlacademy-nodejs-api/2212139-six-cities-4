@@ -7,7 +7,7 @@ import { inject, injectable } from 'inversify';
 import { DatabaseClientInterface } from '../core/database-client/database-client.interface.js';
 import { getMongoURI } from '../core/helpers/db.js';
 import { ControllerInterface } from '../core/controller/controller.interface.js';
-import { ExceptionFilterInterface } from '../core/expception-filters/exception-filter.interface.js';
+import { ExceptionFilterInterface } from '../core/exception-filters/exception-filter.interface.js';
 import { AuthenticateMiddleware } from '../common/middlewares/authenticate.middleware.js';
 
 @injectable()
@@ -26,7 +26,7 @@ export default class RestApplication {
     @inject(AppComponent.OfferController)
     private readonly offerController: ControllerInterface,
     @inject(AppComponent.ExceptionFilterInterface)
-    private readonly exceprionFilter: ExceptionFilterInterface,
+    private readonly exceptionFilter: ExceptionFilterInterface,
     @inject(AppComponent.CommentController)
     private readonly commentController: ControllerInterface
   ) {
@@ -85,7 +85,7 @@ export default class RestApplication {
   private async _initExceptionFilter() {
     this.logger.info('Exception filters initialization');
     this.expressApplication.use(
-      this.exceprionFilter.catch.bind(this.exceprionFilter)
+      this.exceptionFilter.catch.bind(this.exceptionFilter)
     );
     this.logger.info('Exception filters initialization completed');
   }

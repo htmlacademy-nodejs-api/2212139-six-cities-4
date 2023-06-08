@@ -44,7 +44,7 @@ export default class ImportCommand implements CliCommandInterface {
       this.salt
     );
 
-    await this.offerService.create({
+    await this.offerService.createOffer({
       ...offer,
       userId: user.id,
       latitude: offer.coordinates.latitude,
