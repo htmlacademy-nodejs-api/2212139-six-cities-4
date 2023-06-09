@@ -1,5 +1,5 @@
 import { UserEntity } from './user.entity.js';
-import { DocumentType, types } from '@typegoose/typegoose';
+import { DocumentType, mongoose, types } from '@typegoose/typegoose';
 import CreateUserDto from './dto/create-user.dto.js';
 import { UserServiceInterface } from './user-service.interface.js';
 import { inject, injectable } from 'inversify';
@@ -7,6 +7,7 @@ import { AppComponent } from '../../types/app-component.enum.js';
 import { LoggerInterface } from '../../core/logger/logger.interface.js';
 import UpdateUserDto from './dto/update-user.dto.js';
 import LoginUserDto from './dto/login-user.dto.js';
+import { OfferEntity } from '../offer/offer.entity.js';
 
 @injectable()
 export default class UserService implements UserServiceInterface {
@@ -77,5 +78,31 @@ export default class UserService implements UserServiceInterface {
     }
 
     return null;
+  }
+
+  public async addToFavoritesById(
+    userId: string,
+    offerId: string
+  ): Promise<DocumentType<OfferEntity>[] | null> {
+    return this.userModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        $addToSet: { favorites: new mongoose.Types.ObjectId(offerId) },
+      },
+      { new: true, upsert: true }
+    );
+  }
+
+  public async removeFromFavoritesById(
+    userId: string,
+    offerId: string
+  ): Promise<DocumentType<OfferEntity>[] | null> {
+    return this.userModel.findOneAndUpdate(
+      { _id: userId },
+      {
+        $pull: { favorites: new mongoose.Types.ObjectId(offerId) },
+      },
+      { new: true }
+    );
   }
 }

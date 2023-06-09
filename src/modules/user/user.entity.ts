@@ -1,4 +1,4 @@
-import { User } from '../../types/user.type.js';
+import { ExtendedUserType, SaveUserType } from '../../types/user.type.js';
 import typegoose, {
   defaultClasses,
   getModelForClass,
@@ -15,7 +15,9 @@ export interface UserEntity extends defaultClasses.Base {}
     collection: 'users',
   },
 })
-export class UserEntity extends defaultClasses.TimeStamps implements User {
+export class UserEntity
+  extends defaultClasses.TimeStamps
+  implements SaveUserType {
   @prop({ required: true, default: '' })
   public name: string;
 
@@ -31,13 +33,17 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ required: true })
   private password?: string;
 
-  constructor(userData: User) {
+  @prop({ default: [] })
+  public favorites: string[];
+
+  constructor(userData: ExtendedUserType) {
     super();
 
     this.email = userData.email;
     this.avatarUrl = userData.avatarUrl;
     this.name = userData.name;
     this.userType = userData.userType;
+    this.favorites = userData.favorites;
   }
 
   public setPassword(password: string, salt: string) {
