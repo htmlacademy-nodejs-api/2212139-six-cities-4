@@ -31,9 +31,9 @@ export default class UserService implements UserServiceInterface {
   }
 
   public async findById(
-    UserId: string
+    userId: string
   ): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel.findById(UserId).exec();
+    return this.userModel.findById(userId).exec();
   }
 
   public async findByEmail(

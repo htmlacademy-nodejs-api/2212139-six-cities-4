@@ -6,7 +6,7 @@ export default class CreateCommentDto {
   public text!: string;
 
   @IsInt({ message: 'Rating must be an integer' })
-  @Min(1, { message: 'Minimum rating is 1' })
+  @Min(0, { message: 'Minimum rating is 0' })
   @Max(5, { message: 'Maximum rating is 5' })
   public rating!: string;
 

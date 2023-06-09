@@ -74,6 +74,16 @@ export default class OfferController extends Controller {
       middlewares: [new PrivateRouterMiddleware()],
     });
     this.addRoute({
+      path: '/favorite/:offerId',
+      method: HttpMethod.Patch,
+      handler: this.setStatusFavorite,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+    this.addRoute({
       path: '/create',
       method: HttpMethod.Post,
       handler: this.create,
@@ -90,16 +100,6 @@ export default class OfferController extends Controller {
         new PrivateRouterMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
-      ],
-    });
-    this.addRoute({
-      path: '/favorite/:offerId',
-      method: HttpMethod.Patch,
-      handler: this.setStatusFavorite,
-      middlewares: [
-        new PrivateRouterMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
     });
     this.addRoute({

@@ -14,6 +14,7 @@ import {
   ArrayMaxSize,
   ArrayMinSize,
   IsBoolean,
+  IsNumber,
 } from 'class-validator';
 
 export default class UpdateOfferDto {
@@ -49,11 +50,13 @@ export default class UpdateOfferDto {
   public isPremium?: boolean;
 
   @IsOptional()
-  @IsBoolean({ message: 'isFavorite must be true or false' })
-  public isFavorite?: boolean;
-
-  @IsOptional()
-  @IsInt({ message: 'Rating must be an integer' })
+  @IsNumber(
+    { maxDecimalPlaces: 1 },
+    {
+      message:
+        'Only 1 digit precision to the right of decimal point is allowed',
+    }
+  )
   @Min(0, { message: 'Minimum rating is 0' })
   @Max(5, { message: 'Maximum rating is 5' })
   public rating?: number;

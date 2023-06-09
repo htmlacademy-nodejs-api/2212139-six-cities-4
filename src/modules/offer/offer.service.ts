@@ -50,6 +50,15 @@ export default class OfferService implements OfferServiceInterface {
     return this.offerModel.findByIdAndDelete(offerId).exec();
   }
 
+  // public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
+  //   const limit = count ?? DEFAULT_OFFER_COUNT;
+  //   return this.offerModel
+  //     .find({}, {}, { limit })
+  //     .sort({ postDate: SortType.Down })
+  //     .populate(['userId'])
+  //     .exec();
+  // }
+
   public async find(
     userAuthorization?: string,
     count?: number
@@ -87,7 +96,7 @@ export default class OfferService implements OfferServiceInterface {
             as: 'user',
           },
         },
-        { $addFields: { userId: '$user' } },
+        { $addFields: { useId: '$user' } },
         { $limit: +limitNumber },
         { $sort: { postDate: SortType.Down } },
       ])
@@ -154,7 +163,6 @@ export default class OfferService implements OfferServiceInterface {
 
   public async updateRating(offerId: string): Promise<number | null> {
     const currentOffer = await this.offerModel.findById(offerId);
-    console.log(currentOffer);
     const offerWithNewRating = await this.offerModel.aggregate([
       { $match: { title: currentOffer?.title } },
       {
@@ -163,26 +171,25 @@ export default class OfferService implements OfferServiceInterface {
           localField: '_id',
           foreignField: 'offerId',
           pipeline: [
-            { $project: { rating: 1 } },
             {
               $group: {
                 _id: null,
-                ratingAvg: { $avg: '$rating' }
-              }
-            }
+                ratingAvg: { $avg: '$rating' },
+              },
+            },
           ],
-          as: 'result'
-        }
+          as: 'result',
+        },
       },
       { $unwind: '$result' },
       {
         $set: {
           rating: {
-            $round: ['$result.ratingAvg', 1]
-          }
-        }
+            $round: ['$result.ratingAvg', 1],
+          },
+        },
       },
-      { $unset: 'result' }
+      { $unset: 'result' },
     ]);
 
     return offerWithNewRating[0] ? offerWithNewRating[0].rating : 0;

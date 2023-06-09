@@ -46,7 +46,7 @@ export default class UserController extends Controller {
       middlewares: [new ValidateDtoMiddleware(LoginUserDto)],
     });
     this.addRoute({
-      path: '/:userId/louout',
+      path: '/:userId/logout',
       method: HttpMethod.Delete,
       handler: this.logout,
       middlewares: [new ValidateObjectIdMiddleware('userId')],
@@ -130,7 +130,7 @@ export default class UserController extends Controller {
     const { userId } = req.params;
     const user = await this.userService.findById(userId);
 
-    if (!user) {
+    if (user) {
       this.noContent(res, user);
     }
   }

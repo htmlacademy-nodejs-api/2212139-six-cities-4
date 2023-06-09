@@ -4,7 +4,7 @@
 ## Создать новое объявление (5.1)
 POST http://localhost:5000/offers/create HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUyQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4MzEwNjQ0NDFhZDJkZTQ2MzA2MmY5IiwiaWF0IjoxNjg2MzExMDM2LCJleHAiOjE2ODY0ODM4MzZ9.N9WiSjkOUc_kt22xxZn8L6NQSywRLBI1BTfxfj_BnXc
 
 {
   "title": "Чёткая хата8",
@@ -21,7 +21,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb
         "apartment-small-02.jpg"
     ],
   "isPremium": true,
-  "isFavorite": true,
   "rating": 2,
   "roomsCount": 3,
   "guestsCount": 4,
@@ -37,20 +36,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb
 ###
 
 ## Обновить, редактировать объявление (5.2)
-PATCH http://localhost:5000/offers/6480c503399a45b0ca261e76 HTTP/1.1
+PATCH http://localhost:5000/offers/6483114e441ad2de463062fc HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUyQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4MzEwNjQ0NDFhZDJkZTQ2MzA2MmY5IiwiaWF0IjoxNjg2MzExMDM2LCJleHAiOjE2ODY0ODM4MzZ9.N9WiSjkOUc_kt22xxZn8L6NQSywRLBI1BTfxfj_BnXc
 
 {
-  "title": "Makeev Alexey test 1"
+  "title": "Makeev Alexey test 3"
 }
 
 ###
 
 ## Удаление объявления (5.3)
 
-DELETE http://localhost:5000/offers/6480e237a9c61dbd659ab75e HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
+DELETE http://localhost:5000/offers/64831167441ad2de46306300 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUyQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4MzEwNjQ0NDFhZDJkZTQ2MzA2MmY5IiwiaWF0IjoxNjg2MzExMDM2LCJleHAiOjE2ODY0ODM4MzZ9.N9WiSjkOUc_kt22xxZn8L6NQSywRLBI1BTfxfj_BnXc
 ###
 
 ## Получить список предложений по аренде (5.4)
@@ -60,26 +59,26 @@ Content-Type: application/json
 ###
 
 ## Детальная информация по предложению (5.5)
-GET http://localhost:5000/offers/6480c503399a45b0ca261e76 HTTP/1.1
+GET http://localhost:5000/offers/6483114e441ad2de463062fc HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUyQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4MzEwNjQ0NDFhZDJkZTQ2MzA2MmY5IiwiaWF0IjoxNjg2MzExMDM2LCJleHAiOjE2ODY0ODM4MzZ9.N9WiSjkOUc_kt22xxZn8L6NQSywRLBI1BTfxfj_BnXc
 
 ###
 
 ## Список комментариев для предложения (5.6)
-GET http://localhost:5000/offers/6480c4e2399a45b0ca261e76/comments HTTP/1.1
+GET http://localhost:5000/offers/6483114e441ad2de463062fc/comments HTTP/1.1
 
 ###
 
 ## Добавление комментария (5.7)
 POST http://localhost:5000/comments HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUyQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4MzEwNjQ0NDFhZDJkZTQ2MzA2MmY5IiwiaWF0IjoxNjg2MzExMDM2LCJleHAiOjE2ODY0ODM4MzZ9.N9WiSjkOUc_kt22xxZn8L6NQSywRLBI1BTfxfj_BnXc
 
 {
-  "text": "Тестовый текст комментария",
-  "offerId": "6480c503399a45b0ca261e76",
-  "rating": 2
+  "text": "Тестовый текст комментария 4",
+  "offerId": "6483114e441ad2de463062fc",
+  "rating": 4
 }
 ###
 
@@ -90,8 +89,8 @@ POST http://localhost:5000/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Макеев Алексей2",
-  "email": "makeevhome2@overlook.net",
+  "name": "Макеев Алексей3",
+  "email": "makeevhome3@overlook.net",
   "avatarUrl": "makeev.png",
   "userType": "pro",
   "password": "ma1234"
@@ -104,21 +103,21 @@ POST http://localhost:5000/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "makeevhome2@overlook.net",
+  "email": "makeevhome3@overlook.net",
   "password": "ma1234"
 }
 
 ###
 ## Выход из закрытой части приложения (5.10)
-DELETE  http://localhost:5000/users/6480e382a9c61dbd659ab77b/logout HTTP/1.1
+DELETE  http://localhost:5000/users/6483176f70ac0e9be5104198/logout HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUzQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4MzE3NmY3MGFjMGU5YmU1MTA0MTk4IiwiaWF0IjoxNjg2MzEyOTgzLCJleHAiOjE2ODY0ODU3ODN9.EbjWrXhCc0v-trzwlVrrUDZqGU1_zm02MYGiP33BOWU
 ###
 
 ## Проверка состояния пользователя (5.11)
 GET  http://localhost:5000/users/login HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwOGQ2MDM5NGY4Y2I2NmM1MTQ0OTIiLCJpYXQiOjE2ODYxNDY0NTEsImV4cCI6MTY4NjMxOTI1MX0.R0pjd2zXGE508l7CKukSGu5Apo7xhf4_JFDXjzRAECM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUyQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4MzEwNjQ0NDFhZDJkZTQ2MzA2MmY5IiwiaWF0IjoxNjg2MzExMDM2LCJleHAiOjE2ODY0ODM4MzZ9.N9WiSjkOUc_kt22xxZn8L6NQSywRLBI1BTfxfj_BnXc
 
 ###
 ## Премиальные предложения для города (5.12)
@@ -128,14 +127,14 @@ GET http://localhost:5000/offers/premium/Paris HTTP/1.1
 ## Список избранных предложений (5.13)
 GET http://localhost:5000/offers/favorite HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwOGQ2MDM5NGY4Y2I2NmM1MTQ0OTIiLCJpYXQiOjE2ODYxNDY0NTEsImV4cCI6MTY4NjMxOTI1MX0.R0pjd2zXGE508l7CKukSGu5Apo7xhf4_JFDXjzRAECM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUyQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4MzEwNjQ0NDFhZDJkZTQ2MzA2MmY5IiwiaWF0IjoxNjg2MzExMDM2LCJleHAiOjE2ODY0ODM4MzZ9.N9WiSjkOUc_kt22xxZn8L6NQSywRLBI1BTfxfj_BnXc
 
 ###
 
 ## Добавление и удаление предложения в/из избранного (5.14)
-PATCH http://localhost:5000/offers/favorite/63d77401a03b664cf3e1055d HTTP/1.1
+PATCH http://localhost:5000/offers/favorite/6483114e441ad2de463062fc HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjNlMjJhYTRmYWEwMjA4YWMzOGJkYjYzIiwiaWF0IjoxNjc1NzY2NDQ1LCJleHAiOjE2NzU5MzkyNDV9.040JdGUDRqjWftR_8YrbQ1DS5XAQ9I_kVwB8zpsOko4"
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUyQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4MzEwNjQ0NDFhZDJkZTQ2MzA2MmY5IiwiaWF0IjoxNjg2MzExMDM2LCJleHAiOjE2ODY0ODM4MzZ9.N9WiSjkOUc_kt22xxZn8L6NQSywRLBI1BTfxfj_BnXc
 
 ###
 
@@ -156,7 +155,7 @@ Content-Type: image/png
 ## Загрузка превью для предложения
 POST http://localhost:5000/offers/63d77401a03b664cf3e1055d/previewimage HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczlAb3Zlcmxvb2submV0IiwiaWQiOiI2M2UwYjQ3ZTQzZTQxMjgyYzY5MWE4ZTMiLCJpYXQiOjE2NzU3MDcxNzUsImV4cCI6MTY3NTg3OTk3NX0.AmS-PUtKv6Lptt_RG0zb_Q3GACXWDimgP_FRISnVfkw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="prevImg"; filename="room.jpg"
@@ -170,7 +169,7 @@ Content-Type: image/png
 ## Загрузка изображений для предложения
 POST http://localhost:5000/offers/63d77401a03b664cf3e1055d/images HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczlAb3Zlcmxvb2submV0IiwiaWQiOiI2M2UwYjQ3ZTQzZTQxMjgyYzY5MWE4ZTMiLCJpYXQiOjE2NzU3MDcxNzUsImV4cCI6MTY3NTg3OTk3NX0.AmS-PUtKv6Lptt_RG0zb_Q3GACXWDimgP_FRISnVfkw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDgwYzQ3ODM5OWE0NWIwY2EyNjFlNmYiLCJpYXQiOjE2ODYxNjA1MTMsImV4cCI6MTY4NjMzMzMxM30.SBiRd3dNY73mIAkURljS3VspCv47aJuAb5WGAbl6LjE
 
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
