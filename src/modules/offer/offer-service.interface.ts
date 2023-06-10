@@ -35,7 +35,7 @@ export interface OfferServiceInterface extends DocumentExistsInterface {
     offerId: string
   ): Promise<DocumentType<OfferEntity> | null>;
 
-  findFavoriteOffers(
+  findFavoriteByUserId(
     userId: string
   ): Promise<DocumentType<OfferEntity>[] | null>;
 

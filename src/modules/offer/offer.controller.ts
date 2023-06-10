@@ -17,15 +17,13 @@ import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-ob
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import DocumentExistsMiddleware from '../../common/middlewares/document-exists.middleware.js';
 import { PrivateRouterMiddleware } from '../../common/middlewares/private-router.middleware.js';
-import { FavoriteServiceInterface } from '../favorite/favorite-service.interface.js';
 import { UploadFileMiddleware } from '../../common/middlewares/upload-file-middleware.js';
 import { ConfigInterface } from '../../core/config/config.interface.js';
 import { RestSchema } from '../../core/config/rest.schema.js';
-import FavoriteRdo from '../favorite/rdo/favorite.rdo.js';
-import UploadImageRdo from '../favorite/rdo/upload-image.rdo.js';
 import UploadImagesRdo from './rdo/upload-images.rdo.js';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { UnknownRecord } from '../../types/unknown-record.type.js';
+import UploadImageRdo from './rdo/upload-image.rdo.js';
 
 type ParamsOfferDetails =
   | {
@@ -48,15 +46,14 @@ export default class OfferController extends Controller {
     @inject(AppComponent.OfferServiceInterface)
     private readonly offerService: OfferServiceInterface,
     @inject(AppComponent.CommentServiceInterface)
-    private readonly commentService: CommentServiceInterface,
-    @inject(AppComponent.FavoriteServiceInterface)
-    private readonly favoriteService: FavoriteServiceInterface
+    private readonly commentService: CommentServiceInterface
   ) {
     super(logger);
 
     this.logger.info('Register routes for OfferController…');
 
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
+
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Get,
@@ -67,22 +64,36 @@ export default class OfferController extends Controller {
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
+
     this.addRoute({
       path: '/favorite',
       method: HttpMethod.Get,
       handler: this.showFavorite,
       middlewares: [new PrivateRouterMiddleware()],
     });
+
     this.addRoute({
       path: '/favorite/:offerId',
-      method: HttpMethod.Patch,
-      handler: this.setStatusFavorite,
+      method: HttpMethod.Get,
+      handler: this.addFavorite,
       middlewares: [
         new PrivateRouterMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
     });
+
+    this.addRoute({
+      path: '/favorite/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.removeFavorite,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+
     this.addRoute({
       path: '/create',
       method: HttpMethod.Post,
@@ -92,6 +103,7 @@ export default class OfferController extends Controller {
         new ValidateDtoMiddleware(CreateOfferDto),
       ],
     });
+
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Delete,
@@ -102,6 +114,7 @@ export default class OfferController extends Controller {
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
+
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
@@ -113,6 +126,7 @@ export default class OfferController extends Controller {
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
+
     this.addRoute({
       path: '/:offerId/comments',
       method: HttpMethod.Get,
@@ -142,6 +156,7 @@ export default class OfferController extends Controller {
         ),
       ],
     });
+
     this.addRoute({
       path: '/:offerId/images',
       method: HttpMethod.Post,
@@ -243,8 +258,8 @@ export default class OfferController extends Controller {
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
-  public async showFavorite(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findFavoriteOffers();
+  public async showFavorite(req: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.findFavoriteByUserId(req.user.id);
 
     if (!offers) {
       throw new HttpError(
@@ -257,30 +272,22 @@ export default class OfferController extends Controller {
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
-  public async setStatusFavorite(
-    req: Request<ParamsOfferDetails, Record<string, unknown>, CreateOfferDto>,
-    res: Response
-  ): Promise<void> {
-    const { params, user } = req;
-    const offerCheck = await this.favoriteService.findFavorite(
-      user.id,
-      params.offerId
+  public async addFavorite(req: Request, res: Response): Promise<void> {
+    const offer = await this.offerService.addFavorite(
+      req.user.id,
+      req.params.offerId
     );
-    if (!offerCheck) {
-      const favorite = await this.favoriteService.createFavorite({
-        userId: user.id,
-        offerId: params.offerId,
-      });
-      await this.offerService.setFavoriteStatusOffer(params.offerId);
-      this.created(res, fillDTO(FavoriteRdo, favorite));
-    } else {
-      const favorite = await this.favoriteService.deleteById(
-        user.id,
-        params.offerId
-      );
-      await this.offerService.setFavoriteStatusOffer(params.offerId);
-      this.noContent(res, favorite);
-    }
+
+    this.ok(res, fillDTO(OfferRdo, offer));
+  }
+
+  public async removeFavorite(req: Request, res: Response): Promise<void> {
+    const offer = await this.offerService.removeFavorite(
+      req.user.id,
+      req.params.offerId
+    );
+
+    this.ok(res, fillDTO(OfferRdo, offer));
   }
 
   public async uploadPrevImage(

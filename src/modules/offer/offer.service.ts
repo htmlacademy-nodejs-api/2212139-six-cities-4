@@ -103,7 +103,7 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async findFavoriteOffers(
+  public async findFavoriteByUserId(
     userId: string
   ): Promise<DocumentType<OfferEntity>[] | null> {
     const user = await this.userService.findById(userId);
