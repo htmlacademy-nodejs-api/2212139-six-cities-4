@@ -15,16 +15,32 @@ import {
   IsString,
   IsNumber,
 } from 'class-validator';
+import {
+  OfferDescriptionLength,
+  OfferGuestCount,
+  OfferPriceValue,
+  OfferRatingValue,
+  OfferRoomsCount,
+  OfferTitleLength,
+} from '../../../const.js';
 
 export default class CreateOfferDto {
   @IsString({ message: 'title is required' })
-  @MinLength(10, { message: 'Minimum title length must be 10' })
-  @MaxLength(100, { message: 'Maximum title length must be 100' })
+  @MinLength(OfferTitleLength.min, {
+    message: 'Minimum title length must be 10',
+  })
+  @MaxLength(OfferTitleLength.max, {
+    message: 'Maximum title length must be 100',
+  })
   public title!: string;
 
   @IsString({ message: 'description is required' })
-  @MinLength(20, { message: 'Minimum description length must be 20' })
-  @MaxLength(1024, { message: 'Maximum description length must be 1024' })
+  @MinLength(OfferDescriptionLength.min, {
+    message: 'Minimum description length must be 20',
+  })
+  @MaxLength(OfferDescriptionLength.max, {
+    message: 'Maximum description length must be 1024',
+  })
   public description!: string;
 
   @IsDateString({}, { message: 'postDate must be valid ISO date' })
@@ -45,8 +61,8 @@ export default class CreateOfferDto {
         'Only 1 digit precision to the right of decimal point is allowed',
     }
   )
-  @Min(0, { message: 'Minimum rating is 0' })
-  @Max(5, { message: 'Maximum rating is 5' })
+  @Min(OfferRatingValue.min, { message: 'Minimum rating is 0' })
+  @Max(OfferRatingValue.max, { message: 'Maximum rating is 5' })
   public rating!: number;
 
   @IsEnum(OfferType, {
@@ -55,18 +71,18 @@ export default class CreateOfferDto {
   public offerType!: OfferType;
 
   @IsInt({ message: 'Rooms must be an integer' })
-  @Min(1, { message: 'Minimum rooms is 1' })
-  @Max(8, { message: 'Maximum rooms is 8' })
+  @Min(OfferRoomsCount.min, { message: 'Minimum rooms is 1' })
+  @Max(OfferRoomsCount.max, { message: 'Maximum rooms is 8' })
   public roomsCount!: number;
 
   @IsInt({ message: 'Guests must be an integer' })
-  @Min(1, { message: 'Minimum guests is 1' })
-  @Max(10, { message: 'Maximum guests is 10' })
+  @Min(OfferGuestCount.min, { message: 'Minimum guests is 1' })
+  @Max(OfferGuestCount.max, { message: 'Maximum guests is 10' })
   public guestsCount!: number;
 
   @IsInt({ message: 'Price must be an integer' })
-  @Min(100, { message: 'Minimum price is 100' })
-  @Max(100000, { message: 'Maximum price is 100000' })
+  @Min(OfferPriceValue.min, { message: 'Minimum price is 100' })
+  @Max(OfferPriceValue.max, { message: 'Maximum price is 100000' })
   public price!: number;
 
   @IsArray({ message: 'Features categories must be an array' })

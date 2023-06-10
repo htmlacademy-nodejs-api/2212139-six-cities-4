@@ -3,9 +3,9 @@ import { City } from './types/city-type.enum.js';
 export const RANGE_COORDINATES_VALUE = 0.05;
 
 export const enum OfferRatingValue {
-  min = 1,
+  min = 0,
   max = 5,
-  numAfterDigits = 1,
+  numAfterDigits = 0,
 }
 
 export const enum CommentCountValue {
@@ -36,6 +36,11 @@ export const enum OfferPriceValue {
 export const enum OfferTitleLength {
   min = 10,
   max = 100,
+}
+
+export const enum OfferDescriptionLength {
+  min = 20,
+  max = 1024,
 }
 
 export const enum UserNameLingth {
