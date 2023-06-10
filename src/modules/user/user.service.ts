@@ -80,10 +80,13 @@ export default class UserService implements UserServiceInterface {
     return null;
   }
 
-  public async addToFavoritesById(
+  public async addToFavoriteById(
     userId: string,
     offerId: string
   ): Promise<DocumentType<OfferEntity>[] | null> {
+    console.log(`addToFavoriteById 87, user-service
+     userId: ${userId}
+     offerId: ${offerId}`);
     return this.userModel.findOneAndUpdate(
       { _id: userId },
       {

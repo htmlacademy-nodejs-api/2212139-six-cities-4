@@ -1,6 +1,7 @@
 import { UserType } from '../../../types/user-type.enum.js';
 import { IsEmail, IsString, Length, IsEnum } from 'class-validator';
 import { UserNameLingth, UserPasswordLength } from '../../../const.js';
+import { ObjectId } from 'mongoose';
 
 export default class CreateUserDto {
   @IsString({ message: 'name is required' })
@@ -25,5 +26,5 @@ export default class CreateUserDto {
   })
   public password!: string;
 
-  public favorites!: string[];
+  public favorites!: ObjectId[];
 }

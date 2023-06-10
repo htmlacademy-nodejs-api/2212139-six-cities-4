@@ -24,6 +24,7 @@ import UploadImagesRdo from './rdo/upload-images.rdo.js';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { UnknownRecord } from '../../types/unknown-record.type.js';
 import UploadImageRdo from './rdo/upload-image.rdo.js';
+import SaveOfferRdo from './rdo/save-offer.rdo.js';
 
 type ParamsOfferDetails =
   | {
@@ -66,7 +67,7 @@ export default class OfferController extends Controller {
     });
 
     this.addRoute({
-      path: '/favorite',
+      path: '/favorite/get',
       method: HttpMethod.Get,
       handler: this.showFavorite,
       middlewares: [new PrivateRouterMiddleware()],
@@ -74,7 +75,7 @@ export default class OfferController extends Controller {
 
     this.addRoute({
       path: '/favorite/:offerId',
-      method: HttpMethod.Post,
+      method: HttpMethod.Patch,
       handler: this.addFavorite,
       middlewares: [
         new PrivateRouterMiddleware(),
@@ -259,7 +260,7 @@ export default class OfferController extends Controller {
   }
 
   public async showFavorite(req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findFavoriteByUserId(req.user.id);
+    const offers = await this.offerService.findFavoritesByUserId(req.user.id);
 
     if (!offers) {
       throw new HttpError(
@@ -273,12 +274,16 @@ export default class OfferController extends Controller {
   }
 
   public async addFavorite(req: Request, res: Response): Promise<void> {
+    console.log(`addFavorite offer.Controller 276:
+         userId: ${req.user.id}
+        offerId: ${req.params.offerId}`);
+
     const offer = await this.offerService.addFavorite(
       req.user.id,
       req.params.offerId
     );
 
-    this.ok(res, fillDTO(OfferRdo, offer));
+    this.ok(res, fillDTO(SaveOfferRdo, offer));
   }
 
   public async removeFavorite(req: Request, res: Response): Promise<void> {

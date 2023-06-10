@@ -5,6 +5,7 @@ import typegoose, {
 } from '@typegoose/typegoose';
 import { createSHA256 } from '../../core/helpers/index.js';
 import { UserType } from '../../types/user-type.enum.js';
+import { ObjectId } from 'mongoose';
 
 const { prop, modelOptions } = typegoose;
 
@@ -34,7 +35,7 @@ export class UserEntity
   private password?: string;
 
   @prop({ default: [] })
-  public favorites: string[];
+  public favorites: ObjectId[];
 
   constructor(userData: ExtendedUserType) {
     super();

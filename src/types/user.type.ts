@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose';
 import { UserType } from './user-type.enum.js';
 
 export type MiddleUserType = {
@@ -21,5 +22,5 @@ export type ExtendedUserType = {
   avatarUrl: string;
   userType: UserType;
   password: string;
-  favorites: string[];
+  favorites: ObjectId[];
 };

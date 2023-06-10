@@ -1,4 +1,5 @@
 import { Expose } from 'class-transformer';
+import { ObjectId } from 'mongoose';
 
 export default class UserRdo {
   @Expose()
@@ -17,5 +18,5 @@ export default class UserRdo {
   public userType!: string;
 
   @Expose()
-  public favorites!: string[];
+  public favorites!: ObjectId[];
 }

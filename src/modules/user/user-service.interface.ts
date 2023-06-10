@@ -7,24 +7,31 @@ import { OfferEntity } from '../offer/offer.entity.js';
 
 export interface UserServiceInterface {
   create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>>;
+
   findById(UserId: string): Promise<DocumentType<UserEntity> | null>;
+
   findByEmail(email: string): Promise<DocumentType<UserEntity> | null>;
+
   findOrCreate(
     dto: CreateUserDto,
     salt: string
   ): Promise<DocumentType<UserEntity>>;
+
   updateById(
     userId: string,
     dto: UpdateUserDto
   ): Promise<DocumentType<UserEntity> | null>;
+
   verifyUser(
     dto: LoginUserDto,
     salt: string
   ): Promise<DocumentType<UserEntity> | null>;
-  addToFavoritesById(
+
+  addToFavoriteById(
     userId: string,
     offerId: string
   ): Promise<DocumentType<OfferEntity>[] | null>;
+
   removeFromFavoritesById(
     userId: string,
     offerId: string

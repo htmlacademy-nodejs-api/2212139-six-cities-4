@@ -103,10 +103,11 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
-  public async findFavoriteByUserId(
+  public async findFavoritesByUserId(
     userId: string
   ): Promise<DocumentType<OfferEntity>[] | null> {
     const user = await this.userService.findById(userId);
+    console.log(`offer.service 110 ${user}`);
 
     if (!user) {
       return null;
@@ -131,7 +132,7 @@ export default class OfferService implements OfferServiceInterface {
     userId: string,
     offerId: string
   ): Promise<DocumentType<OfferEntity> | null> {
-    await this.userService.addToFavoritesById(userId, offerId);
+    await this.userService.addToFavoriteById(userId, offerId);
 
     return this.offerModel.findById(offerId).populate(['userId']).exec();
   }

@@ -4,7 +4,7 @@ export const RATING_DEFAULT = 0;
 export const RETURNABLE_FIELDS = {
   title: 1,
   postDate: 1,
-  city: 1,
+  cityName: 1,
   preview: 1,
   isPremium: 1,
   rating: 1,

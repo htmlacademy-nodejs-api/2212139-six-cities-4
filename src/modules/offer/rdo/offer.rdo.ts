@@ -36,9 +36,6 @@ export default class OfferRdo {
   public offerType!: OfferType;
 
   @Expose()
-  public apartment!: string;
-
-  @Expose()
   public roomsCount!: number;
 
   @Expose()
