@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
-* Студент: [Алексей Макеев](https://up.htmlacademy.ru/nodejs-api/4/user/2212139).
-* Наставник: [Роман Решетников](https://htmlacademy.ru/profile/id1919895)
+- Студент: [Алексей Макеев](https://up.htmlacademy.ru/nodejs-api/4/user/2212139).
+- Наставник: [Глеб Клецков](https://htmlacademy.ru/profile/id1487865)
 
 ---
 

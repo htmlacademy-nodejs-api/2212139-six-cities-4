@@ -122,6 +122,7 @@ export default class OfferService implements OfferServiceInterface {
           },
         },
         { $project: RETURNABLE_FIELDS },
+        { $addFields: { id: { $toString: '$_id' } } },
       ])
       .exec();
   }

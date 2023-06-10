@@ -10,7 +10,6 @@ import { UserServiceInterface } from './user-service.interface.js';
 import { StatusCodes } from 'http-status-codes';
 import { createJWT, fillDTO } from '../../core/helpers/index.js';
 import HttpError from '../../core/errors/http-error.js';
-import UserRdo from './rdo/user.rdo.js';
 import { RestSchema } from '../../core/config/rest.schema.js';
 import LoginUserDto from './dto/login-user.dto.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
@@ -19,6 +18,7 @@ import { UploadFileMiddleware } from '../../common/middlewares/upload-file-middl
 import { UnknownRecord } from '../../types/unknown-record.type.js';
 import { JWT_ALGORITHM } from './user.constant.js';
 import LoggedUserRdo from './rdo/logged-user.rdo.js';
+import SaveUserRdo from './rdo/save-user.rdo.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -91,7 +91,7 @@ export default class UserController extends Controller {
       this.configService.get('SALT')
     );
 
-    this.created(res, fillDTO(UserRdo, result));
+    this.created(res, fillDTO(SaveUserRdo, result));
   }
 
   public async login(

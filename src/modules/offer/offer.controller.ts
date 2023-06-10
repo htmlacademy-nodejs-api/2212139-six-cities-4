@@ -74,7 +74,7 @@ export default class OfferController extends Controller {
 
     this.addRoute({
       path: '/favorite/:offerId',
-      method: HttpMethod.Get,
+      method: HttpMethod.Post,
       handler: this.addFavorite,
       middlewares: [
         new PrivateRouterMiddleware(),
