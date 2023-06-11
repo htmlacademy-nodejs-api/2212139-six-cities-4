@@ -16,7 +16,10 @@ export interface OfferServiceInterface extends DocumentExistsInterface {
 
   deleteByOfferId(offerId: string): Promise<DocumentType<OfferEntity> | null>;
 
-  find(count?: number): Promise<DocumentType<OfferEntity>[] | null>;
+  find(
+    userAuthId?: string,
+    count?: number
+  ): Promise<DocumentType<OfferEntity>[] | null>;
 
   findByTitle(title: string): Promise<DocumentType<OfferEntity> | null>;
 

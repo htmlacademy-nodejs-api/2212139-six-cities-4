@@ -58,13 +58,44 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async find(
+    userAuthId?: string,
     count?: number
   ): Promise<DocumentType<OfferEntity>[] | null> {
     const limit = count ?? DEFAULT_OFFER_COUNT;
+    console.log(`offerService 65 find() userAuthId: ${userAuthId}`);
+
+    if (userAuthId) {
+      const user = await this.userService.findById(userAuthId);
+
+      if (!user) {
+        return null;
+      }
+
+      console.log(`offerService find() 73: ${userAuthId}`);
+      return this.offerModel
+        .aggregate([
+          { $project: RETURNABLE_FIELDS },
+          {
+            $set: {
+              isFavorite: {
+                $cond: [{ $in: ['$_id', [...user.favorites]] }, true, false],
+              },
+            },
+          },
+          { $set: { id: { $toString: '$_id' } } },
+          { $sort: { postedDate: SortType.Down } },
+          { $limit: limit },
+        ])
+        .exec();
+    }
+
     return this.offerModel
-      .find({}, {}, { limit })
-      .sort({ postDate: SortType.Down })
-      .populate(['userId'])
+      .aggregate([
+        { $project: RETURNABLE_FIELDS },
+        { $addFields: { id: { $toString: '$_id' } } },
+        { $sort: { postedDate: SortType.Down } },
+        { $limit: limit },
+      ])
       .exec();
   }
 
@@ -97,9 +128,13 @@ export default class OfferService implements OfferServiceInterface {
   ): Promise<DocumentType<OfferEntity>[]> {
     const limit = count ?? OFFER_PREMIUM_COUNT;
     return this.offerModel
-      .find({ isPremium: true, cityName: cityName }, {}, { limit })
-      .sort({ postDate: SortType.Down })
-      .populate(['userId'])
+      .aggregate([
+        { $match: { isPremium: true, cityName: cityName } },
+        { $project: RETURNABLE_FIELDS },
+        { $addFields: { id: { $toString: '$_id' } } },
+        { $sort: { postedDate: SortType.Down } },
+        { $limit: limit },
+      ])
       .exec();
   }
 
@@ -122,6 +157,7 @@ export default class OfferService implements OfferServiceInterface {
             },
           },
         },
+        { $set: { isFavorite: true } },
         { $project: RETURNABLE_FIELDS },
         { $addFields: { id: { $toString: '$_id' } } },
       ])

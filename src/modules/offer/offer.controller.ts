@@ -25,6 +25,7 @@ import { ParamsDictionary } from 'express-serve-static-core';
 import { UnknownRecord } from '../../types/unknown-record.type.js';
 import UploadImageRdo from './rdo/upload-image.rdo.js';
 import SaveOfferRdo from './rdo/save-offer.rdo.js';
+import { RequestQuery } from '../../types/request-query.type.js';
 
 type ParamsOfferDetails =
   | {
@@ -183,20 +184,17 @@ export default class OfferController extends Controller {
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.find();
+  public async index(
+    req: Request<ParamsOfferDetails, unknown, unknown, RequestQuery>,
+    res: Response
+  ): Promise<void> {
+    const { query, user } = req;
+    const offers = await this.offerService.find(user?.id, query?.limit);
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
   public async create(
-    {
-      body,
-      user,
-    }: Request<
-      Record<string, unknown>,
-      Record<string, unknown>,
-      CreateOfferDto
-    >,
+    { body, user }: Request<UnknownRecord, UnknownRecord, CreateOfferDto>,
     res: Response
   ): Promise<void> {
     const result = await this.offerService.createOffer({
@@ -274,10 +272,6 @@ export default class OfferController extends Controller {
   }
 
   public async addFavorite(req: Request, res: Response): Promise<void> {
-    console.log(`addFavorite offer.Controller 276:
-         userId: ${req.user.id}
-        offerId: ${req.params.offerId}`);
-
     const offer = await this.offerService.addFavorite(
       req.user.id,
       req.params.offerId
