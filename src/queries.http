@@ -38,10 +38,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUzQG92ZXJsb
 ## Обновить, редактировать объявление (5.2)
 PATCH http://localhost:5000/offers/648450d3102622433fead1a5 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUzQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4NDRmZWQxMDI2MjI0MzNmZWFkMWEyIiwiaWF0IjoxNjg2MzkyODQyLCJleHAiOjE2ODY1NjU2NDJ9.oXW-WFyH6u2SQRF8Qfkc3tmooxyCG_eL4gmeonHYAZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg2YzIxNTE1ZDc2MDQwZDg3ODhiZjMiLCJpYXQiOjE2ODY1NTMxMTgsImV4cCI6MTY4NjcyNTkxOH0.oCl7w1kiBuelVw7_FBtj3Ph1AEUI83DmIauDbYGab_c
 
 {
-  "title": "Makeev Alexey test 3"
+  "title": "Makeev Alexey test 7"
 }
 
 ###
@@ -91,8 +91,8 @@ POST http://localhost:5000/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Макеев Алексей3",
-  "email": "makeevhome3@overlook.net",
+  "name": "Макеев Алексей",
+  "email": "makeevhome@overlook.net",
   "avatarUrl": "makeev.png",
   "userType": "pro",
   "password": "ma1234"
@@ -105,7 +105,7 @@ POST http://localhost:5000/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "makeevhome3@overlook.net",
+  "email": "makeevhome@overlook.net",
   "password": "ma1234"
 }
 
@@ -125,6 +125,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUzQG92ZXJsb
 ###
 ## Премиальные предложения для города (5.12)
 GET http://localhost:5000/offers/premium/Paris HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUzQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4NDRmZWQxMDI2MjI0MzNmZWFkMWEyIiwiaWF0IjoxNjg2MzkyODQyLCJleHAiOjE2ODY1NjU2NDJ9.oXW-WFyH6u2SQRF8Qfkc3tmooxyCG_eL4gmeonHYAZk
 ###
 
 ## Список избранных предложений (5.13)

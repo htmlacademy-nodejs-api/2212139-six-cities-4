@@ -62,7 +62,6 @@ export default class OfferService implements OfferServiceInterface {
     count?: number
   ): Promise<DocumentType<OfferEntity>[] | null> {
     const limit = count ?? DEFAULT_OFFER_COUNT;
-    console.log(`offerService 65 find() userAuthId: ${userAuthId}`);
 
     if (userAuthId) {
       const user = await this.userService.findById(userAuthId);
@@ -124,16 +123,45 @@ export default class OfferService implements OfferServiceInterface {
 
   public async findPremiumOffers(
     cityName: string,
-    count?: number
-  ): Promise<DocumentType<OfferEntity>[]> {
-    const limit = count ?? OFFER_PREMIUM_COUNT;
+    userAuthId?: string
+  ): Promise<DocumentType<OfferEntity>[] | null> {
+    console.log(
+      `offerService 131 findPremiumOffers, userAuthId: ${userAuthId}`
+    );
+
+    if (userAuthId) {
+      const user = await this.userService.findById(userAuthId);
+
+      if (!user) {
+        return null;
+      }
+
+      console.log(`offerService find() 73: ${userAuthId}`);
+      return this.offerModel
+        .aggregate([
+          { $match: { isPremium: true, cityName: cityName } },
+          { $project: RETURNABLE_FIELDS },
+          {
+            $set: {
+              isFavorite: {
+                $cond: [{ $in: ['$_id', [...user.favorites]] }, true, false],
+              },
+            },
+          },
+          { $set: { id: { $toString: '$_id' } } },
+          { $sort: { postedDate: SortType.Down } },
+          { $limit: OFFER_PREMIUM_COUNT },
+        ])
+        .exec();
+    }
+
     return this.offerModel
       .aggregate([
         { $match: { isPremium: true, cityName: cityName } },
         { $project: RETURNABLE_FIELDS },
         { $addFields: { id: { $toString: '$_id' } } },
         { $sort: { postedDate: SortType.Down } },
-        { $limit: limit },
+        { $limit: OFFER_PREMIUM_COUNT },
       ])
       .exec();
   }

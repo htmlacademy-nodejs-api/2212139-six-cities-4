@@ -221,9 +221,19 @@ export default class OfferController extends Controller {
     {
       body,
       params,
+      user,
     }: Request<ParamsOfferDetails, UnknownRecord, UpdateOfferDto>,
     res: Response
   ): Promise<void> {
+    const currentOffer = await this.offerService.findById(params.offerId);
+
+    if (user.id !== currentOffer?.userId._id.toString()) {
+      throw new HttpError(
+        StatusCodes.LOCKED,
+        'This is not your offer',
+        'OfferController'
+      );
+    }
     const updatedOffer = await this.offerService.updateByOfferId(
       params.offerId,
       body
@@ -241,15 +251,17 @@ export default class OfferController extends Controller {
   }
 
   public async showPremium(
-    { params }: Request<ParamsGetPremium>,
+    req: Request<ParamsGetPremium>,
     res: Response
   ): Promise<void> {
-    const { cityName } = params;
-    const offers = await this.offerService.findPremiumOffers(cityName);
+    const offers = await this.offerService.findPremiumOffers(
+      req.params.cityName,
+      req.user?.id
+    );
     if (!offers) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
-        `Premium offer with city ${cityName} not found.`,
+        `Premium offer with city ${req.params.cityName} not found.`,
         'OfferController'
       );
     }

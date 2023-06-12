@@ -25,8 +25,8 @@ export interface OfferServiceInterface extends DocumentExistsInterface {
 
   findPremiumOffers(
     cityName: string,
-    count?: number
-  ): Promise<DocumentType<OfferEntity>[]>;
+    userAuthId?: string
+  ): Promise<DocumentType<OfferEntity>[] | null>;
 
   addFavorite(
     userId: string,
