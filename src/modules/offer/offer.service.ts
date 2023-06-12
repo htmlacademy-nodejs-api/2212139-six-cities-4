@@ -70,7 +70,6 @@ export default class OfferService implements OfferServiceInterface {
         return null;
       }
 
-      console.log(`offerService find() 73: ${userAuthId}`);
       return this.offerModel
         .aggregate([
           { $project: RETURNABLE_FIELDS },
@@ -83,7 +82,7 @@ export default class OfferService implements OfferServiceInterface {
           },
           { $set: { id: { $toString: '$_id' } } },
           { $sort: { postedDate: SortType.Down } },
-          { $limit: limit },
+          { $limit: +limit },
         ])
         .exec();
     }
@@ -93,7 +92,7 @@ export default class OfferService implements OfferServiceInterface {
         { $project: RETURNABLE_FIELDS },
         { $addFields: { id: { $toString: '$_id' } } },
         { $sort: { postedDate: SortType.Down } },
-        { $limit: limit },
+        { $limit: +limit },
       ])
       .exec();
   }

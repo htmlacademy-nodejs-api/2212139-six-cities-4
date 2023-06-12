@@ -54,6 +54,16 @@ export default class OfferController extends Controller {
 
     this.logger.info('Register routes for OfferController…');
 
+    this.addRoute({
+      path: '/create',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto),
+      ],
+    });
+
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
 
     this.addRoute({
@@ -61,8 +71,30 @@ export default class OfferController extends Controller {
       method: HttpMethod.Get,
       handler: this.show,
       middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+      ],
+    });
+
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.delete,
+      middlewares: [
         new PrivateRouterMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
+      ],
+    });
+
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Patch,
+      handler: this.update,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
@@ -93,39 +125,6 @@ export default class OfferController extends Controller {
         new PrivateRouterMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
-      ],
-    });
-
-    this.addRoute({
-      path: '/create',
-      method: HttpMethod.Post,
-      handler: this.create,
-      middlewares: [
-        new PrivateRouterMiddleware(),
-        new ValidateDtoMiddleware(CreateOfferDto),
-      ],
-    });
-
-    this.addRoute({
-      path: '/:offerId',
-      method: HttpMethod.Delete,
-      handler: this.delete,
-      middlewares: [
-        new PrivateRouterMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
-      ],
-    });
-
-    this.addRoute({
-      path: '/:offerId',
-      method: HttpMethod.Patch,
-      handler: this.update,
-      middlewares: [
-        new PrivateRouterMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new ValidateDtoMiddleware(UpdateOfferDto),
-        new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
 
