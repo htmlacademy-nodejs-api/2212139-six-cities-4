@@ -30,8 +30,8 @@ export default class ImportCommand implements CliCommandInterface {
     this.onComplete = this.onComplete.bind(this);
 
     this.logger = new ConsoleLoggerService();
-    this.offerService = new OfferService(this.logger, OfferModel);
     this.userService = new UserService(this.logger, UserModel);
+    this.offerService = new OfferService(this.logger, OfferModel, this.userService);
     this.databaseService = new MongoClientService(this.logger);
   }
 
@@ -40,6 +40,7 @@ export default class ImportCommand implements CliCommandInterface {
       {
         ...offer.user,
         password: DEFAULT_USER_PASSWORD,
+        favorites: []
       },
       this.salt
     );

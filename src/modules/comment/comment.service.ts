@@ -13,11 +13,11 @@ export default class CommentService implements CommentServiceInterface {
     private readonly commentModel: types.ModelType<CommentEntity>
   ) {}
 
-  public async create(
+  public async createComment(
     dto: CreateCommentDto
   ): Promise<DocumentType<CommentEntity>> {
     const comment = await this.commentModel.create(dto);
-    return comment.populate('userId');
+    return comment;
   }
 
   public async findByOfferId(
@@ -29,6 +29,12 @@ export default class CommentService implements CommentServiceInterface {
     return this.commentModel
       .find({ offerId }, {}, { limit })
       .populate('userId');
+  }
+
+  public async findByCommentId(
+    commentId: string
+  ): Promise<DocumentType<CommentEntity> | null> {
+    return this.commentModel.findById(commentId).populate(['userId']).exec();
   }
 
   public async deleteByOfferId(offerId: string): Promise<number> {

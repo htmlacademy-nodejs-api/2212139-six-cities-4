@@ -47,7 +47,7 @@ export default class UserController extends Controller {
     });
     this.addRoute({
       path: '/:userId/logout',
-      method: HttpMethod.Delete,
+      method: HttpMethod.Post,
       handler: this.logout,
       middlewares: [new ValidateObjectIdMiddleware('userId')],
     });

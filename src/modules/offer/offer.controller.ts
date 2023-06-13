@@ -200,6 +200,7 @@ export default class OfferController extends Controller {
       ...body,
       userId: user.id,
     });
+    console.log(`OfferController create 203 ${result}`);
     const offer = await this.offerService.findById(result.id);
     this.created(res, fillDTO(OfferRdo, offer));
   }
