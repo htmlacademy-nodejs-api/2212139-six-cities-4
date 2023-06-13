@@ -206,10 +206,20 @@ export default class OfferController extends Controller {
   }
 
   public async delete(
-    { params }: Request<ParamsOfferDetails>,
+    req: Request<ParamsOfferDetails>,
     res: Response
   ): Promise<void> {
-    const { offerId } = params;
+    const { offerId } = req.params;
+    const currentOffer = await this.offerService.findById(offerId);
+
+    if (req.user.id !== currentOffer?.userId._id.toString()) {
+      throw new HttpError(
+        StatusCodes.LOCKED,
+        'This is not your offer',
+        'OfferController'
+      );
+    }
+
     const offer = await this.offerService.deleteByOfferId(offerId);
 
     await this.commentService.deleteByOfferId(offerId);
