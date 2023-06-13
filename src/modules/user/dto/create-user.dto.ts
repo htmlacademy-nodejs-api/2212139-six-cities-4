@@ -14,8 +14,6 @@ export default class CreateUserDto {
   @IsEmail({}, { message: 'email must be valid address' })
   public email!: string;
 
-  public avatarUrl!: string;
-
   @IsString({ message: 'userType is required' })
   @IsEnum(UserType, { message: 'type must be one of pro or обычный' })
   public userType!: UserType;

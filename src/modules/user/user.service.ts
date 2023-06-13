@@ -8,6 +8,7 @@ import { LoggerInterface } from '../../core/logger/logger.interface.js';
 import UpdateUserDto from './dto/update-user.dto.js';
 import LoginUserDto from './dto/login-user.dto.js';
 import { OfferEntity } from '../offer/offer.entity.js';
+import { DEFAULT_AVATAR_USER_NAME } from './user.constant.js';
 
 @injectable()
 export default class UserService implements UserServiceInterface {
@@ -22,7 +23,10 @@ export default class UserService implements UserServiceInterface {
     dto: CreateUserDto,
     salt: string
   ): Promise<DocumentType<UserEntity>> {
-    const user = new UserEntity(dto);
+    const user = new UserEntity({
+      ...dto,
+      avatarUrl: DEFAULT_AVATAR_USER_NAME,
+    });
     user.setPassword(dto.password, salt);
 
     const result = await this.userModel.create(user);
@@ -84,9 +88,6 @@ export default class UserService implements UserServiceInterface {
     userId: string,
     offerId: string
   ): Promise<DocumentType<OfferEntity>[] | null> {
-    console.log(`addToFavoriteById 87, user-service
-     userId: ${userId}
-     offerId: ${offerId}`);
     return this.userModel.findOneAndUpdate(
       { _id: userId },
       {

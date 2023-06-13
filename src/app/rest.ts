@@ -9,6 +9,7 @@ import { getMongoURI } from '../core/helpers/db.js';
 import { ControllerInterface } from '../core/controller/controller.interface.js';
 import { ExceptionFilterInterface } from '../core/exception-filters/exception-filter.interface.js';
 import { AuthenticateMiddleware } from '../common/middlewares/authenticate.middleware.js';
+import { getFullServerPath } from '../core/helpers/index.js';
 
 @injectable()
 export default class RestApplication {
@@ -54,7 +55,10 @@ export default class RestApplication {
     this.expressApplication.listen(port);
 
     this.logger.info(
-      `Server started on http://localhost:${this.config.get('PORT')}`
+      `🚀Server started on ${getFullServerPath(
+        this.config.get('HOST'),
+        this.config.get('PORT')
+      )}`
     );
   }
 
@@ -72,6 +76,10 @@ export default class RestApplication {
     this.expressApplication.use(
       '/upload',
       express.static(this.config.get('UPLOAD_DIRECTORY'))
+    );
+    this.expressApplication.use(
+      '/static',
+      express.static(this.config.get('STATIC_DIRECTORY_PATH'))
     );
     const authenticateMiddleware = new AuthenticateMiddleware(
       this.config.get('JWT_SECRET')

@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-export default class UploadUserAvatarResponse {
+export default class UploadUserAvatarRdo {
   @Expose()
   public filepath!: string;
 }

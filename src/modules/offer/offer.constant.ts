@@ -13,3 +13,14 @@ export const RETURNABLE_FIELDS = {
   price: 1,
   commentsCount: 1,
 };
+
+export const DEFAULT_PREVIEW_IMAGES = [
+  'room1.jpg',
+  'room2.jpg',
+  'romm3.jpd',
+  'romm4.jpd',
+  'romm5.jpd',
+  'romm6.jpd',
+  'romm7.jpd',
+  'romm8.jpd',
+];

@@ -19,6 +19,7 @@ import { UnknownRecord } from '../../types/unknown-record.type.js';
 import { JWT_ALGORITHM } from './user.constant.js';
 import LoggedUserRdo from './rdo/logged-user.rdo.js';
 import SaveUserRdo from './rdo/save-user.rdo.js';
+import UploadUserAvatarRdo from './rdo/upload-user-avatar.rdo.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -27,9 +28,9 @@ export default class UserController extends Controller {
     @inject(AppComponent.UserServiceInterface)
     private readonly userService: UserServiceInterface,
     @inject(AppComponent.ConfigInterface)
-    private readonly configService: ConfigInterface<RestSchema>
+    protected readonly configService: ConfigInterface<RestSchema>
   ) {
-    super(logger);
+    super(logger, configService);
 
     this.logger.info('Register routes for UserController...');
 
@@ -117,13 +118,14 @@ export default class UserController extends Controller {
       { email: user.email, id: user.id }
     );
 
-    this.ok(res, fillDTO(LoggedUserRdo, { email: user.email, token }));
+    this.ok(res, { ...fillDTO(LoggedUserRdo, user), token });
   }
 
   public async uploadAvatar(req: Request, res: Response) {
-    this.created(res, {
-      filepath: req.file?.path,
-    });
+    const { userId } = req.params;
+    const uploadFile = { avatarUrl: req.file?.filename };
+    await this.userService.updateById(userId, uploadFile);
+    this.created(res, fillDTO(UploadUserAvatarRdo, uploadFile));
   }
 
   public async logout(req: Request, res: Response): Promise<void> {
@@ -135,16 +137,19 @@ export default class UserController extends Controller {
     }
   }
 
-  public async checkAuthenticate({ user: { email } }: Request, res: Response) {
-    const foundedUser = await this.userService.findByEmail(email);
-
-    if (!foundedUser) {
+  public async checkAuthenticate(req: Request, res: Response) {
+    if (!req.user) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
         'Unauthorized',
         'UserController'
       );
     }
+
+    const {
+      user: { email },
+    } = req;
+    const foundedUser = await this.userService.findByEmail(email);
 
     this.ok(res, fillDTO(LoggedUserRdo, foundedUser));
   }

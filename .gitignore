@@ -6,7 +6,7 @@
 /docs/
 .idea/*
 ./mongodb
-./upload/
+./upload/*
 
 .DS_Store
 coverage

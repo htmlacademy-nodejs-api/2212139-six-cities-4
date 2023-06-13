@@ -23,9 +23,11 @@ import { RestSchema } from '../../core/config/rest.schema.js';
 import UploadImagesRdo from './rdo/upload-images.rdo.js';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { UnknownRecord } from '../../types/unknown-record.type.js';
-import UploadImageRdo from './rdo/upload-image.rdo.js';
 import SaveOfferRdo from './rdo/save-offer.rdo.js';
 import { RequestQuery } from '../../types/request-query.type.js';
+import { DEFAULT_PREVIEW_IMAGES } from './offer.constant.js';
+import { getRandomItem } from '../../core/helpers/index.js';
+import UploadPreviewRdo from './rdo/upload-preview.rdo.js';
 
 type ParamsOfferDetails =
   | {
@@ -43,14 +45,14 @@ type ParamsGetPremium =
 export default class OfferController extends Controller {
   constructor(
     @inject(AppComponent.LoggerInterface) logger: LoggerInterface,
-    @inject(AppComponent.ConfigInterface)
-    private readonly configService: ConfigInterface<RestSchema>,
     @inject(AppComponent.OfferServiceInterface)
     private readonly offerService: OfferServiceInterface,
     @inject(AppComponent.CommentServiceInterface)
-    private readonly commentService: CommentServiceInterface
+    private readonly commentService: CommentServiceInterface,
+    @inject(AppComponent.ConfigInterface)
+    configService: ConfigInterface<RestSchema>
   ) {
-    super(logger);
+    super(logger, configService);
 
     this.logger.info('Register routes for OfferController…');
 
@@ -196,9 +198,11 @@ export default class OfferController extends Controller {
     { body, user }: Request<UnknownRecord, UnknownRecord, CreateOfferDto>,
     res: Response
   ): Promise<void> {
+    const randomPreviewImage = getRandomItem(DEFAULT_PREVIEW_IMAGES);
     const result = await this.offerService.createOffer({
       ...body,
       userId: user.id,
+      preview: randomPreviewImage,
     });
 
     const offer = await this.offerService.findById(result.id);
@@ -318,7 +322,7 @@ export default class OfferController extends Controller {
     const { offerId } = req.params;
     const updateDto = { preview: req.file?.filename };
     await this.offerService.updateByOfferId(offerId, updateDto);
-    this.created(res, fillDTO(UploadImageRdo, updateDto));
+    this.created(res, fillDTO(UploadPreviewRdo, updateDto));
   }
 
   public async uploadImages(req: Request<ParamsOfferDetails>, res: Response) {

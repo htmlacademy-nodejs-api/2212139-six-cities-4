@@ -14,6 +14,8 @@ import {
   IsBoolean,
   IsString,
   IsNumber,
+  Validate,
+  ArrayMaxSize,
 } from 'class-validator';
 import {
   OfferDescriptionLength,
@@ -22,7 +24,9 @@ import {
   OfferRatingValue,
   OfferRoomsCount,
   OfferTitleLength,
+  OFFER_PHOTOS_COUNT,
 } from '../../../const.js';
+import { ValidImageFormat } from '../../../common/middlewares/valid-image-format.middleware.js';
 
 export default class CreateOfferDto {
   @IsString({ message: 'title is required' })
@@ -90,6 +94,22 @@ export default class CreateOfferDto {
   @IsEnum(Feature, { each: true, message: 'features must be an array' })
   public features!: Feature[];
 
+  @IsString({ message: '$property must be a string' })
+  @Validate(ValidImageFormat)
+  public preview!: string;
+
+  @IsArray({ message: '$property must be an array' })
+  @ArrayMaxSize(OFFER_PHOTOS_COUNT, {
+    message: '$property must contain exactly $constraint1 items',
+  })
+  @ArrayMinSize(OFFER_PHOTOS_COUNT, {
+    message: '$property must contain exactly $constraint1 items',
+  })
+  @IsString({ message: '$property must be a string', each: true })
+  @Validate(ValidImageFormat, { each: true })
+  public photos!: string[];
+
+  public images!: string[];
   public userId!: string;
 
   public latitude!: number;

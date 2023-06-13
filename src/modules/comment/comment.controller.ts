@@ -3,6 +3,8 @@ import { StatusCodes } from 'http-status-codes';
 import { inject } from 'inversify';
 import { PrivateRouterMiddleware } from '../../common/middlewares/private-router.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { ConfigInterface } from '../../core/config/config.interface.js';
+import { RestSchema } from '../../core/config/rest.schema.js';
 import { Controller } from '../../core/controller/controller.abstract.js';
 import HttpError from '../../core/errors/http-error.js';
 import { fillDTO } from '../../core/helpers/common.js';
@@ -20,10 +22,12 @@ export default class CommentController extends Controller {
     @inject(AppComponent.LoggerInterface) logger: LoggerInterface,
     @inject(AppComponent.CommentServiceInterface)
     private readonly commentService: CommentService,
+    @inject(AppComponent.ConfigInterface)
+    configService: ConfigInterface<RestSchema>,
     @inject(AppComponent.OfferServiceInterface)
     private readonly offerService: OfferServiceInterface
   ) {
-    super(logger);
+    super(logger, configService);
 
     this.logger.info('Register routes for CommentController...');
     this.addRoute({
