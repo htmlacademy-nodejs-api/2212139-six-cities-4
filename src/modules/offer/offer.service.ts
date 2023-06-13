@@ -124,10 +124,6 @@ export default class OfferService implements OfferServiceInterface {
     cityName: string,
     userAuthId?: string
   ): Promise<DocumentType<OfferEntity>[] | null> {
-    console.log(
-      `offerService 131 findPremiumOffers, userAuthId: ${userAuthId}`
-    );
-
     if (userAuthId) {
       const user = await this.userService.findById(userAuthId);
 
@@ -135,7 +131,6 @@ export default class OfferService implements OfferServiceInterface {
         return null;
       }
 
-      console.log(`offerService find() 73: ${userAuthId}`);
       return this.offerModel
         .aggregate([
           { $match: { isPremium: true, cityName: cityName } },
@@ -169,7 +164,6 @@ export default class OfferService implements OfferServiceInterface {
     userId: string
   ): Promise<DocumentType<OfferEntity>[] | null> {
     const user = await this.userService.findById(userId);
-    console.log(`offer.service 110 ${user}`);
 
     if (!user) {
       return null;

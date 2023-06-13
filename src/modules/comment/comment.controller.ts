@@ -49,13 +49,13 @@ export default class CommentController extends Controller {
       );
     }
 
-    const result = this.commentService.createComment({
+    const result = await this.commentService.createComment({
       ...body,
       userId: user.id,
     });
-    console.log(`create CommentController 53 ${result}`);
+
     await this.offerService.incCommentCount(body.offerId);
-    //const comment = await this.commentService.findByCommentId(result.);
-    this.created(res, fillDTO(CommentRdo, result));
+    const comment = await this.commentService.findByCommentId(result.id);
+    this.created(res, fillDTO(CommentRdo, comment));
   }
 }

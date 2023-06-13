@@ -200,7 +200,7 @@ export default class OfferController extends Controller {
       ...body,
       userId: user.id,
     });
-    console.log(`OfferController create 203 ${result}`);
+
     const offer = await this.offerService.findById(result.id);
     this.created(res, fillDTO(OfferRdo, offer));
   }
@@ -308,7 +308,7 @@ export default class OfferController extends Controller {
       req.params.offerId
     );
 
-    this.ok(res, fillDTO(OfferRdo, offer));
+    this.noContent(res, fillDTO(OfferRdo, offer));
   }
 
   public async uploadPrevImage(
