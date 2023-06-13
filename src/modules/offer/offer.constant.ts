@@ -17,10 +17,10 @@ export const RETURNABLE_FIELDS = {
 export const DEFAULT_PREVIEW_IMAGES = [
   'room1.jpg',
   'room2.jpg',
-  'romm3.jpd',
-  'romm4.jpd',
-  'romm5.jpd',
-  'romm6.jpd',
-  'romm7.jpd',
-  'romm8.jpd',
+  'room3.jpd',
+  'room4.jpd',
+  'room5.jpd',
+  'room6.jpd',
+  'room7.jpd',
+  'room8.jpd',
 ];
