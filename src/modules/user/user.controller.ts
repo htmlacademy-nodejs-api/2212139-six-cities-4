@@ -20,6 +20,8 @@ import { JWT_ALGORITHM } from './user.constant.js';
 import LoggedUserRdo from './rdo/logged-user.rdo.js';
 import SaveUserRdo from './rdo/save-user.rdo.js';
 import UploadUserAvatarRdo from './rdo/upload-user-avatar.rdo.js';
+import { BLOCKED_TOKENS } from '../../const.js';
+import { CheckTokenInBlackListMiddleware } from '../../common/middlewares/check-token-in-black-list.middleware.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -58,6 +60,7 @@ export default class UserController extends Controller {
       handler: this.uploadAvatar,
       middlewares: [
         new ValidateObjectIdMiddleware('userId'),
+        new CheckTokenInBlackListMiddleware(),
         new UploadFileMiddleware(
           this.configService.get('UPLOAD_DIRECTORY'),
           'avatar'
@@ -68,6 +71,7 @@ export default class UserController extends Controller {
       path: '/login',
       method: HttpMethod.Get,
       handler: this.checkAuthenticate,
+      middlewares: [new CheckTokenInBlackListMiddleware()],
     });
   }
 
@@ -129,12 +133,18 @@ export default class UserController extends Controller {
   }
 
   public async logout(req: Request, res: Response): Promise<void> {
-    const { userId } = req.params;
-    const user = await this.userService.findById(userId);
+    const token = String(req.headers.authorization?.split(' ')[1]);
 
-    if (user) {
-      this.noContent(res, user);
+    if (!req.user) {
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        'Unauthorized',
+        'UserController'
+      );
     }
+
+    BLOCKED_TOKENS.add(token);
+    this.ok(res, { token });
   }
 
   public async checkAuthenticate(req: Request, res: Response) {

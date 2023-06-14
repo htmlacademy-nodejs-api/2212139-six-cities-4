@@ -1,5 +1,7 @@
 import { City } from './types/city-type.enum.js';
 
+export const BLOCKED_TOKENS: Set<string> = new Set();
+
 export const RANGE_COORDINATES_VALUE = 0.05;
 
 export const enum OfferRatingValue {

@@ -28,6 +28,7 @@ import { RequestQuery } from '../../types/request-query.type.js';
 import { DEFAULT_PREVIEW_IMAGES } from './offer.constant.js';
 import { getRandomItem } from '../../core/helpers/index.js';
 import UploadPreviewRdo from './rdo/upload-preview.rdo.js';
+import { CheckTokenInBlackListMiddleware } from '../../common/middlewares/check-token-in-black-list.middleware.js';
 
 type ParamsOfferDetails =
   | {
@@ -62,6 +63,7 @@ export default class OfferController extends Controller {
       handler: this.create,
       middlewares: [
         new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
         new ValidateDtoMiddleware(CreateOfferDto),
       ],
     });
@@ -84,6 +86,7 @@ export default class OfferController extends Controller {
       handler: this.delete,
       middlewares: [
         new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
@@ -95,6 +98,7 @@ export default class OfferController extends Controller {
       handler: this.update,
       middlewares: [
         new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
@@ -105,7 +109,10 @@ export default class OfferController extends Controller {
       path: '/favorite/get',
       method: HttpMethod.Get,
       handler: this.showFavorite,
-      middlewares: [new PrivateRouterMiddleware()],
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
+      ],
     });
 
     this.addRoute({

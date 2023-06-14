@@ -1,6 +1,7 @@
 import { Response, Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { inject } from 'inversify';
+import { CheckTokenInBlackListMiddleware } from '../../common/middlewares/check-token-in-black-list.middleware.js';
 import { PrivateRouterMiddleware } from '../../common/middlewares/private-router.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { ConfigInterface } from '../../core/config/config.interface.js';
@@ -37,6 +38,7 @@ export default class CommentController extends Controller {
       middlewares: [
         new PrivateRouterMiddleware(),
         new ValidateDtoMiddleware(CreateCommentDto),
+        new CheckTokenInBlackListMiddleware(),
       ],
     });
   }
