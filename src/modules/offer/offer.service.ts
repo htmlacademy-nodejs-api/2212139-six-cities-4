@@ -191,7 +191,10 @@ export default class OfferService implements OfferServiceInterface {
   ): Promise<DocumentType<OfferEntity> | null> {
     await this.userService.addToFavoriteById(userId, offerId);
 
-    return this.offerModel.findById(offerId).populate(['userId']).exec();
+    return this.offerModel
+      .findByIdAndUpdate(offerId, { $set: { isFavorite: true } })
+      .populate(['userId'])
+      .exec();
   }
 
   public async removeFavorite(

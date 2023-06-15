@@ -7,7 +7,6 @@ import { AppComponent } from '../../types/app-component.enum.js';
 import { LoggerInterface } from '../../core/logger/logger.interface.js';
 import UpdateUserDto from './dto/update-user.dto.js';
 import LoginUserDto from './dto/login-user.dto.js';
-import { OfferEntity } from '../offer/offer.entity.js';
 import { DEFAULT_AVATAR_USER_NAME } from './user.constant.js';
 
 @injectable()
@@ -87,8 +86,8 @@ export default class UserService implements UserServiceInterface {
   public async addToFavoriteById(
     userId: string,
     offerId: string
-  ): Promise<DocumentType<OfferEntity>[] | null> {
-    return this.userModel.findOneAndUpdate(
+  ): Promise<void> {
+    await this.userModel.findOneAndUpdate(
       { _id: userId },
       {
         $addToSet: { favorites: new mongoose.Types.ObjectId(offerId) },
@@ -100,8 +99,8 @@ export default class UserService implements UserServiceInterface {
   public async removeFromFavoritesById(
     userId: string,
     offerId: string
-  ): Promise<DocumentType<OfferEntity>[] | null> {
-    return this.userModel.findOneAndUpdate(
+  ): Promise<void> {
+    await this.userModel.findOneAndUpdate(
       { _id: userId },
       {
         $pull: { favorites: new mongoose.Types.ObjectId(offerId) },

@@ -7,7 +7,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY2ODY4ODYsImV4cCI6MTY4Njg1OTY4Nn0.i_fQ0kJKO2cSrW3QF7ShGt1u8cXCMgH4rjUSbgo4mHY
 
 {
-  "title": "Чёткая хата1",
+  "title": "Чёткая хата 5",
   "description": "Один из лучших хостелов для душевного общения. Ужинаем вместе и играем в «Мафию» по вечерам, вкусно готовим. Ежедневная уборка, бесплатный Wi-Fi, чистое постельное белье.",
   "postDate": "2023-05-17T07:47:15.358Z",
   "cityName": "Paris",
@@ -36,7 +36,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb
 ###
 
 ## Обновить, редактировать объявление (5.2)
-PATCH http://localhost:5000/offers/6488cd0cb7d562598ee0bc99 HTTP/1.1
+PATCH http://localhost:5000/offers/648b0e178cebc7577cdf5cb9 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY2ODY4ODYsImV4cCI6MTY4Njg1OTY4Nn0.i_fQ0kJKO2cSrW3QF7ShGt1u8cXCMgH4rjUSbgo4mHY
 
@@ -48,7 +48,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb
 
 ## Удаление объявления (5.3)
 
-DELETE http://localhost:5000/offers/6488cd0cb7d562598ee0bc99 HTTP/1.1
+DELETE http://localhost:5000/offers/648b0e058cebc7577cdf5cb5 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY2ODY4ODYsImV4cCI6MTY4Njg1OTY4Nn0.i_fQ0kJKO2cSrW3QF7ShGt1u8cXCMgH4rjUSbgo4mHY
 
 ###
@@ -61,25 +61,25 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb
 ###
 
 ## Детальная информация по предложению (5.5)
-GET http://localhost:5000/offers/648450d3102622433fead1a5 HTTP/1.1
+GET http://localhost:5000/offers/648b0e178cebc7577cdf5cb9 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWUzQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ4NDRmZWQxMDI2MjI0MzNmZWFkMWEyIiwiaWF0IjoxNjg2NDk4ODQ5LCJleHAiOjE2ODY2NzE2NDl9.8-ilIBZ1nl4zCrDldb-wBeNzUYPN47d7hWLg_Qp8sdI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY2ODY4ODYsImV4cCI6MTY4Njg1OTY4Nn0.i_fQ0kJKO2cSrW3QF7ShGt1u8cXCMgH4rjUSbgo4mHY
 
 ###
 
 ## Список комментариев для предложения (5.6)
-GET http://localhost:5000/offers/648450d3102622433fead1a5/comments HTTP/1.1
+GET http://localhost:5000/offers/648b0e178cebc7577cdf5cb9/comments HTTP/1.1
 
 ###
 
 ## Добавление комментария (5.7)
 POST http://localhost:5000/comments HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg2YzIxNTE1ZDc2MDQwZDg3ODhiZjMiLCJpYXQiOjE2ODY1NzIwNjksImV4cCI6MTY4Njc0NDg2OX0.ePUoIquN5Yn-9UXM8-TMNsFN3BHK9MqHjZplfpPTctQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY4MzUxNDcsImV4cCI6MTY4NzAwNzk0N30.mk7K2XJaDBkw2fPQBda7-IgvZtgUFqqBR9ZYFXgC2pY
 
 {
-  "text": "Тестовый текст комментария 9",
-  "offerId": "648450d3102622433fead1a5",
+  "text": "Тестовый текст комментария 4",
+  "offerId": "648b0e178cebc7577cdf5cb9",
   "rating": 4
 }
 ###
@@ -111,9 +111,9 @@ Content-Type: application/json
 
 ###
 ## Выход из закрытой части приложения (5.10)
-DELETE  http://localhost:5000/users/6486c21515d76040d8788bf3/logout HTTP/1.1
+POST  http://localhost:5000/users/6488cbe0b7d562598ee0bc93/logout HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg2YzIxNTE1ZDc2MDQwZDg3ODhiZjMiLCJpYXQiOjE2ODY1NzUwNTcsImV4cCI6MTY4Njc0Nzg1N30.lRQ7YK6gHB4ETzMwe7DeyAlilFCzDui3Lc-V9ea-SHw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY4MzUxNDcsImV4cCI6MTY4NzAwNzk0N30.mk7K2XJaDBkw2fPQBda7-IgvZtgUFqqBR9ZYFXgC2pY
 
 ###
 
@@ -126,26 +126,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb
 ## Премиальные предложения для города (5.12)
 GET http://localhost:5000/offers/premium/Paris HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg2YzIxNTE1ZDc2MDQwZDg3ODhiZjMiLCJpYXQiOjE2ODY2NTczMjQsImV4cCI6MTY4NjgzMDEyNH0.zmzZrq6cLqHlIb_Vll6XoeagCDzu-wal5lr46W5GpeY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY4Mzg1MzMsImV4cCI6MTY4NzAxMTMzM30.5GZMBtktmzMmagRJMzKkPyBpFCRPztKQntWhqI0I5ZA
 ###
 
 ## Список избранных предложений (5.13)
 GET http://localhost:5000/offers/favorite/get HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg2YzIxNTE1ZDc2MDQwZDg3ODhiZjMiLCJpYXQiOjE2ODY2NTczMjQsImV4cCI6MTY4NjgzMDEyNH0.zmzZrq6cLqHlIb_Vll6XoeagCDzu-wal5lr46W5GpeY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY4Mzg1MzMsImV4cCI6MTY4NzAxMTMzM30.5GZMBtktmzMmagRJMzKkPyBpFCRPztKQntWhqI0I5ZA
 
 ###
 
 ## Добавление предложения в избранное (5.14)
-PATCH http://localhost:5000/offers/favorite/648450f8102622433fead1b1 HTTP/1.1
+PATCH http://localhost:5000/offers/favorite/648b0e228cebc7577cdf5cbd HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg2YzIxNTE1ZDc2MDQwZDg3ODhiZjMiLCJpYXQiOjE2ODY2NTczMjQsImV4cCI6MTY4NjgzMDEyNH0.zmzZrq6cLqHlIb_Vll6XoeagCDzu-wal5lr46W5GpeY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY4Mzg1MzMsImV4cCI6MTY4NzAxMTMzM30.5GZMBtktmzMmagRJMzKkPyBpFCRPztKQntWhqI0I5ZA
 
 ###
 
 ## Удаление предложения из избранного (5.14)
-DELETE http://localhost:5000/offers/favorite/648450f8102622433fead1b1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg2YzIxNTE1ZDc2MDQwZDg3ODhiZjMiLCJpYXQiOjE2ODY2NTczMjQsImV4cCI6MTY4NjgzMDEyNH0.zmzZrq6cLqHlIb_Vll6XoeagCDzu-wal5lr46W5GpeY
+DELETE http://localhost:5000/offers/favorite/648b0e228cebc7577cdf5cbd HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY4Mzg1MzMsImV4cCI6MTY4NzAxMTMzM30.5GZMBtktmzMmagRJMzKkPyBpFCRPztKQntWhqI0I5ZA
 
 ###
 

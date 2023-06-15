@@ -20,7 +20,6 @@ import { JWT_ALGORITHM } from './user.constant.js';
 import LoggedUserRdo from './rdo/logged-user.rdo.js';
 import SaveUserRdo from './rdo/save-user.rdo.js';
 import UploadUserAvatarRdo from './rdo/upload-user-avatar.rdo.js';
-import { BLOCKED_TOKENS } from '../../const.js';
 import { CheckTokenInBlackListMiddleware } from '../../common/middlewares/check-token-in-black-list.middleware.js';
 
 @injectable()
@@ -143,8 +142,7 @@ export default class UserController extends Controller {
       );
     }
 
-    BLOCKED_TOKENS.add(token);
-    this.ok(res, { token });
+    this.noContent(res, { token });
   }
 
   public async checkAuthenticate(req: Request, res: Response) {
