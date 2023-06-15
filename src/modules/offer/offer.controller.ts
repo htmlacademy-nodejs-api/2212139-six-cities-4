@@ -161,8 +161,8 @@ export default class OfferController extends Controller {
       handler: this.uploadPrevImage,
       middlewares: [
         new PrivateRouterMiddleware(),
-        new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
+        new CheckTokenInBlackListMiddleware(),
         new UploadFileMiddleware(
           this.configService.get('UPLOAD_DIRECTORY'),
           'preview'
@@ -331,13 +331,30 @@ export default class OfferController extends Controller {
     res: Response
   ) {
     const { offerId } = req.params;
+    const offer = await this.offerService.findById(offerId);
+    if (req.user.id !== offer?.userId._id.toString()) {
+      throw new HttpError(
+        StatusCodes.LOCKED,
+        'This is not your offer',
+        'OfferController'
+      );
+    }
     const updateDto = { preview: req.file?.filename };
     await this.offerService.updateByOfferId(offerId, updateDto);
+
     this.created(res, fillDTO(UploadPreviewRdo, updateDto));
   }
 
   public async uploadImages(req: Request<ParamsOfferDetails>, res: Response) {
     const { offerId } = req.params;
+    const offer = await this.offerService.findById(offerId);
+    if (req.user.id !== offer?.userId._id.toString()) {
+      throw new HttpError(
+        StatusCodes.LOCKED,
+        'This is not your offer',
+        'OfferController'
+      );
+    }
     const fileArray = req.files as Array<Express.Multer.File>;
     const fileNames = fileArray.map((file) => file.filename);
     const updateDto = { photos: fileNames };

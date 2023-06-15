@@ -21,6 +21,7 @@ import LoggedUserRdo from './rdo/logged-user.rdo.js';
 import SaveUserRdo from './rdo/save-user.rdo.js';
 import UploadUserAvatarRdo from './rdo/upload-user-avatar.rdo.js';
 import { CheckTokenInBlackListMiddleware } from '../../common/middlewares/check-token-in-black-list.middleware.js';
+import { PrivateRouterMiddleware } from '../../common/middlewares/private-router.middleware.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -39,7 +40,13 @@ export default class UserController extends Controller {
       path: '/register',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateUserDto)],
+      middlewares: [
+        new ValidateDtoMiddleware(CreateUserDto),
+        new UploadFileMiddleware(
+          this.configService.get('UPLOAD_DIRECTORY'),
+          'avatar'
+        ),
+      ],
     });
     this.addRoute({
       path: '/login',
@@ -58,6 +65,7 @@ export default class UserController extends Controller {
       method: HttpMethod.Post,
       handler: this.uploadAvatar,
       middlewares: [
+        new PrivateRouterMiddleware(),
         new ValidateObjectIdMiddleware('userId'),
         new CheckTokenInBlackListMiddleware(),
         new UploadFileMiddleware(
@@ -126,9 +134,17 @@ export default class UserController extends Controller {
 
   public async uploadAvatar(req: Request, res: Response) {
     const { userId } = req.params;
-    const uploadFile = { avatarUrl: req.file?.filename };
-    await this.userService.updateById(userId, uploadFile);
-    this.created(res, fillDTO(UploadUserAvatarRdo, uploadFile));
+    if (req.user.id !== userId) {
+      throw new HttpError(
+        StatusCodes.LOCKED,
+        'This is not your user',
+        'UserController'
+      );
+    }
+    const uploadDto = { avatarUrl: req.file?.filename };
+    await this.userService.updateById(userId, uploadDto);
+
+    this.created(res, fillDTO(UploadUserAvatarRdo, uploadDto));
   }
 
   public async logout(req: Request, res: Response): Promise<void> {

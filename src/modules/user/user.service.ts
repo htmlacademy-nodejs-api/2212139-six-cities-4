@@ -63,7 +63,9 @@ export default class UserService implements UserServiceInterface {
     userId: string,
     dto: UpdateUserDto
   ): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel.findByIdAndUpdate(userId, dto, { new: true }).exec();
+    return await this.userModel
+      .findByIdAndUpdate(userId, dto, { new: true })
+      .exec();
   }
 
   public async verifyUser(
