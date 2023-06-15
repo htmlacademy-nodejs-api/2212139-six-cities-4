@@ -121,6 +121,7 @@ export default class OfferController extends Controller {
       handler: this.addFavorite,
       middlewares: [
         new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -132,6 +133,7 @@ export default class OfferController extends Controller {
       handler: this.removeFavorite,
       middlewares: [
         new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -159,6 +161,7 @@ export default class OfferController extends Controller {
       handler: this.uploadPrevImage,
       middlewares: [
         new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new UploadFileMiddleware(
           this.configService.get('UPLOAD_DIRECTORY'),
@@ -173,6 +176,7 @@ export default class OfferController extends Controller {
       handler: this.uploadImages,
       middlewares: [
         new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new UploadFileMiddleware(
           this.configService.get('UPLOAD_DIRECTORY'),
