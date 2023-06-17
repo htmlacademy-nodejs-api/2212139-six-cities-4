@@ -27,10 +27,14 @@ export default class RestApplication {
     private readonly userController: ControllerInterface,
     @inject(AppComponent.OfferController)
     private readonly offerController: ControllerInterface,
-    @inject(AppComponent.ExceptionFilterInterface)
-    private readonly exceptionFilter: ExceptionFilterInterface,
+    @inject(AppComponent.HttpErrorExeptionFilter)
+    private readonly httpErrorExeptionFilter: ExceptionFilterInterface,
     @inject(AppComponent.CommentController)
-    private readonly commentController: ControllerInterface
+    private readonly commentController: ControllerInterface,
+    @inject(AppComponent.BaseExeptionFilter)
+    private readonly baseExeptionFilter: ExceptionFilterInterface,
+    @inject(AppComponent.ValidationExeptionFilter)
+    private readonly validationExeptionFilter: ExceptionFilterInterface
   ) {
     this.expressApplication = express();
   }
@@ -95,7 +99,13 @@ export default class RestApplication {
   private async _initExceptionFilter() {
     this.logger.info('Exception filters initialization');
     this.expressApplication.use(
-      this.exceptionFilter.catch.bind(this.exceptionFilter)
+      this.validationExeptionFilter.catch.bind(this.validationExeptionFilter)
+    );
+    this.expressApplication.use(
+      this.baseExeptionFilter.catch.bind(this.baseExeptionFilter)
+    );
+    this.expressApplication.use(
+      this.httpErrorExeptionFilter.catch.bind(this.httpErrorExeptionFilter)
     );
     this.logger.info('Exception filters initialization completed');
   }

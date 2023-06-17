@@ -5,6 +5,7 @@ import { UnknownRecord } from '../../types/unknown-record.type.js';
 import { DEFAULT_STATIC_IMAGES } from '../../app/rest.constant.js';
 import { ValidationError } from 'class-validator';
 import { ValidationErrorField } from '../../types/validation-error-field.type.js';
+import { ServiceError } from '../../types/service-error.enum.js';
 
 export function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : '';
@@ -21,9 +22,15 @@ export function fillDTO<T, V>(someDto: ClassConstructor<T>, plainObject: V) {
   });
 }
 
-export function createErrorObject(message: string) {
+export function createErrorObject(
+  serviceError: ServiceError,
+  message: string,
+  details: ValidationErrorField[] = []
+) {
   return {
-    error: message,
+    errorType: serviceError,
+    message,
+    details: [...details],
   };
 }
 

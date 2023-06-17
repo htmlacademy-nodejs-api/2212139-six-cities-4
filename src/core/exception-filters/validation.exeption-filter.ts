@@ -1,6 +1,5 @@
 import { ExceptionFilterInterface } from './exception-filter.interface.js';
 import { inject, injectable } from 'inversify';
-import { StatusCodes } from 'http-status-codes';
 import { NextFunction, Request, Response } from 'express';
 import { AppComponent } from '../../types/app-component.enum.js';
 import { LoggerInterface } from '../logger/logger.interface.js';
@@ -9,8 +8,7 @@ import { createErrorObject } from '../helpers/index.js';
 import { ServiceError } from '../../types/service-error.enum.js';
 
 @injectable()
-export default class ValidationExceptionFilter
-implements ExceptionFilterInterface {
+export default class ValidationExceptionFilter implements ExceptionFilterInterface {
   constructor(
     @inject(AppComponent.LoggerInterface)
     private readonly logger: LoggerInterface

@@ -9,7 +9,9 @@ import PinoService from '../core/logger/pino.service.js';
 import { AppComponent } from '../types/app-component.enum.js';
 import RestApplication from './rest.js';
 import { ExceptionFilterInterface } from '../core/exception-filters/exception-filter.interface.js';
-import ExceptionFilter from '../core/exception-filters/exception-filter.js';
+import ValidationExceptionFilter from '../core/exception-filters/validation.exeption-filter.js';
+import BaseExceptionFilter from '../core/exception-filters/base.exeption-filter.js';
+import HttpErrorExceptionFilter from '../core/exception-filters/http-error.exeption-filter.js';
 
 export function createRestApplicationContainer() {
   const restApplicationContainer = new Container();
@@ -30,8 +32,16 @@ export function createRestApplicationContainer() {
     .to(MongoClientService)
     .inSingletonScope();
   restApplicationContainer
-    .bind<ExceptionFilterInterface>(AppComponent.ExceptionFilterInterface)
-    .to(ExceptionFilter)
+    .bind<ExceptionFilterInterface>(AppComponent.HttpErrorExeptionFilter)
+    .to(HttpErrorExceptionFilter)
+    .inSingletonScope();
+  restApplicationContainer
+    .bind<ExceptionFilterInterface>(AppComponent.ValidationExeptionFilter)
+    .to(ValidationExceptionFilter)
+    .inSingletonScope();
+  restApplicationContainer
+    .bind<ExceptionFilterInterface>(AppComponent.BaseExeptionFilter)
+    .to(BaseExceptionFilter)
     .inSingletonScope();
 
   return restApplicationContainer;
