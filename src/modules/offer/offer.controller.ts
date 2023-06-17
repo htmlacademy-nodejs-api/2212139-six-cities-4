@@ -8,7 +8,6 @@ import { OfferServiceInterface } from './offer-service.interface.js';
 import { fillDTO } from '../../core/helpers/common.js';
 import OfferRdo from './rdo/offer.rdo.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
-import * as core from 'express-serve-static-core';
 import HttpError from '../../core/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import UpdateOfferDto from './dto/update-offer.dto.js';
@@ -17,14 +16,31 @@ import CommentRdo from '../comment/rdo/comment.rdo.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import DocumentExistsMiddleware from '../../common/middlewares/document-exists.middleware.js';
+import { PrivateRouterMiddleware } from '../../common/middlewares/private-router.middleware.js';
+import { UploadFileMiddleware } from '../../common/middlewares/upload-file-middleware.js';
+import { ConfigInterface } from '../../core/config/config.interface.js';
+import { RestSchema } from '../../core/config/rest.schema.js';
+import UploadImagesRdo from './rdo/upload-images.rdo.js';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { UnknownRecord } from '../../types/unknown-record.type.js';
+import SaveOfferRdo from './rdo/save-offer.rdo.js';
+import { RequestQuery } from '../../types/request-query.type.js';
+import { DEFAULT_PREVIEW_IMAGES } from './offer.constant.js';
+import { getRandomItem } from '../../core/helpers/index.js';
+import UploadPreviewRdo from './rdo/upload-preview.rdo.js';
+import { CheckTokenInBlackListMiddleware } from '../../common/middlewares/check-token-in-black-list.middleware.js';
 
-type ParamsGetOffer = {
-  offerId: string;
-};
+type ParamsOfferDetails =
+  | {
+      offerId: string;
+    }
+  | ParamsDictionary;
 
-type ParamsGetPremium = {
-  cityName: string;
-};
+type ParamsGetPremium =
+  | {
+      cityName: string;
+    }
+  | ParamsDictionary;
 
 @injectable()
 export default class OfferController extends Controller {
@@ -33,11 +49,26 @@ export default class OfferController extends Controller {
     @inject(AppComponent.OfferServiceInterface)
     private readonly offerService: OfferServiceInterface,
     @inject(AppComponent.CommentServiceInterface)
-    private readonly commentService: CommentServiceInterface
+    private readonly commentService: CommentServiceInterface,
+    @inject(AppComponent.ConfigInterface)
+    configService: ConfigInterface<RestSchema>
   ) {
-    super(logger);
+    super(logger, configService);
 
     this.logger.info('Register routes for OfferController…');
+
+    this.addRoute({
+      path: '/create',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto),
+      ],
+    });
+
+    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
 
     this.addRoute({
       path: '/:offerId',
@@ -48,42 +79,66 @@ export default class OfferController extends Controller {
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
-    this.addRoute({
-      path: '/favorite',
-      method: HttpMethod.Get,
-      handler: this.showFavorite,
-    });
-    this.addRoute({
-      path: '/favorite',
-      method: HttpMethod.Get,
-      handler: this.showPremium,
-    });
-    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
-    this.addRoute({
-      path: '/',
-      method: HttpMethod.Post,
-      handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)],
-    });
+
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
+
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistsMiddleware(this.offerService, 'offer', 'offerId'),
       ],
     });
+
+    this.addRoute({
+      path: '/favorite/get',
+      method: HttpMethod.Get,
+      handler: this.showFavorite,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
+      ],
+    });
+
+    this.addRoute({
+      path: '/favorite/:offerId',
+      method: HttpMethod.Patch,
+      handler: this.addFavorite,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+
+    this.addRoute({
+      path: '/favorite/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.removeFavorite,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ],
+    });
+
     this.addRoute({
       path: '/:offerId/comments',
       method: HttpMethod.Get,
@@ -99,43 +154,87 @@ export default class OfferController extends Controller {
       method: HttpMethod.Get,
       handler: this.showPremium,
     });
+
+    this.addRoute({
+      path: '/:offerId/previewimage',
+      method: HttpMethod.Post,
+      handler: this.uploadPrevImage,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new CheckTokenInBlackListMiddleware(),
+        new UploadFileMiddleware(
+          this.configService.get('UPLOAD_DIRECTORY'),
+          'preview'
+        ),
+      ],
+    });
+
+    this.addRoute({
+      path: '/:offerId/images',
+      method: HttpMethod.Post,
+      handler: this.uploadImages,
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new CheckTokenInBlackListMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(
+          this.configService.get('UPLOAD_DIRECTORY'),
+          'photos'
+        ),
+      ],
+    });
   }
 
   public async show(
-    { params }: Request<core.ParamsDictionary | ParamsGetOffer>,
+    { params }: Request<ParamsOfferDetails>,
     res: Response
   ): Promise<void> {
     const { offerId } = params;
-    const offer = await this.offerService.findByOfferId(offerId);
+    const offer = await this.offerService.findById(offerId);
 
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findOffers();
+  public async index(
+    req: Request<ParamsOfferDetails, unknown, unknown, RequestQuery>,
+    res: Response
+  ): Promise<void> {
+    const { query, user } = req;
+    const offers = await this.offerService.find(user?.id, query?.limit);
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
   public async create(
-    {
-      body,
-    }: Request<
-      Record<string, unknown>,
-      Record<string, unknown>,
-      CreateOfferDto
-    >,
+    { body, user }: Request<UnknownRecord, UnknownRecord, CreateOfferDto>,
     res: Response
   ): Promise<void> {
-    const result = await this.offerService.createOffer(body);
-    const offer = await this.offerService.findByOfferId(result.id);
+    const randomPreviewImage = getRandomItem(DEFAULT_PREVIEW_IMAGES);
+    const result = await this.offerService.createOffer({
+      ...body,
+      userId: user.id,
+      preview: randomPreviewImage,
+    });
+
+    const offer = await this.offerService.findById(result.id);
     this.created(res, fillDTO(OfferRdo, offer));
   }
 
   public async delete(
-    { params }: Request<core.ParamsDictionary | ParamsGetOffer>,
+    req: Request<ParamsOfferDetails>,
     res: Response
   ): Promise<void> {
-    const { offerId } = params;
+    const { offerId } = req.params;
+    const currentOffer = await this.offerService.findById(offerId);
+
+    if (req.user.id !== currentOffer?.userId._id.toString()) {
+      throw new HttpError(
+        StatusCodes.LOCKED,
+        'This is not your offer',
+        'OfferController'
+      );
+    }
+
     const offer = await this.offerService.deleteByOfferId(offerId);
 
     await this.commentService.deleteByOfferId(offerId);
@@ -147,13 +246,19 @@ export default class OfferController extends Controller {
     {
       body,
       params,
-    }: Request<
-      core.ParamsDictionary | ParamsGetOffer,
-      Record<string, unknown>,
-      UpdateOfferDto
-    >,
+      user,
+    }: Request<ParamsOfferDetails, UnknownRecord, UpdateOfferDto>,
     res: Response
   ): Promise<void> {
+    const currentOffer = await this.offerService.findById(params.offerId);
+
+    if (user.id !== currentOffer?.userId._id.toString()) {
+      throw new HttpError(
+        StatusCodes.LOCKED,
+        'This is not your offer',
+        'OfferController'
+      );
+    }
     const updatedOffer = await this.offerService.updateByOfferId(
       params.offerId,
       body
@@ -163,7 +268,7 @@ export default class OfferController extends Controller {
   }
 
   public async getComments(
-    { params }: Request<core.ParamsDictionary | ParamsGetOffer, object, object>,
+    { params }: Request<ParamsOfferDetails, UnknownRecord, UnknownRecord>,
     res: Response
   ): Promise<void> {
     const comments = await this.commentService.findByOfferId(params.offerId);
@@ -171,15 +276,17 @@ export default class OfferController extends Controller {
   }
 
   public async showPremium(
-    { params }: Request<core.ParamsDictionary | ParamsGetPremium>,
+    req: Request<ParamsGetPremium>,
     res: Response
   ): Promise<void> {
-    const { cityName } = params;
-    const offers = await this.offerService.findPremiumOffers(cityName);
+    const offers = await this.offerService.findPremiumOffers(
+      req.params.cityName,
+      req.user?.id
+    );
     if (!offers) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
-        `Premium offer with city ${cityName} not found.`,
+        `Premium offer with city ${req.params.cityName} not found.`,
         'OfferController'
       );
     }
@@ -187,8 +294,8 @@ export default class OfferController extends Controller {
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
-  public async showFavorite(_req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findFavoriteOffers();
+  public async showFavorite(req: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.findFavoritesByUserId(req.user.id);
 
     if (!offers) {
       throw new HttpError(
@@ -199,5 +306,59 @@ export default class OfferController extends Controller {
     }
 
     this.ok(res, fillDTO(OfferRdo, offers));
+  }
+
+  public async addFavorite(req: Request, res: Response): Promise<void> {
+    const offer = await this.offerService.addFavorite(
+      req.user.id,
+      req.params.offerId
+    );
+
+    this.ok(res, fillDTO(SaveOfferRdo, offer));
+  }
+
+  public async removeFavorite(req: Request, res: Response): Promise<void> {
+    const offer = await this.offerService.removeFavorite(
+      req.user.id,
+      req.params.offerId
+    );
+
+    this.noContent(res, fillDTO(OfferRdo, offer));
+  }
+
+  public async uploadPrevImage(
+    req: Request<ParamsOfferDetails>,
+    res: Response
+  ) {
+    const { offerId } = req.params;
+    const offer = await this.offerService.findById(offerId);
+    if (req.user.id !== offer?.userId._id.toString()) {
+      throw new HttpError(
+        StatusCodes.LOCKED,
+        'This is not your offer',
+        'OfferController'
+      );
+    }
+    const updateDto = { preview: req.file?.filename };
+    await this.offerService.updateByOfferId(offerId, updateDto);
+
+    this.created(res, fillDTO(UploadPreviewRdo, updateDto));
+  }
+
+  public async uploadImages(req: Request<ParamsOfferDetails>, res: Response) {
+    const { offerId } = req.params;
+    const offer = await this.offerService.findById(offerId);
+    if (req.user.id !== offer?.userId._id.toString()) {
+      throw new HttpError(
+        StatusCodes.LOCKED,
+        'This is not your offer',
+        'OfferController'
+      );
+    }
+    const fileArray = req.files as Array<Express.Multer.File>;
+    const fileNames = fileArray.map((file) => file.filename);
+    const updateDto = { photos: fileNames };
+    await this.offerService.updateByOfferId(offerId, updateDto);
+    this.created(res, fillDTO(UploadImagesRdo, updateDto));
   }
 }

@@ -6,8 +6,13 @@ import CreateOfferDto from './dto/create-offer.dto.js';
 import { OfferServiceInterface } from './offer-service.interface.js';
 import { OfferEntity } from './offer.entity.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
-import { DEFAULT_OFFER_COUNT } from './offer.constant.js';
+import {
+  DEFAULT_OFFER_COUNT,
+  OFFER_PREMIUM_COUNT,
+  RETURNABLE_FIELDS,
+} from './offer.constant.js';
 import { SortType } from '../../types/sort-type.enum.js';
+import { UserServiceInterface } from '../user/user-service.interface.js';
 
 @injectable()
 export default class OfferService implements OfferServiceInterface {
@@ -15,7 +20,9 @@ export default class OfferService implements OfferServiceInterface {
     @inject(AppComponent.LoggerInterface)
     private readonly logger: LoggerInterface,
     @inject(AppComponent.OfferModel)
-    private readonly offerModel: types.ModelType<OfferEntity>
+    private readonly offerModel: types.ModelType<OfferEntity>,
+    @inject(AppComponent.UserServiceInterface)
+    private readonly userService: UserServiceInterface
   ) {}
 
   public async createOffer(
@@ -27,7 +34,7 @@ export default class OfferService implements OfferServiceInterface {
     return result;
   }
 
-  public async findByOfferId(
+  public async findById(
     offerId: string
   ): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel.findById(offerId).populate(['userId']).exec();
@@ -37,7 +44,7 @@ export default class OfferService implements OfferServiceInterface {
     offerId: string,
     dto: UpdateOfferDto
   ): Promise<DocumentType<OfferEntity> | null> {
-    const newRating = this.updateRating(offerId);
+    const newRating = await this.updateRating(offerId);
     return this.offerModel
       .findByIdAndUpdate(offerId, { ...dto, rating: newRating }, { new: true })
       .populate(['userId'])
@@ -50,8 +57,44 @@ export default class OfferService implements OfferServiceInterface {
     return this.offerModel.findByIdAndDelete(offerId).exec();
   }
 
-  public async findOffers(count: number): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel.find().limit(count).populate(['userId']).exec();
+  public async find(
+    userAuthId?: string,
+    count?: number
+  ): Promise<DocumentType<OfferEntity>[] | null> {
+    const limit = count ?? DEFAULT_OFFER_COUNT;
+
+    if (userAuthId) {
+      const user = await this.userService.findById(userAuthId);
+
+      if (!user) {
+        return null;
+      }
+
+      return this.offerModel
+        .aggregate([
+          { $project: RETURNABLE_FIELDS },
+          {
+            $set: {
+              isFavorite: {
+                $cond: [{ $in: ['$_id', [...user.favorites]] }, true, false],
+              },
+            },
+          },
+          { $set: { id: { $toString: '$_id' } } },
+          { $sort: { postedDate: SortType.Down } },
+          { $limit: +limit },
+        ])
+        .exec();
+    }
+
+    return this.offerModel
+      .aggregate([
+        { $project: RETURNABLE_FIELDS },
+        { $addFields: { id: { $toString: '$_id' } } },
+        { $sort: { postedDate: SortType.Down } },
+        { $limit: +limit },
+      ])
+      .exec();
   }
 
   public async exists(documentId: string): Promise<boolean> {
@@ -79,37 +122,91 @@ export default class OfferService implements OfferServiceInterface {
 
   public async findPremiumOffers(
     cityName: string,
-    count?: number
-  ): Promise<DocumentType<OfferEntity>[]> {
-    const limit = count ?? DEFAULT_OFFER_COUNT;
+    userAuthId?: string
+  ): Promise<DocumentType<OfferEntity>[] | null> {
+    if (userAuthId) {
+      const user = await this.userService.findById(userAuthId);
+
+      if (!user) {
+        return null;
+      }
+
+      return this.offerModel
+        .aggregate([
+          { $match: { isPremium: true, cityName: cityName } },
+          { $project: RETURNABLE_FIELDS },
+          {
+            $set: {
+              isFavorite: {
+                $cond: [{ $in: ['$_id', [...user.favorites]] }, true, false],
+              },
+            },
+          },
+          { $set: { id: { $toString: '$_id' } } },
+          { $sort: { postedDate: SortType.Down } },
+          { $limit: OFFER_PREMIUM_COUNT },
+        ])
+        .exec();
+    }
+
     return this.offerModel
-      .find({ isPremium: true, cityName: cityName }, {}, { limit })
-      .sort({ postDate: SortType.Down })
-      .populate(['userId'])
+      .aggregate([
+        { $match: { isPremium: true, cityName: cityName } },
+        { $project: RETURNABLE_FIELDS },
+        { $addFields: { id: { $toString: '$_id' } } },
+        { $sort: { postedDate: SortType.Down } },
+        { $limit: OFFER_PREMIUM_COUNT },
+      ])
       .exec();
   }
 
-  public async findFavoriteOffers(
-    count?: number
-  ): Promise<DocumentType<OfferEntity>[]> {
-    const limit = count ?? DEFAULT_OFFER_COUNT;
+  public async findFavoritesByUserId(
+    userId: string
+  ): Promise<DocumentType<OfferEntity>[] | null> {
+    const user = await this.userService.findById(userId);
+
+    if (!user) {
+      return null;
+    }
+
     return this.offerModel
-      .find({ isFavorite: true }, {}, { limit })
-      .populate(['userId'])
+      .aggregate([
+        {
+          $match: {
+            _id: {
+              $in: [...user.favorites],
+            },
+          },
+        },
+        { $set: { isFavorite: true } },
+        { $project: RETURNABLE_FIELDS },
+        { $addFields: { id: { $toString: '$_id' } } },
+      ])
       .exec();
   }
 
-  public async setFavoriteStatusOffer(
-    offerId: string,
-    { isFavorite }: UpdateOfferDto
+  public async addFavorite(
+    userId: string,
+    offerId: string
   ): Promise<DocumentType<OfferEntity> | null> {
+    await this.userService.addToFavoriteById(userId, offerId);
+
     return this.offerModel
-      .findByIdAndUpdate(offerId, { $set: { isFavorite } })
+      .findByIdAndUpdate(offerId, { $set: { isFavorite: true } })
+      .populate(['userId'])
       .exec();
+  }
+
+  public async removeFavorite(
+    userId: string,
+    offerId: string
+  ): Promise<DocumentType<OfferEntity> | null> {
+    await this.userService.removeFromFavoritesById(userId, offerId);
+    return this.offerModel.findById(offerId).populate(['userId']).exec();
   }
 
   public async updateRating(offerId: string): Promise<number | null> {
-    const currentOffer = this.offerModel.findById(offerId);
+    const currentOffer = await this.offerModel.findById(offerId);
     const offerWithNewRating = await this.offerModel.aggregate([
       { $match: { title: currentOffer?.title } },
       {
@@ -118,16 +215,27 @@ export default class OfferService implements OfferServiceInterface {
           localField: '_id',
           foreignField: 'offerId',
           pipeline: [
-            { $project: { rating: 1 } },
-            { $group: { _id: null, ratingAvg: { $avg: '$rating' } } },
+            {
+              $group: {
+                _id: null,
+                ratingAvg: { $avg: '$rating' },
+              },
+            },
           ],
           as: 'result',
         },
       },
       { $unwind: '$result' },
-      { $addFields: { rating: '$result.ratingAvg' } },
+      {
+        $set: {
+          rating: {
+            $round: ['$result.ratingAvg', 1],
+          },
+        },
+      },
       { $unset: 'result' },
     ]);
+
     return offerWithNewRating[0] ? offerWithNewRating[0].rating : 0;
   }
 }

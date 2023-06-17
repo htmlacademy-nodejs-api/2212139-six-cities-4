@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer';
 import { City } from '../../../types/city-type.enum.js';
 import { Feature } from '../../../types/feature-type.enum.js';
 import { OfferType } from '../../../types/offer-type.enum.js';
-import UserRdo from '../../user/rdo/user.rdo.js';
+import SaveUserRdo from '../../user/rdo/save-user.rdo.js';
 
 export default class OfferRdo {
   @Expose()
@@ -36,9 +36,6 @@ export default class OfferRdo {
   public offerType!: OfferType;
 
   @Expose()
-  public apartment!: string;
-
-  @Expose()
   public roomsCount!: number;
 
   @Expose()
@@ -51,8 +48,8 @@ export default class OfferRdo {
   public features!: Feature[];
 
   @Expose({ name: 'userId' })
-  @Type(() => UserRdo)
-  public user!: UserRdo;
+  @Type(() => SaveUserRdo)
+  public user!: SaveUserRdo;
 
   @Expose()
   public commentsCount!: number;

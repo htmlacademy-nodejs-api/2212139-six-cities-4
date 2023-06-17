@@ -1,10 +1,11 @@
-import { User } from '../../types/user.type.js';
+import { ExtendedUserType, SaveUserType } from '../../types/user.type.js';
 import typegoose, {
   defaultClasses,
   getModelForClass,
 } from '@typegoose/typegoose';
 import { createSHA256 } from '../../core/helpers/index.js';
 import { UserType } from '../../types/user-type.enum.js';
+import { ObjectId } from 'mongoose';
 
 const { prop, modelOptions } = typegoose;
 
@@ -15,7 +16,9 @@ export interface UserEntity extends defaultClasses.Base {}
     collection: 'users',
   },
 })
-export class UserEntity extends defaultClasses.TimeStamps implements User {
+export class UserEntity
+  extends defaultClasses.TimeStamps
+  implements SaveUserType {
   @prop({ required: true, default: '' })
   public name: string;
 
@@ -31,13 +34,17 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ required: true })
   private password?: string;
 
-  constructor(userData: User) {
+  @prop({ default: [] })
+  public favorites: ObjectId[];
+
+  constructor(userData: ExtendedUserType) {
     super();
 
     this.email = userData.email;
     this.avatarUrl = userData.avatarUrl;
     this.name = userData.name;
     this.userType = userData.userType;
+    this.favorites = userData.favorites;
   }
 
   public setPassword(password: string, salt: string) {
@@ -46,6 +53,11 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
 
   public getPassword() {
     return this.password;
+  }
+
+  public verifyPassword(password: string, salt: string) {
+    const hashPassword = createSHA256(password, salt);
+    return hashPassword === this.password;
   }
 }
 

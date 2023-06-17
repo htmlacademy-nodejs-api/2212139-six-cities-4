@@ -11,21 +11,40 @@ import {
   Min,
   MinLength,
   ArrayMinSize,
-  IsMongoId,
   IsBoolean,
   IsString,
+  IsNumber,
+  Validate,
   ArrayMaxSize,
 } from 'class-validator';
+import {
+  OfferDescriptionLength,
+  OfferGuestCount,
+  OfferPriceValue,
+  OfferRatingValue,
+  OfferRoomsCount,
+  OfferTitleLength,
+  OFFER_PHOTOS_COUNT,
+} from '../../../const.js';
+import { ValidImageFormat } from '../../../common/middlewares/valid-image-format.middleware.js';
 
 export default class CreateOfferDto {
   @IsString({ message: 'title is required' })
-  @MinLength(10, { message: 'Minimum title length must be 10' })
-  @MaxLength(100, { message: 'Maximum title length must be 100' })
+  @MinLength(OfferTitleLength.min, {
+    message: 'Minimum title length must be 10',
+  })
+  @MaxLength(OfferTitleLength.max, {
+    message: 'Maximum title length must be 100',
+  })
   public title!: string;
 
   @IsString({ message: 'description is required' })
-  @MinLength(20, { message: 'Minimum description length must be 20' })
-  @MaxLength(1024, { message: 'Maximum description length must be 1024' })
+  @MinLength(OfferDescriptionLength.min, {
+    message: 'Minimum description length must be 20',
+  })
+  @MaxLength(OfferDescriptionLength.max, {
+    message: 'Maximum description length must be 1024',
+  })
   public description!: string;
 
   @IsDateString({}, { message: 'postDate must be valid ISO date' })
@@ -36,24 +55,18 @@ export default class CreateOfferDto {
   })
   public cityName!: City;
 
-  @IsString({ message: 'preview is required' })
-  public preview!: string;
-
-  @ArrayMinSize(6)
-  @ArrayMaxSize(6)
-  @IsArray({ message: 'Field image must be an array' })
-  @IsString({ message: 'photos is required' })
-  public photos!: string[];
-
   @IsBoolean({ message: 'isPremium must be true or false' })
   public isPremium!: boolean;
 
-  @IsBoolean({ message: 'isFavorite must be true or false' })
-  public isFavorite!: boolean;
-
-  @IsInt({ message: 'Rating must be an integer' })
-  @Min(1, { message: 'Minimum rating is 1' })
-  @Max(5, { message: 'Maximum rating is 5' })
+  @IsNumber(
+    { maxDecimalPlaces: 1 },
+    {
+      message:
+        'Only 1 digit precision to the right of decimal point is allowed',
+    }
+  )
+  @Min(OfferRatingValue.min, { message: 'Minimum rating is 0' })
+  @Max(OfferRatingValue.max, { message: 'Maximum rating is 5' })
   public rating!: number;
 
   @IsEnum(OfferType, {
@@ -62,18 +75,18 @@ export default class CreateOfferDto {
   public offerType!: OfferType;
 
   @IsInt({ message: 'Rooms must be an integer' })
-  @Min(1, { message: 'Minimum rooms is 1' })
-  @Max(8, { message: 'Maximum rooms is 8' })
+  @Min(OfferRoomsCount.min, { message: 'Minimum rooms is 1' })
+  @Max(OfferRoomsCount.max, { message: 'Maximum rooms is 8' })
   public roomsCount!: number;
 
   @IsInt({ message: 'Guests must be an integer' })
-  @Min(1, { message: 'Minimum guests is 1' })
-  @Max(10, { message: 'Maximum guests is 10' })
+  @Min(OfferGuestCount.min, { message: 'Minimum guests is 1' })
+  @Max(OfferGuestCount.max, { message: 'Maximum guests is 10' })
   public guestsCount!: number;
 
   @IsInt({ message: 'Price must be an integer' })
-  @Min(100, { message: 'Minimum price is 100' })
-  @Max(100000, { message: 'Maximum price is 100000' })
+  @Min(OfferPriceValue.min, { message: 'Minimum price is 100' })
+  @Max(OfferPriceValue.max, { message: 'Maximum price is 100000' })
   public price!: number;
 
   @IsArray({ message: 'Features categories must be an array' })
@@ -81,12 +94,25 @@ export default class CreateOfferDto {
   @IsEnum(Feature, { each: true, message: 'features must be an array' })
   public features!: Feature[];
 
-  @IsMongoId({ message: 'userId field must be valid an id' })
+  @IsString({ message: '$property must be a string' })
+  @Validate(ValidImageFormat)
+  public preview!: string;
+
+  @IsArray({ message: '$property must be an array' })
+  @ArrayMaxSize(OFFER_PHOTOS_COUNT, {
+    message: '$property must contain exactly $constraint1 items',
+  })
+  @ArrayMinSize(OFFER_PHOTOS_COUNT, {
+    message: '$property must contain exactly $constraint1 items',
+  })
+  @IsString({ message: '$property must be a string', each: true })
+  @Validate(ValidImageFormat, { each: true })
+  public photos!: string[];
+
+  public images!: string[];
   public userId!: string;
 
-  @IsInt({ message: 'latitude must be an floating point' })
   public latitude!: number;
 
-  @IsInt({ message: 'longitude must be an floating point' })
   public longitude!: number;
 }

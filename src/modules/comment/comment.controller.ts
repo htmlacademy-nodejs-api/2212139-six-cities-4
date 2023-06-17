@@ -1,13 +1,18 @@
 import { Response, Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { inject } from 'inversify';
+import { CheckTokenInBlackListMiddleware } from '../../common/middlewares/check-token-in-black-list.middleware.js';
+import { PrivateRouterMiddleware } from '../../common/middlewares/private-router.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { ConfigInterface } from '../../core/config/config.interface.js';
+import { RestSchema } from '../../core/config/rest.schema.js';
 import { Controller } from '../../core/controller/controller.abstract.js';
 import HttpError from '../../core/errors/http-error.js';
 import { fillDTO } from '../../core/helpers/common.js';
 import { LoggerInterface } from '../../core/logger/logger.interface.js';
 import { AppComponent } from '../../types/app-component.enum.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
+import { UnknownRecord } from '../../types/unknown-record.type.js';
 import { OfferServiceInterface } from '../offer/offer-service.interface.js';
 import CommentService from './comment.service.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
@@ -18,22 +23,28 @@ export default class CommentController extends Controller {
     @inject(AppComponent.LoggerInterface) logger: LoggerInterface,
     @inject(AppComponent.CommentServiceInterface)
     private readonly commentService: CommentService,
+    @inject(AppComponent.ConfigInterface)
+    configService: ConfigInterface<RestSchema>,
     @inject(AppComponent.OfferServiceInterface)
     private readonly offerService: OfferServiceInterface
   ) {
-    super(logger);
+    super(logger, configService);
 
     this.logger.info('Register routes for CommentController...');
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)],
+      middlewares: [
+        new PrivateRouterMiddleware(),
+        new ValidateDtoMiddleware(CreateCommentDto),
+        new CheckTokenInBlackListMiddleware(),
+      ],
     });
   }
 
   public async create(
-    { body }: Request<object, object, CreateCommentDto>,
+    { body, user }: Request<UnknownRecord, UnknownRecord, CreateCommentDto>,
     res: Response
   ): Promise<void> {
     if (!(await this.offerService.exists(body.offerId))) {
@@ -44,8 +55,13 @@ export default class CommentController extends Controller {
       );
     }
 
-    const comment = this.commentService.create(body);
+    const result = await this.commentService.createComment({
+      ...body,
+      userId: user.id,
+    });
+
     await this.offerService.incCommentCount(body.offerId);
+    const comment = await this.commentService.findByCommentId(result.id);
     this.created(res, fillDTO(CommentRdo, comment));
   }
 }

@@ -6,23 +6,43 @@ import { DocumentExistsInterface } from '../../types/document-exists.interface.j
 
 export interface OfferServiceInterface extends DocumentExistsInterface {
   createOffer(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>>;
-  findByOfferId(offerId: string): Promise<DocumentType<OfferEntity> | null>;
+
+  findById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
+
   updateByOfferId(
     offerId: string,
     dto: UpdateOfferDto
   ): Promise<DocumentType<OfferEntity> | null>;
+
   deleteByOfferId(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  findOffers(count?: number): Promise<DocumentType<OfferEntity>[]>;
+
+  find(
+    userAuthId?: string,
+    count?: number
+  ): Promise<DocumentType<OfferEntity>[] | null>;
+
   findByTitle(title: string): Promise<DocumentType<OfferEntity> | null>;
+
   findPremiumOffers(
     cityName: string,
-    count?: number
-  ): Promise<DocumentType<OfferEntity>[]>;
-  findFavoriteOffers(count?: number): Promise<DocumentType<OfferEntity>[]>;
-  setFavoriteStatusOffer(
-    offerId: string,
-    dto: UpdateOfferDto
+    userAuthId?: string
+  ): Promise<DocumentType<OfferEntity>[] | null>;
+
+  addFavorite(
+    userId: string,
+    offerId: string
   ): Promise<DocumentType<OfferEntity> | null>;
+
+  removeFavorite(
+    userId: string,
+    offerId: string
+  ): Promise<DocumentType<OfferEntity> | null>;
+
+  findFavoritesByUserId(
+    userId: string
+  ): Promise<DocumentType<OfferEntity>[] | null>;
+
   incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
+
   exists(documentId: string): Promise<boolean>;
 }

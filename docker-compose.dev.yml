@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   db:
-    image: mongo:4.2
+    image: mongo:6.0
     restart: always
     container_name: six-cities-4_mongodb
     environment:
