@@ -3,6 +3,8 @@ import * as crypto from 'node:crypto';
 import * as jose from 'jose';
 import { UnknownRecord } from '../../types/unknown-record.type.js';
 import { DEFAULT_STATIC_IMAGES } from '../../app/rest.constant.js';
+import { ValidationError } from 'class-validator';
+import { ValidationErrorField } from '../../types/validation-error-field.type.js';
 
 export function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : '';
@@ -71,12 +73,20 @@ export function transformObject(
 ) {
   return properties.forEach((property) => {
     transformProperty(property, data, (target: UnknownRecord) => {
-      const rootPath = DEFAULT_STATIC_IMAGES.includes(
-        target[property] as string
-      )
+      const rootPath = DEFAULT_STATIC_IMAGES.includes(String(target[property]))
         ? staticPath
         : uploadPath;
       target[property] = `${rootPath}/${target[property]}`;
     });
   });
+}
+
+export function transformErrors(
+  errors: ValidationError[]
+): ValidationErrorField[] {
+  return errors.map(({ property, value, constraints }) => ({
+    property,
+    value,
+    messages: constraints ? Object.values(constraints) : [],
+  }));
 }

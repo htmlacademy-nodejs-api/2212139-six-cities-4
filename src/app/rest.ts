@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import cors from 'cors';
 import { ConfigInterface } from '../core/config/config.interface.js';
 import { RestSchema } from '../core/config/rest.schema.js';
 import { LoggerInterface } from '../core/logger/logger.interface.js';
@@ -87,6 +88,7 @@ export default class RestApplication {
     this.expressApplication.use(
       authenticateMiddleware.execute.bind(authenticateMiddleware)
     );
+    this.expressApplication.use(cors());
     this.logger.info('Global middleware initialization completed');
   }
 
