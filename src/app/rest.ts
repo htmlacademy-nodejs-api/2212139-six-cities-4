@@ -27,14 +27,14 @@ export default class RestApplication {
     private readonly userController: ControllerInterface,
     @inject(AppComponent.OfferController)
     private readonly offerController: ControllerInterface,
-    @inject(AppComponent.HttpErrorExeptionFilter)
-    private readonly httpErrorExeptionFilter: ExceptionFilterInterface,
+    @inject(AppComponent.HttpErrorExceptionFilter)
+    private readonly httpErrorExceptionFilter: ExceptionFilterInterface,
     @inject(AppComponent.CommentController)
     private readonly commentController: ControllerInterface,
-    @inject(AppComponent.BaseExeptionFilter)
-    private readonly baseExeptionFilter: ExceptionFilterInterface,
-    @inject(AppComponent.ValidationExeptionFilter)
-    private readonly validationExeptionFilter: ExceptionFilterInterface
+    @inject(AppComponent.ValidationExceptionFilter)
+    private readonly validationExceptionFilter: ExceptionFilterInterface,
+    @inject(AppComponent.BaseExceptionFilter)
+    private readonly baseExceptionFilter: ExceptionFilterInterface
   ) {
     this.expressApplication = express();
   }
@@ -99,13 +99,13 @@ export default class RestApplication {
   private async _initExceptionFilter() {
     this.logger.info('Exception filters initialization');
     this.expressApplication.use(
-      this.validationExeptionFilter.catch.bind(this.validationExeptionFilter)
+      this.validationExceptionFilter.catch.bind(this.validationExceptionFilter)
     );
     this.expressApplication.use(
-      this.baseExeptionFilter.catch.bind(this.baseExeptionFilter)
+      this.httpErrorExceptionFilter.catch.bind(this.httpErrorExceptionFilter)
     );
     this.expressApplication.use(
-      this.httpErrorExeptionFilter.catch.bind(this.httpErrorExeptionFilter)
+      this.baseExceptionFilter.catch.bind(this.baseExceptionFilter)
     );
     this.logger.info('Exception filters initialization completed');
   }
