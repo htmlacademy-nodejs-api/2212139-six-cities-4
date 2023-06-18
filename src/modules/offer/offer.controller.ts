@@ -29,6 +29,7 @@ import { DEFAULT_PREVIEW_IMAGES } from './offer.constant.js';
 import { getRandomItem } from '../../core/helpers/index.js';
 import UploadPreviewRdo from './rdo/upload-preview.rdo.js';
 import { CheckTokenInBlackListMiddleware } from '../../common/middlewares/check-token-in-black-list.middleware.js';
+import { UploadFilesMiddleware } from '../../common/middlewares/upload-files.middleware.js';
 
 type ParamsOfferDetails =
   | {
@@ -178,7 +179,7 @@ export default class OfferController extends Controller {
         new PrivateRouterMiddleware(),
         new CheckTokenInBlackListMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
-        new UploadFileMiddleware(
+        new UploadFilesMiddleware(
           this.configService.get('UPLOAD_DIRECTORY'),
           'photos'
         ),
