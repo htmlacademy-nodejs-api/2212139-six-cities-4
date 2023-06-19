@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import cors from 'cors';
 import { ConfigInterface } from '../core/config/config.interface.js';
 import { RestSchema } from '../core/config/rest.schema.js';
 import { LoggerInterface } from '../core/logger/logger.interface.js';
@@ -26,10 +27,14 @@ export default class RestApplication {
     private readonly userController: ControllerInterface,
     @inject(AppComponent.OfferController)
     private readonly offerController: ControllerInterface,
-    @inject(AppComponent.ExceptionFilterInterface)
-    private readonly exceptionFilter: ExceptionFilterInterface,
+    @inject(AppComponent.HttpErrorExceptionFilter)
+    private readonly httpErrorExceptionFilter: ExceptionFilterInterface,
     @inject(AppComponent.CommentController)
-    private readonly commentController: ControllerInterface
+    private readonly commentController: ControllerInterface,
+    @inject(AppComponent.ValidationExceptionFilter)
+    private readonly validationExceptionFilter: ExceptionFilterInterface,
+    @inject(AppComponent.BaseExceptionFilter)
+    private readonly baseExceptionFilter: ExceptionFilterInterface
   ) {
     this.expressApplication = express();
   }
@@ -87,13 +92,20 @@ export default class RestApplication {
     this.expressApplication.use(
       authenticateMiddleware.execute.bind(authenticateMiddleware)
     );
+    this.expressApplication.use(cors());
     this.logger.info('Global middleware initialization completed');
   }
 
   private async _initExceptionFilter() {
     this.logger.info('Exception filters initialization');
     this.expressApplication.use(
-      this.exceptionFilter.catch.bind(this.exceptionFilter)
+      this.validationExceptionFilter.catch.bind(this.validationExceptionFilter)
+    );
+    this.expressApplication.use(
+      this.httpErrorExceptionFilter.catch.bind(this.httpErrorExceptionFilter)
+    );
+    this.expressApplication.use(
+      this.baseExceptionFilter.catch.bind(this.baseExceptionFilter)
     );
     this.logger.info('Exception filters initialization completed');
   }

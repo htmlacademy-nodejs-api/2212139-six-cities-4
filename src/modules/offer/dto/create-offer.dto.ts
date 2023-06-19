@@ -109,7 +109,6 @@ export default class CreateOfferDto {
   @Validate(ValidImageFormat, { each: true })
   public photos!: string[];
 
-  public images!: string[];
   public userId!: string;
 
   public latitude!: number;

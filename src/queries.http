@@ -181,7 +181,7 @@ Content-Type: image/jpeg
 ## Загрузка изображений для предложения
 POST http://localhost:5000/offers/648b46f3ca08d505a3b48183/images HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY4Mzg1MzMsImV4cCI6MTY4NzAxMTMzM30.5GZMBtktmzMmagRJMzKkPyBpFCRPztKQntWhqI0I5ZA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODcwODQzNzEsImV4cCI6MTY4NzI1NzE3MX0.9uMi0yA03yWoM8IaXt6Foulym9NP885C7bZ-aAtgaSY
 
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
