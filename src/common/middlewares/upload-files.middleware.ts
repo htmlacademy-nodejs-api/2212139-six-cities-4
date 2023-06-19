@@ -18,14 +18,16 @@ export class UploadFilesMiddleware implements MiddlewareInterface {
       filename: (_req, file, callback) => {
         const extension = mime.extension(file.mimetype);
         const filename = nanoid();
+        console.log(file);
         callback(null, `${filename}.${extension}`);
       },
     });
+    console.log(`UploadFilesMiddleware 24: ${this.fieldName}`);
 
-    const uploadSingleFilesMiddleware = multer({ storage }).array(
+    const fileUploadMiddleware = multer({ storage }).array(
       this.fieldName,
       OFFER_PHOTOS_COUNT
     );
-    uploadSingleFilesMiddleware(req, res, next);
+    fileUploadMiddleware(req, res, next);
   }
 }
