@@ -102,7 +102,7 @@ export const postOffer = createAsyncThunk<Offer, NewOffer, { extra: Extra }>(
       ApiRoute.Offers,
       adaptOfferToServer(newOffer)
     );
-    history.push(`${AppRoute.Property}/${data.id}`);
+    history.push(`${AppRoute.Property}/${data._id}`);
 
     return adaptOfferToClient(data);
   }
@@ -116,7 +116,7 @@ export const editOffer = createAsyncThunk<Offer, Offer, { extra: Extra }>(
       `${ApiRoute.Offers}/${offer.id}`,
       adaptOfferToServer(offer)
     );
-    history.push(`${AppRoute.Property}/${data.id}`);
+    history.push(`${AppRoute.Property}/${data._id}`);
 
     return adaptOfferToClient(data);
   }

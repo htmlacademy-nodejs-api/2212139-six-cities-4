@@ -134,7 +134,7 @@ export default class UserController extends Controller {
 
   public async uploadAvatar(req: Request, res: Response) {
     const { userId } = req.params;
-    if (req.user.id !== userId) {
+    if (req.user._id !== userId) {
       throw new HttpError(
         StatusCodes.LOCKED,
         'This is not your user',

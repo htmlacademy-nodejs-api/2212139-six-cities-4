@@ -20,7 +20,7 @@ export const adaptOffersToClient = (offers: OfferDto[]): Offer[] =>
   offers
     .filter((offer: OfferDto) => offer.user !== null)
     .map((offer: OfferDto) => ({
-      id: offer.id,
+      id: offer._id,
       price: offer.price,
       rating: offer.rating,
       title: offer.title,
@@ -39,7 +39,7 @@ export const adaptOffersToClient = (offers: OfferDto[]): Offer[] =>
     }));
 
 export const adaptOfferToClient = (offer: OfferDto): Offer => ({
-  id: offer.id,
+  id: offer._id,
   price: offer.price,
   rating: offer.rating,
   title: offer.title,
