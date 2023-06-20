@@ -12,6 +12,11 @@ export const RETURNABLE_FIELDS = {
   offerType: 1,
   price: 1,
   commentsCount: 1,
+  latitude: 1,
+  longitude: 1,
+  id: 1,
+  userId: 1,
+  description: 1,
 };
 
 export const DEFAULT_PREVIEW_IMAGES = [

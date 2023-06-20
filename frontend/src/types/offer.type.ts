@@ -5,6 +5,7 @@ import { City } from './city-type.enum.js';
 import { Location } from './location.type.js';
 
 export type Offer = {
+  _id: string;
   title: string;
   description: string;
   postDate: Date;

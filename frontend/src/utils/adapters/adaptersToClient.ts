@@ -2,32 +2,37 @@ import { CityLocation, UserType } from '../../const';
 import CommentDto from '../../dto/comment/comment.dto';
 import OfferDto from '../../dto/offer/offer.dto';
 import UserDto from '../../dto/user/user.dto';
-import { City, Offer, User, Comment } from '../../types/types';
+import { City, Offer, User, Comment, Location } from '../../types/types';
 
 export const adaptCityToClient = (serverCity: string): City => ({
   name: serverCity,
   location: CityLocation[serverCity],
 });
 
+export const adaptLocationToClient = (lat: number, lon: number): Location => ({
+  latitude: lat,
+  longitude: lon,
+});
+
 export const adaptUserToClient = (user: UserDto): User => ({
   name: user.name,
   email: user.email,
   avatarUrl: user.avatarUrl,
-  type: user.userType === 'обычный' ? UserType.Regular : UserType.Pro,
+  type: user.userType === 'pro' ? UserType.Pro : UserType.Regular,
 });
 
 export const adaptOffersToClient = (offers: OfferDto[]): Offer[] =>
   offers
-    .filter((offer: OfferDto) => offer.user !== null)
+    .filter((offer: OfferDto) => offer.title !== null)
     .map((offer: OfferDto) => ({
-      id: offer._id,
+      id: offer.id,
       price: offer.price,
       rating: offer.rating,
       title: offer.title,
       isPremium: offer.isPremium,
       isFavorite: offer.isFavorite,
       city: adaptCityToClient(offer.cityName),
-      location: CityLocation[offer.cityName],
+      location: adaptLocationToClient(offer.latitude, offer.longitude),
       previewImage: offer.preview,
       type: offer.offerType,
       bedrooms: offer.roomsCount,
@@ -39,14 +44,14 @@ export const adaptOffersToClient = (offers: OfferDto[]): Offer[] =>
     }));
 
 export const adaptOfferToClient = (offer: OfferDto): Offer => ({
-  id: offer._id,
+  id: offer.id,
   price: offer.price,
   rating: offer.rating,
   title: offer.title,
   isPremium: offer.isPremium,
   isFavorite: offer.isFavorite,
   city: adaptCityToClient(offer.cityName),
-  location: CityLocation[offer.cityName],
+  location: adaptLocationToClient(offer.latitude, offer.longitude),
   previewImage: offer.preview,
   type: offer.offerType,
   bedrooms: offer.roomsCount,

@@ -4,7 +4,7 @@ import { OfferType } from '../../types/offer-type.enum.js';
 import UserDto from '../user/user.dto.js';
 
 export default class OfferDto {
-  public _id!: string;
+  public id!: string;
 
   public title!: string;
 
