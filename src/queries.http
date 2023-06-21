@@ -4,10 +4,10 @@
 ## Создать новое объявление (5.1)
 POST http://localhost:5000/offers/create HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDkwNTY4MzMxMmZkZjNiYWRkNGIyZGEiLCJpYXQiOjE2ODcxODA5NTQsImV4cCI6MTY4NzM1Mzc1NH0.4h7e91dJeq3wrcRQhxHOgqM1aqrHulyK1KQiWBX4EAs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAbWFpbC5ydSIsImlkIjoiNjQ5MDY2ZGE4NTZmMDE4MWNmMmI3ZGRlIiwiaWF0IjoxNjg3MzU4MDM2LCJleHAiOjE2ODc1MzA4MzZ9.DUnHw9jrZj3AqcJVzbeorJGoxHOWY5i48xLPZoa0CAk
 
 {
-  "title": "Чёткая хата 8",
+  "title": "Чёткая хата 9",
   "description": "Один из лучших хостелов для душевного общения. Ужинаем вместе и играем в «Мафию» по вечерам, вкусно готовим. Ежедневная уборка, бесплатный Wi-Fi, чистое постельное белье.",
   "postDate": "2023-05-17T07:47:15.358Z",
   "cityName": "Paris",
@@ -96,7 +96,7 @@ Content-Type: application/json
   "email": "makeevhome@overlook.net",
   "avatarUrl": "makeev.png",
   "userType": "pro",
-  "password": "ma1234"
+  "password": "1234aa"
 }
 
 ###
@@ -107,7 +107,7 @@ Content-Type: application/json
 
 {
   "email": "makeevhome@overlook.net",
-  "password": "ma1234"
+  "password": "1234aa"
 }
 
 ###
@@ -153,9 +153,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb
 
 ## Отправка аватарки пользователю
 
-POST http://localhost:5000/users/648b3bf7d127354ba40ede0d/avatar HTTP/1.1
+POST http://localhost:5000/users/649066da856f0181cf2b7dde/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY4Mzg1MzMsImV4cCI6MTY4NzAxMTMzM30.5GZMBtktmzMmagRJMzKkPyBpFCRPztKQntWhqI0I5ZA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAbWFpbC5ydSIsImlkIjoiNjQ5MDY2ZGE4NTZmMDE4MWNmMmI3ZGRlIiwiaWF0IjoxNjg3MzU4MDM2LCJleHAiOjE2ODc1MzA4MzZ9.DUnHw9jrZj3AqcJVzbeorJGoxHOWY5i48xLPZoa0CAk
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="avatar"; filename="image.png"
@@ -180,9 +180,9 @@ Content-Type: image/jpeg
 ###
 
 ## Загрузка изображений для предложения
-POST http://localhost:5000/offers/648b46f3ca08d505a3b48183/images HTTP/1.1
+POST http://localhost:5000/offers/64930a7b5a225ae3d496ee01/images HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDkwNTY4MzMxMmZkZjNiYWRkNGIyZGEiLCJpYXQiOjE2ODcxODA5NTQsImV4cCI6MTY4NzM1Mzc1NH0.4h7e91dJeq3wrcRQhxHOgqM1aqrHulyK1KQiWBX4EAs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAbWFpbC5ydSIsImlkIjoiNjQ5MDY2ZGE4NTZmMDE4MWNmMmI3ZGRlIiwiaWF0IjoxNjg3MzU4MDM2LCJleHAiOjE2ODc1MzA4MzZ9.DUnHw9jrZj3AqcJVzbeorJGoxHOWY5i48xLPZoa0CAk
 
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -221,7 +221,7 @@ Content-Type: image/jpeg
 
 < ./static/room6.jpg
 
-------WebKitFormBoundary7MA4YWxkTrZu0gW
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 
 ###

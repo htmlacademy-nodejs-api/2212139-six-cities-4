@@ -8,7 +8,7 @@ export const adaptSignupToServer = (user: UserRegister): CreateUserDto => ({
   email: user.email,
   name: user.name,
   password: user.password,
-  userType: user.type === 'regular' ? UserType.Regular : UserType.Pro,
+  userType: user.type === 'pro' ? UserType.Pro : UserType.Regular,
 });
 
 export const adaptOfferToServer = (offer: NewOffer): CreateOfferDto => ({
@@ -17,7 +17,7 @@ export const adaptOfferToServer = (offer: NewOffer): CreateOfferDto => ({
   postDate: new Date().toISOString(),
   cityName: offer.city.name,
   isPremium: offer.isPremium,
-  rating: 3,
+  rating: 0,
   offerType: offer.type,
   roomsCount: offer.bedrooms,
   guestsCount: offer.maxAdults,
