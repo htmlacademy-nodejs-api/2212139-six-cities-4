@@ -4,12 +4,12 @@
 ## Создать новое объявление (5.1)
 POST http://localhost:5000/offers/create HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAbWFpbC5ydSIsImlkIjoiNjQ5MDY2ZGE4NTZmMDE4MWNmMmI3ZGRlIiwiaWF0IjoxNjg3MzU4MDM2LCJleHAiOjE2ODc1MzA4MzZ9.DUnHw9jrZj3AqcJVzbeorJGoxHOWY5i48xLPZoa0CAk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAbWFpbC5uZXQiLCJpZCI6IjY0OTMxODk1Zjg1YWVhNzYzNmNmNDkxYiIsImlhdCI6MTY4NzM2MTcxNCwiZXhwIjoxNjg3NTM0NTE0fQ.qfja3MgiGhlCJcXVDUtTSHJAib565PkDPu8_l4B-3iE
 
 {
-  "title": "Чёткая хата 9",
+  "title": "Чёткая хата 5",
   "description": "Один из лучших хостелов для душевного общения. Ужинаем вместе и играем в «Мафию» по вечерам, вкусно готовим. Ежедневная уборка, бесплатный Wi-Fi, чистое постельное белье.",
-  "postDate": "2023-05-17T07:47:15.358Z",
+  "postDate": "2023-06-17T07:47:15.358Z",
   "cityName": "Paris",
   "preview": "room8.jpg",
   "photos": [
@@ -37,9 +37,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAbWFpbC5yd
 ###
 
 ## Обновить, редактировать объявление (5.2)
-PATCH http://localhost:5000/offers/649056f0312fdf3badd4b2dd HTTP/1.1
+PATCH http://localhost:5000/offers/64931957f85aea7636cf492a HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDkwNTY4MzMxMmZkZjNiYWRkNGIyZGEiLCJpYXQiOjE2ODcxODA5NTQsImV4cCI6MTY4NzM1Mzc1NH0.4h7e91dJeq3wrcRQhxHOgqM1aqrHulyK1KQiWBX4EAs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAbWFpbC5uZXQiLCJpZCI6IjY0OTMxODk1Zjg1YWVhNzYzNmNmNDkxYiIsImlhdCI6MTY4NzM2MTcxNCwiZXhwIjoxNjg3NTM0NTE0fQ.qfja3MgiGhlCJcXVDUtTSHJAib565PkDPu8_l4B-3iE
 
 {
   "title": "Makeev Alexey test 1"
@@ -49,15 +49,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb
 
 ## Удаление объявления (5.3)
 
-DELETE http://localhost:5000/offers/648b0e058cebc7577cdf5cb5 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDg4Y2JlMGI3ZDU2MjU5OGVlMGJjOTMiLCJpYXQiOjE2ODY2ODY4ODYsImV4cCI6MTY4Njg1OTY4Nn0.i_fQ0kJKO2cSrW3QF7ShGt1u8cXCMgH4rjUSbgo4mHY
+DELETE http://localhost:5000/offers/64931957f85aea7636cf492a HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAbWFpbC5uZXQiLCJpZCI6IjY0OTMxODk1Zjg1YWVhNzYzNmNmNDkxYiIsImlhdCI6MTY4NzM2MTcxNCwiZXhwIjoxNjg3NTM0NTE0fQ.qfja3MgiGhlCJcXVDUtTSHJAib565PkDPu8_l4B-3iE
 
 ###
 
 ## Получить список предложений по аренде (5.4)
 GET http://localhost:5000/offers?limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAb3Zlcmxvb2submV0IiwiaWQiOiI2NDkwNTY4MzMxMmZkZjNiYWRkNGIyZGEiLCJpYXQiOjE2ODcxODA5NTQsImV4cCI6MTY4NzM1Mzc1NH0.4h7e91dJeq3wrcRQhxHOgqM1aqrHulyK1KQiWBX4EAs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im1ha2VldmhvbWVAbWFpbC5uZXQiLCJpZCI6IjY0OTMxODk1Zjg1YWVhNzYzNmNmNDkxYiIsImlhdCI6MTY4NzM2MTcxNCwiZXhwIjoxNjg3NTM0NTE0fQ.qfja3MgiGhlCJcXVDUtTSHJAib565PkDPu8_l4B-3iE
 
 ###
 
@@ -93,10 +93,10 @@ Content-Type: application/json
 
 {
   "name": "Макеев Алексей",
-  "email": "makeevhome@overlook.net",
+  "email": "makeevhome@mail.net",
   "avatarUrl": "makeev.png",
   "userType": "pro",
-  "password": "1234aa"
+  "password": "2222aa"
 }
 
 ###
@@ -106,8 +106,8 @@ POST http://localhost:5000/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "makeevhome@overlook.net",
-  "password": "1234aa"
+  "email": "makeevhome@mail.net",
+  "password": "2222aa"
 }
 
 ###
