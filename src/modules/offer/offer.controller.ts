@@ -117,8 +117,8 @@ export default class OfferController extends Controller {
     });
 
     this.addRoute({
-      path: '/favorite/:offerId',
-      method: HttpMethod.Patch,
+      path: '/favorite/get/:offerId',
+      method: HttpMethod.Post,
       handler: this.addFavorite,
       middlewares: [
         new PrivateRouterMiddleware(),
@@ -129,7 +129,7 @@ export default class OfferController extends Controller {
     });
 
     this.addRoute({
-      path: '/favorite/:offerId',
+      path: '/favorite/get/:offerId',
       method: HttpMethod.Delete,
       handler: this.removeFavorite,
       middlewares: [
@@ -202,8 +202,10 @@ export default class OfferController extends Controller {
     res: Response
   ): Promise<void> {
     const { query, user } = req;
-    const offers = await this.offerService.find(user?.id, query?.limit);
-    this.ok(res, fillDTO(OfferRdo, offers));
+    const offers = await this.offerService.find(user?._id, query?.limit);
+
+    //this.ok(res, fillDTO(OfferRdo, offers));
+    this.send(res, StatusCodes.OK, offers);
   }
 
   public async create(
@@ -213,7 +215,7 @@ export default class OfferController extends Controller {
     const randomPreviewImage = getRandomItem(DEFAULT_PREVIEW_IMAGES);
     const result = await this.offerService.createOffer({
       ...body,
-      userId: user.id,
+      userId: user._id,
       preview: randomPreviewImage,
     });
 
@@ -228,7 +230,7 @@ export default class OfferController extends Controller {
     const { offerId } = req.params;
     const currentOffer = await this.offerService.findById(offerId);
 
-    if (req.user.id !== currentOffer?.userId._id.toString()) {
+    if (req.user._id !== currentOffer?.userId._id.toString()) {
       throw new HttpError(
         StatusCodes.LOCKED,
         'This is not your offer',
@@ -253,7 +255,7 @@ export default class OfferController extends Controller {
   ): Promise<void> {
     const currentOffer = await this.offerService.findById(params.offerId);
 
-    if (user.id !== currentOffer?.userId._id.toString()) {
+    if (user._id !== currentOffer?.userId._id.toString()) {
       throw new HttpError(
         StatusCodes.LOCKED,
         'This is not your offer',
@@ -282,7 +284,7 @@ export default class OfferController extends Controller {
   ): Promise<void> {
     const offers = await this.offerService.findPremiumOffers(
       req.params.cityName,
-      req.user?.id
+      req.user?._id
     );
     if (!offers) {
       throw new HttpError(
@@ -296,7 +298,7 @@ export default class OfferController extends Controller {
   }
 
   public async showFavorite(req: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.findFavoritesByUserId(req.user.id);
+    const offers = await this.offerService.findFavoritesByUserId(req.user._id);
 
     if (!offers) {
       throw new HttpError(
@@ -311,7 +313,7 @@ export default class OfferController extends Controller {
 
   public async addFavorite(req: Request, res: Response): Promise<void> {
     const offer = await this.offerService.addFavorite(
-      req.user.id,
+      req.user._id,
       req.params.offerId
     );
 
@@ -320,7 +322,7 @@ export default class OfferController extends Controller {
 
   public async removeFavorite(req: Request, res: Response): Promise<void> {
     const offer = await this.offerService.removeFavorite(
-      req.user.id,
+      req.user._id,
       req.params.offerId
     );
 
@@ -333,7 +335,7 @@ export default class OfferController extends Controller {
   ) {
     const { offerId } = req.params;
     const offer = await this.offerService.findById(offerId);
-    if (req.user.id !== offer?.userId._id.toString()) {
+    if (req.user._id !== offer?.userId._id.toString()) {
       throw new HttpError(
         StatusCodes.LOCKED,
         'This is not your offer',
@@ -349,7 +351,7 @@ export default class OfferController extends Controller {
   public async uploadImages(req: Request<ParamsOfferDetails>, res: Response) {
     const { offerId } = req.params;
     const offer = await this.offerService.findById(offerId);
-    if (req.user.id !== offer?.userId._id.toString()) {
+    if (req.user._id !== offer?.userId._id.toString()) {
       throw new HttpError(
         StatusCodes.LOCKED,
         'This is not your offer',

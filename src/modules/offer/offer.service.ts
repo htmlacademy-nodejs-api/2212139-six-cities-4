@@ -72,7 +72,6 @@ export default class OfferService implements OfferServiceInterface {
 
       return this.offerModel
         .aggregate([
-          { $project: RETURNABLE_FIELDS },
           {
             $set: {
               isFavorite: {
@@ -83,16 +82,49 @@ export default class OfferService implements OfferServiceInterface {
           { $set: { id: { $toString: '$_id' } } },
           { $sort: { postedDate: SortType.Down } },
           { $limit: +limit },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'user',
+            },
+          },
+          {
+            $unwind: {
+              path: '$user',
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+          {
+            $project: RETURNABLE_FIELDS,
+          },
         ])
         .exec();
     }
 
     return this.offerModel
       .aggregate([
-        { $project: RETURNABLE_FIELDS },
         { $addFields: { id: { $toString: '$_id' } } },
         { $sort: { postedDate: SortType.Down } },
         { $limit: +limit },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'user',
+          },
+        },
+        {
+          $unwind: {
+            path: '$user',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $project: RETURNABLE_FIELDS,
+        },
       ])
       .exec();
   }
@@ -134,7 +166,6 @@ export default class OfferService implements OfferServiceInterface {
       return this.offerModel
         .aggregate([
           { $match: { isPremium: true, cityName: cityName } },
-          { $project: RETURNABLE_FIELDS },
           {
             $set: {
               isFavorite: {
@@ -145,6 +176,23 @@ export default class OfferService implements OfferServiceInterface {
           { $set: { id: { $toString: '$_id' } } },
           { $sort: { postedDate: SortType.Down } },
           { $limit: OFFER_PREMIUM_COUNT },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'user',
+            },
+          },
+          {
+            $unwind: {
+              path: '$user',
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+          {
+            $project: RETURNABLE_FIELDS,
+          },
         ])
         .exec();
     }
@@ -152,10 +200,26 @@ export default class OfferService implements OfferServiceInterface {
     return this.offerModel
       .aggregate([
         { $match: { isPremium: true, cityName: cityName } },
-        { $project: RETURNABLE_FIELDS },
         { $addFields: { id: { $toString: '$_id' } } },
         { $sort: { postedDate: SortType.Down } },
         { $limit: OFFER_PREMIUM_COUNT },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'user',
+          },
+        },
+        {
+          $unwind: {
+            path: '$user',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $project: RETURNABLE_FIELDS,
+        },
       ])
       .exec();
   }

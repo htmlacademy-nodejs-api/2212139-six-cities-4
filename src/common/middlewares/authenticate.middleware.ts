@@ -26,7 +26,7 @@ export class AuthenticateMiddleware implements MiddlewareInterface {
         createSecretKey(this.jwtSecret, 'utf-8')
       );
 
-      req.user = { email: String(payload.email), id: String(payload.id) };
+      req.user = { email: String(payload.email), _id: String(payload.id) };
       return next();
     } catch (err) {
       return next(

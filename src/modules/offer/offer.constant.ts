@@ -12,15 +12,22 @@ export const RETURNABLE_FIELDS = {
   offerType: 1,
   price: 1,
   commentsCount: 1,
+  latitude: 1,
+  longitude: 1,
+  id: 1,
+  'user.name': 1,
+  'user.email': 1,
+  'user.avatarUrl': 1,
+  'user.userType': 1,
 };
 
 export const DEFAULT_PREVIEW_IMAGES = [
   'room1.jpg',
   'room2.jpg',
-  'room3.jpd',
-  'room4.jpd',
-  'room5.jpd',
-  'room6.jpd',
-  'room7.jpd',
-  'room8.jpd',
+  'room3.jpg',
+  'room4.jpg',
+  'room5.jpg',
+  'room6.jpg',
+  'room7.jpg',
+  'room8.jpg',
 ];

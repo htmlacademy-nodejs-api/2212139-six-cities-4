@@ -57,7 +57,7 @@ export default class CommentController extends Controller {
 
     const result = await this.commentService.createComment({
       ...body,
-      userId: user.id,
+      userId: user._id,
     });
 
     await this.offerService.incCommentCount(body.offerId);

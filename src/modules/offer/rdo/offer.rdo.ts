@@ -6,6 +6,9 @@ import SaveUserRdo from '../../user/rdo/save-user.rdo.js';
 
 export default class OfferRdo {
   @Expose()
+  public id!: string;
+
+  @Expose()
   public title!: string;
 
   @Expose()
