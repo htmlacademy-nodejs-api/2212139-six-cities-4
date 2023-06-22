@@ -15,8 +15,10 @@ export const RETURNABLE_FIELDS = {
   latitude: 1,
   longitude: 1,
   id: 1,
-  userId: 1,
-  description: 1,
+  'user.name': 1,
+  'user.email': 1,
+  'user.avatarUrl': 1,
+  'user.userType': 1,
 };
 
 export const DEFAULT_PREVIEW_IMAGES = [

@@ -22,6 +22,7 @@ import SaveUserRdo from './rdo/save-user.rdo.js';
 import UploadUserAvatarRdo from './rdo/upload-user-avatar.rdo.js';
 import { CheckTokenInBlackListMiddleware } from '../../common/middlewares/check-token-in-black-list.middleware.js';
 import { PrivateRouterMiddleware } from '../../common/middlewares/private-router.middleware.js';
+import { BLOCKED_TOKENS } from '../../const.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -48,18 +49,21 @@ export default class UserController extends Controller {
         ),
       ],
     });
+
     this.addRoute({
       path: '/login',
       method: HttpMethod.Post,
       handler: this.login,
       middlewares: [new ValidateDtoMiddleware(LoginUserDto)],
     });
+
     this.addRoute({
-      path: '/:userId/logout',
-      method: HttpMethod.Post,
+      path: '/logout',
+      method: HttpMethod.Delete,
       handler: this.logout,
-      middlewares: [new ValidateObjectIdMiddleware('userId')],
+      middlewares: [new PrivateRouterMiddleware()],
     });
+
     this.addRoute({
       path: '/:userId/avatar',
       method: HttpMethod.Post,
@@ -157,6 +161,8 @@ export default class UserController extends Controller {
         'UserController'
       );
     }
+
+    BLOCKED_TOKENS.add(token);
 
     this.noContent(res, { token });
   }

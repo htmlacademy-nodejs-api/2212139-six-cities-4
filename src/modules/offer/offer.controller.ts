@@ -117,8 +117,8 @@ export default class OfferController extends Controller {
     });
 
     this.addRoute({
-      path: '/favorite/:offerId',
-      method: HttpMethod.Patch,
+      path: '/favorite/get/:offerId',
+      method: HttpMethod.Post,
       handler: this.addFavorite,
       middlewares: [
         new PrivateRouterMiddleware(),
@@ -129,7 +129,7 @@ export default class OfferController extends Controller {
     });
 
     this.addRoute({
-      path: '/favorite/:offerId',
+      path: '/favorite/get/:offerId',
       method: HttpMethod.Delete,
       handler: this.removeFavorite,
       middlewares: [
@@ -203,7 +203,9 @@ export default class OfferController extends Controller {
   ): Promise<void> {
     const { query, user } = req;
     const offers = await this.offerService.find(user?._id, query?.limit);
-    this.ok(res, fillDTO(OfferRdo, offers));
+
+    //this.ok(res, fillDTO(OfferRdo, offers));
+    this.send(res, StatusCodes.OK, offers);
   }
 
   public async create(
