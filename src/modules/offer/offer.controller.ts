@@ -203,7 +203,7 @@ export default class OfferController extends Controller {
   ): Promise<void> {
     const { query, user } = req;
     const offers = await this.offerService.find(user?.id, query?.limit);
-    this.ok(res, fillDTO(OfferRdo, offers));
+    this.send(res, StatusCodes.OK, offers);
   }
 
   public async create(
