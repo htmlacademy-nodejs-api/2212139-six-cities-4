@@ -1,8 +1,12 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { City } from '../../../types/city-type.enum.js';
 import { OfferType } from '../../../types/offer-type.enum.js';
+import SaveUserRdo from '../../user/rdo/save-user.rdo.js';
 
 export default class SaveOfferRdo {
+  @Expose()
+  public id!: string;
+
   @Expose()
   public title!: string;
 
@@ -29,6 +33,10 @@ export default class SaveOfferRdo {
 
   @Expose()
   public price!: number;
+
+  @Expose({ name: 'userId' })
+  @Type(() => SaveUserRdo)
+  public user!: SaveUserRdo;
 
   @Expose()
   public commentsCount!: number;
