@@ -1,3 +1,4 @@
+import { DECIMAL_NUMBER_SYSTEM } from '../../const.js';
 import { City } from '../../types/city-type.enum.js';
 import { Feature } from '../../types/feature-type.enum.js';
 import { OfferType } from '../../types/offer-type.enum.js';
@@ -52,16 +53,16 @@ export function createOffer(offerData: string): Offer {
     photos: photos.split(';'),
     isPremium: !!premium,
     isFavorite: !!favorite,
-    rating: Number.parseInt(rating, 10),
+    rating: Number.parseInt(rating, DECIMAL_NUMBER_SYSTEM),
     offerType: OfferType[offerType as keyof typeof OfferType],
-    roomsCount: Number.parseInt(rooms, 10),
-    guestsCount: Number.parseInt(guests, 10),
-    price: Number.parseInt(price, 10),
+    roomsCount: Number.parseInt(rooms, DECIMAL_NUMBER_SYSTEM),
+    guestsCount: Number.parseInt(guests, DECIMAL_NUMBER_SYSTEM),
+    price: Number.parseInt(price, DECIMAL_NUMBER_SYSTEM),
     features: features
       .split(';')
       .map((feature) => Feature[feature as keyof typeof Feature]),
     user,
-    commentsCount: Number.parseInt(commentsCount, 10),
+    commentsCount: Number.parseInt(commentsCount, DECIMAL_NUMBER_SYSTEM),
     coordinates,
   } as Offer;
 }

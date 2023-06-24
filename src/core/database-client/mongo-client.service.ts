@@ -4,9 +4,7 @@ import { inject, injectable } from 'inversify';
 import { AppComponent } from '../../types/app-component.enum.js';
 import { LoggerInterface } from '../logger/logger.interface.js';
 import { setTimeout } from 'node:timers/promises';
-
-const RETRY_COUNT = 5;
-const RETRY_TIMEOUT = 1000;
+import { RETRY_COUNT, RETRY_TIMEOUT } from '../../const.js';
 
 @injectable()
 export default class MongoClientService implements DatabaseClientInterface {

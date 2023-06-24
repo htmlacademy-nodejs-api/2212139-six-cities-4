@@ -202,9 +202,7 @@ export default class OfferController extends Controller {
     res: Response
   ): Promise<void> {
     const { query, user } = req;
-    const offers = await this.offerService.find(user?._id, query?.limit);
-
-    //this.ok(res, fillDTO(OfferRdo, offers));
+    const offers = await this.offerService.find(user?.id, query?.limit);
     this.send(res, StatusCodes.OK, offers);
   }
 
@@ -348,7 +346,7 @@ export default class OfferController extends Controller {
     this.created(res, fillDTO(UploadPreviewRdo, updateDto));
   }
 
-  public async uploadImages(req: Request<ParamsOfferDetails>, res: Response) {
+  public async uploadImages(req: Request<ParamsOfferDetails>, res: Response) 
     const { offerId } = req.params;
     const offer = await this.offerService.findById(offerId);
     if (req.user._id !== offer?.userId._id.toString()) {
