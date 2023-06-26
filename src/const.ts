@@ -4,9 +4,11 @@ export const BLOCKED_TOKENS: Set<string> = new Set();
 
 export const RANGE_COORDINATES_VALUE = 0.05;
 export const DECIMAL_NUMBER_SYSTEM = 10;
-export const RETRY_COUNT = 5;
-export const RETRY_TIMEOUT = 1000;
 
+export const enum Retry {
+  count = 5,
+  timeout = 1000,
+}
 export const enum OfferRatingValue {
   min = 0,
   max = 5,
